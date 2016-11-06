@@ -27,7 +27,9 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -59,9 +61,11 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Life is like a boat." />
@@ -73,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
 
 
 
@@ -100,16 +104,22 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
     }
   };
 </script>
 
+
+
+
+  <link rel="canonical" href="http://icedcap.github.io/page/3/"/>
+
+
   <title> Ice.D.cap </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -132,7 +142,7 @@
  ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
@@ -164,8 +174,6 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
             首页
           </a>
         </li>
@@ -173,8 +181,6 @@
         
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
             归档
           </a>
@@ -184,9 +190,15 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
           </a>
         </li>
       
@@ -217,7 +229,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -301,14 +313,14 @@
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>处理View滑动事件并且执行酷炫效果是安卓上层开发的一个难点。与纯自定义View控件相比，实现View滑动效果又可以从动画的角度出发；但是针对滑动后保留控件的事件对象来说动画又存在短板；若从代码复杂度来说实现简单的View滑动又可以通过View自身提供的<code>scrollTo</code>和<code>scrollBy</code>方法辅以Scroller对象来实现；针对复杂滑动效果还是要通过自定义控件处理好各个View事件序列的事件分发和消费逻辑。</p>
 <p>本篇通过模仿最美应用滑动操作效果来探讨下在Android中实现View滑动的这几种方案，并且对比各方案的优劣性。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/" rel="contents">
+            <a class="btn" href="/2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
         
       
     </div>
-    
+
     <div>
       
     </div>
@@ -340,7 +352,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -425,14 +437,14 @@
 <p>这些可以应用于任何的Android应用程序，典型的可以对一个视图进行位置上的，旋转性、膨胀性，和颜色上进行动画效果的展示。</p>
 <p>动画可以定义在XML文件中也可以在java代码上来实现它。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/16/动画总结/" rel="contents">
+            <a class="btn" href="/2016/05/16/动画总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
         
       
     </div>
-    
+
     <div>
       
     </div>
@@ -464,7 +476,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -549,14 +561,14 @@
 
 <h2 id="Handler机制概述"><a href="#Handler机制概述" class="headerlink" title="Handler机制概述"></a>Handler机制概述</h2><p>Handler是安卓框架中消息机制的核心，在开发中用到最多的就是通过消息传递通知主线程进行UI操作，比如UI更新，view事件等。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/12/深入理解Handler机制/" rel="contents">
+            <a class="btn" href="/2016/05/12/深入理解Handler机制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
         
       
     </div>
-    
+
     <div>
       
     </div>
@@ -588,7 +600,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -674,14 +686,14 @@
 </blockquote>
 <h2 id="RemoteViews实际应用"><a href="#RemoteViews实际应用" class="headerlink" title="RemoteViews实际应用"></a>RemoteViews实际应用</h2><h3 id="通知栏"><a href="#通知栏" class="headerlink" title="通知栏"></a>通知栏</h3><p>在Android应用开发中，通知栏是一个很重要的UI交互。其原理是通过调用NotificationManager的notify方法来实现的。最基本的实现是使用API提供的默认布局，例如<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/" rel="contents">
+            <a class="btn" href="/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
         
       
     </div>
-    
+
     <div>
       
     </div>
@@ -713,7 +725,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -780,14 +792,14 @@
 <p>这是从各大平台上参考的android架构文章，主要参考自：<br><a href="https://github.com/Juude/Awesome-Android-Architecture">Juude/Awesome-Android-Architecture</a></p>
 </blockquote>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/24/test/" rel="contents">
+            <a class="btn" href="/2016/04/24/test/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
         
       
     </div>
-    
+
     <div>
       
     </div>
@@ -845,7 +857,7 @@
       
 
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/default_avatar.jpg"
                alt="Ice.D.cap" />
@@ -888,7 +900,7 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/icedcap" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i>
+                    <i class="fa fa-fw fa-github"></i>
                   
                   GitHub
                 </a>
@@ -897,7 +909,7 @@
               <span class="links-of-author-item">
                 <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
                   
-                    <i class="fa fa-twitter"></i>
+                    <i class="fa fa-fw fa-twitter"></i>
                   
                   Twitter
                 </a>
@@ -906,7 +918,7 @@
               <span class="links-of-author-item">
                 <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i>
+                    <i class="fa fa-fw fa-weibo"></i>
                   
                   Weibo
                 </a>
@@ -946,7 +958,7 @@
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
@@ -988,49 +1000,49 @@
 
 
   
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
 
 
 
@@ -1055,19 +1067,26 @@
 
   
     
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
   
 
 
 
 
 
-  
+
   
   
 
   
 
   
+
+  
+
+  
+
 
 </body>
 </html>

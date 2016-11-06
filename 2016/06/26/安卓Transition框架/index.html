@@ -1,0 +1,702 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,Transition," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="上篇博文中完全总结了安卓的动画框架，以及它的使用和应用场景。随着安卓源码的不断迭代，尤其到安卓5.0以后引入了Material设计模式。使得Android动画效果更加完善，在5.0之前号称为过度版的KitKat中引入了Transition框架，从字面上看它是过渡、转场的意思。上篇博文中也介绍了View动画的应用场景，不同的是本篇将介绍安卓Transition转场框架的应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓Transition框架">
+<meta property="og:url" content="http://icedcap.github.io/2016/06/26/安卓Transition框架/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="上篇博文中完全总结了安卓的动画框架，以及它的使用和应用场景。随着安卓源码的不断迭代，尤其到安卓5.0以后引入了Material设计模式。使得Android动画效果更加完善，在5.0之前号称为过度版的KitKat中引入了Transition框架，从字面上看它是过渡、转场的意思。上篇博文中也介绍了View动画的应用场景，不同的是本篇将介绍安卓Transition转场框架的应用。">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/demo.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/transition_classes.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/classes_relationship.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/struct_scene.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/TransitionManager.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/beginDelayedTransition.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/googleplaynewsstand.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/activitytransition.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/transition/FABTransition.gif">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓Transition框架">
+<meta name="twitter:description" content="上篇博文中完全总结了安卓的动画框架，以及它的使用和应用场景。随着安卓源码的不断迭代，尤其到安卓5.0以后引入了Material设计模式。使得Android动画效果更加完善，在5.0之前号称为过度版的KitKat中引入了Transition框架，从字面上看它是过渡、转场的意思。上篇博文中也介绍了View动画的应用场景，不同的是本篇将介绍安卓Transition转场框架的应用。">
+<meta name="twitter:image" content="http://icedcap.github.io/pic/transition/demo.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 安卓Transition框架 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓Transition框架
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-26T21:57:47+08:00" content="2016-06-26">
+              2016-06-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/26/安卓Transition框架/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/26/安卓Transition框架/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇博文中完全总结了安卓的动画框架，以及它的使用和应用场景。随着安卓源码的不断迭代，尤其到安卓5.0以后引入了Material设计模式。使得Android动画效果更加完善，在5.0之前号称为过度版的<em>KitKat</em>中引入了<code>Transition</code>框架，从字面上看它是过渡、转场的意思。上篇博文中也介绍了<a href="http://icedcap.github.io/2016/06/21/Android%E5%8A%A8%E7%94%BB%E5%AE%8C%E5%85%A8%E6%80%BB%E7%BB%93/#View动画的应用">View动画的应用场景</a>，不同的是本篇将介绍安卓<code>Transition</code>转场框架的应用。</p>
+<a id="more"></a>
+<h2 id="Transition框架"><a href="#Transition框架" class="headerlink" title="Transition框架"></a>Transition框架</h2><p><code>Transition</code>框架主要的作用对象是控件、视图层级（布局）、Activity和Fragment之间。如下图所示的Activity之间的切换以及各自的视图层的动画效果。</p>
+<p style="text-align: center;"><br>    <img src="pic/transition/demo.gif"><br></p><br><code>Transition</code>框架在动画运行时改变一些对象属性值来达到预期效果，框架内置了一些普通的过渡动画(<code>Fade</code> <code>Explode</code> <code>Slide</code> <code>Rotate</code>等)并且允许开发者自定义复杂的过渡动画。下面就来深入了解转场动画吧。<br><br>&gt; <strong>注意:</strong> <code>Transition</code>是API19引入的，使用时要注意版本兼容性问题。在4.0(API14)到4.4(API19)之间的版本可以使用<code>animateLayoutChanges</code>属性应用布局动画，具体可以查看<a href="https://developer.android.com/training/animation/layout.html" target="_blank" rel="external">官方指南</a>。<br><br>为了帮助实现视图层级之间的过渡动画，AndroidAPI19引入<code>transition</code>框架。源码位于<code>/frameworks/base/core/java/android/transition/..</code>下，其结构如下图所示<br><p style="text-align: center;"><br>    <img src="pic/transition/transition_classes.png"><br></p><br><code>Transition</code>是过渡动画的基类，框架中提供了很多实用的过渡动画，如下图所示<br><p style="text-align: center;"><br>    <img src="pic/transition/classes_relationship.png"><br></p><br><code>Transition</code>框架会为视图层级中的多个view应用一个或者多个动画，从而达到视图间转场过渡的效果。<code>Transition</code>具有如下特点：<br><br>-   <strong>组级别的动画</strong>    应用在多个View上并且使用一个或者多个动画效果。<br>-   <strong>依赖于转场</strong> 在View属性值的开始与结束之间进行动画<br>-   <strong>内置动画</strong>  框架内部依赖于动画框架，例如淡出或者移动的效果<br>-   <strong>支持XML资源文件编写</strong>   <code>transitionSet</code> <code>transitionManager</code>等<br>-   <strong>监听器</strong>   和动画框架一样支持动画生命周期的回调<br><br>### Transition框架工作原理<br>前文对<code>Transition</code>的类作了大致的了解，并且介绍的框架的一些特点。下面谈谈框架的工作原理。<br><br>其实框架围绕着两个概念进行架构一个是<code>Transition</code>另一个是<code>Scene</code>，它们分别代表转场和场景的意思。<code>Scene</code>维护着视图的状态并且持有<code>mEnterAction</code>和<code>mExitAction</code>执行视图出现和消失的<code>Runnable</code>。如下图所示的<code>Scene</code>内部结构<br><p style="text-align: center;"><br>    <img src="pic/transition/struct_scene.png"><br></p><br><code>Transition</code>则定义了在两个<code>Scene</code>之间的动画切换。<code>Transition</code>内部结构比较复杂，主要封装了一个<code>AnimationInfo</code>内部静态类用于转场动画和<code>TransitionListener</code>监听器。<br>当一个场景消失并出现另外一个场景的时候，<code>Transition</code>主要做以下两件事：<br>1. 捕获<code>Scene</code>在开始和结束时的状态<br>2. 基于从一个场景到另外一个场景的视图动画创建Animator<br><br>### TransitionManager<br>对<code>Transition</code>的结构有了大概了解后，我们看一下框架中重要的<code>TransitionManager</code>，下图是它的内部结构<br><p style="text-align: center;"><br>    <img src="pic/transition/TransitionManager.png"><br></p><br>可以看到方法<strong>beginDelayedTransition</strong>作用与<code>ViewGroup</code>上，以及方法<strong>go</strong>作用在<code>Scene</code>。下面通过实例具体看看这两个方法的应用效果。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransitionActivity2</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> View red, blue, orange, green;</div><div class="line">    <span class="keyword">private</span> ViewGroup mViewGroup;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mCount;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_transition2);</div><div class="line">        mViewGroup = (ViewGroup) findViewById(R.id.root_container);</div><div class="line">        mViewGroup.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">                <span class="keyword">int</span> temp = ++mCount % <span class="number">6</span>;</div><div class="line">                <span class="keyword">if</span> (temp == <span class="number">1</span> || temp ==<span class="number">2</span>)&#123;</div><div class="line">                    animFade();</div><div class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span> (temp == <span class="number">3</span>|| temp == <span class="number">4</span>)&#123;</div><div class="line">                    animSlide();</div><div class="line">                &#125;<span class="keyword">else</span> &#123;</div><div class="line">                    animExplode();</div><div class="line">                &#125;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        red = findViewById(R.id.red);</div><div class="line">        blue = findViewById(R.id.blue);</div><div class="line">        green = findViewById(R.id.green);</div><div class="line">        orange = findViewById(R.id.orange);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animFade</span><span class="params">()</span> </span>&#123;</div><div class="line">        TransitionManager.beginDelayedTransition(mViewGroup, <span class="keyword">new</span> Fade());</div><div class="line">        toggleVisibility(red, blue, green, orange);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animSlide</span><span class="params">()</span> </span>&#123;</div><div class="line">        TransitionManager.beginDelayedTransition(mViewGroup, <span class="keyword">new</span> Slide());</div><div class="line">        toggleVisibility(red, blue, green, orange);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animExplode</span><span class="params">()</span> </span>&#123;</div><div class="line">        TransitionManager.beginDelayedTransition(mViewGroup, <span class="keyword">new</span> Explode());</div><div class="line">        toggleVisibility(green, red, orange, blue);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">toggleVisibility</span><span class="params">(View... views)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (View view : views) &#123;</div><div class="line">            <span class="keyword">boolean</span> isVisibility = view.getVisibility() == View.VISIBLE;</div><div class="line">            view.setVisibility(isVisibility ? View.INVISIBLE : View.VISIBLE);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>这里使用框架内置的<code>Fade</code>(淡入淡出) <code>Slide</code>(滑动) <code>Explode</code>(爆炸)转场效果。<br><p style="text-align: center;"><br>    <img src="pic/transition/beginDelayedTransition.gif"><br></p><br>对于<code>Transition</code>也可以通过XML文件来声明例如<code>Explode</code>，可以创建res/transition/explode.xml文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">explode</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"500"</span>&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">explode</span>&gt;</span></div></pre></td></tr></table></figure><br><br>并且使用<code>TransitionInflate#inflateTransition</code>方法创建<code>Transition</code>对象。<br><strong>注意：</strong>在调用<code>beginDelayedTransition</code>方法之后一定要改变布局中元素的可见性(最好使用<em>INVISIBLE</em>而不是<em>GONE</em>)，否则不能达到预期的效果。<br><br>下面看一下<code>go</code>方法的使用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animScene</span><span class="params">()</span> </span>&#123;</div><div class="line">    Scene scene = <span class="keyword">new</span> Scene(mViewGroup);</div><div class="line">    TransitionManager.go(scene, <span class="keyword">new</span> Explode());</div><div class="line">    toggleVisibility(green, red, orange, blue);</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>上述代码的效果等同于<code>animExplode</code>。<code>Scene</code>的创建如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Scene</span><span class="params">(ViewGroup sceneRoot)</span> </span>&#123;</div><div class="line">    mSceneRoot = sceneRoot;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Scene</span><span class="params">(ViewGroup sceneRoot, View layout)</span> </span>&#123;</div><div class="line">    mSceneRoot = sceneRoot;</div><div class="line">    mLayout = layout;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>第二个构造器的第二个参数是该场景的视图层级，当进入该场景后，它将被作为子元素添加到<code>sceneRoot</code>。除了在构造器中添加布局和控件之外，<code>Scene</code>还提供了<code>setEnterAction</code>和<code>setExitAction</code>以及<code>enter</code>和<code>exit</code>方法用于进场和出场。<br><br>### 深入理解转场过程<br><code>beginDelayedTransition</code>方法中会做几件事，第一，如果没有传入<code>transition</code>参数将会使用默认的转场类<code>Fade</code>淡入淡出效果。第二，调用<code>sceneChangeSetup</code>方法设置现在场景的变化。第三，<code>setCurrentScene</code>设置当前场景并且通过<code>sceneChangeRunTransition</code>方法为<code>sceneRoot</code>添加监听器。<br>下面看一下<code>sceneChangeSetup</code>方法具体干了些什么？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sceneChangeSetup</span><span class="params">(ViewGroup sceneRoot, Transition transition)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// Capture current values</span></div><div class="line">    ArrayList&lt;Transition&gt; runningTransitions = getRunningTransitions().get(sceneRoot);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (runningTransitions != <span class="keyword">null</span> &amp;&amp; runningTransitions.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (Transition runningTransition : runningTransitions) &#123;</div><div class="line">            runningTransition.pause(sceneRoot);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (transition != <span class="keyword">null</span>) &#123;</div><div class="line">        transition.captureValues(sceneRoot, <span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Notify previous scene that it is being exited</span></div><div class="line">    Scene previousScene = Scene.getCurrentScene(sceneRoot);</div><div class="line">    <span class="keyword">if</span> (previousScene != <span class="keyword">null</span>) &#123;</div><div class="line">        previousScene.exit();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>逻辑很清晰，首先捕获正在运行的转场动画如果有的话就暂停它，接着调用<code>captureValues</code>方法，从字面意思上看是捕获一些值。最后是获取前一个场景如果不为空就调用其退出的方法。很显然这里的重点是<code>captureValues</code>方法，接着往下看<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">captureValues</span><span class="params">(ViewGroup sceneRoot, <span class="keyword">boolean</span> start)</span> </span>&#123;</div><div class="line">    clearValues(start);</div><div class="line">    <span class="keyword">if</span> ((mTargetIds.size() &gt; <span class="number">0</span> || mTargets.size() &gt; <span class="number">0</span>)</div><div class="line">            &amp;&amp; (mTargetNames == <span class="keyword">null</span> || mTargetNames.isEmpty())</div><div class="line">            &amp;&amp; (mTargetTypes == <span class="keyword">null</span> || mTargetTypes.isEmpty())) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mTargetIds.size(); ++i) &#123;</div><div class="line">            <span class="keyword">int</span> id = mTargetIds.get(i);</div><div class="line">            View view = sceneRoot.findViewById(id);</div><div class="line">            <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</div><div class="line">                TransitionValues values = <span class="keyword">new</span> TransitionValues();</div><div class="line">                values.view = view;</div><div class="line">                <span class="keyword">if</span> (start) &#123;</div><div class="line">                    captureStartValues(values);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    captureEndValues(values);</div><div class="line">                &#125;</div><div class="line">                values.targetedTransitions.add(<span class="keyword">this</span>);</div><div class="line">                capturePropagationValues(values);</div><div class="line">                <span class="keyword">if</span> (start) &#123;</div><div class="line">                    addViewValues(mStartValues, view, values);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    addViewValues(mEndValues, view, values);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mTargets.size(); ++i) &#123;</div><div class="line">            View view = mTargets.get(i);</div><div class="line">            TransitionValues values = <span class="keyword">new</span> TransitionValues();</div><div class="line">            values.view = view;</div><div class="line">            <span class="keyword">if</span> (start) &#123;</div><div class="line">                captureStartValues(values);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                captureEndValues(values);</div><div class="line">            &#125;</div><div class="line">            values.targetedTransitions.add(<span class="keyword">this</span>);</div><div class="line">            capturePropagationValues(values);</div><div class="line">            <span class="keyword">if</span> (start) &#123;</div><div class="line">                addViewValues(mStartValues, view, values);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                addViewValues(mEndValues, view, values);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        captureHierarchy(sceneRoot, start);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!start &amp;&amp; mNameOverrides != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">int</span> numOverrides = mNameOverrides.size();</div><div class="line">        ArrayList&lt;View&gt; overriddenViews = <span class="keyword">new</span> ArrayList&lt;View&gt;(numOverrides);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numOverrides; i++) &#123;</div><div class="line">            String fromName = mNameOverrides.keyAt(i);</div><div class="line">            overriddenViews.add(mStartValues.nameValues.remove(fromName));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numOverrides; i++) &#123;</div><div class="line">            View view = overriddenViews.get(i);</div><div class="line">            <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</div><div class="line">                String toName = mNameOverrides.valueAt(i);</div><div class="line">                mStartValues.nameValues.put(toName, view);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>可以看到无论是为转场框架设置了target与否都会调用<code>captureStartValues(values)</code>和<code>captureEndValues(values)</code>来捕获进场和出场的<em>values</em>，在捕获过程中使用循环递归寻求每一个子元素的状态。<code>captureStartValues</code>和<code>captureEndValues</code>都是抽象方法。下面看一下<code>explode</code>的具体实现<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">captureStartValues</span><span class="params">(TransitionValues transitionValues)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.captureStartValues(transitionValues);</div><div class="line">    captureValues(transitionValues);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">captureValues</span><span class="params">(TransitionValues transitionValues)</span> </span>&#123;</div><div class="line">    View view = transitionValues.view;</div><div class="line">    view.getLocationOnScreen(mTempLoc);</div><div class="line">    <span class="keyword">int</span> left = mTempLoc[<span class="number">0</span>];</div><div class="line">    <span class="keyword">int</span> top = mTempLoc[<span class="number">1</span>];</div><div class="line">    <span class="keyword">int</span> right = left + view.getWidth();</div><div class="line">    <span class="keyword">int</span> bottom = top + view.getHeight();</div><div class="line">    transitionValues.values.put(PROPNAME_SCREEN_BOUNDS, <span class="keyword">new</span> Rect(left, top, right, bottom));</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>主要记录了子元素的<code>left</code> <code>top</code> <code>right</code> 和<code>bottom</code>属性。<br>通过<code>ViewTreeObserver</code>中回调<code>onPreDraw</code>方法捕获结束时的values<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onPreDraw</span><span class="params">()</span> </span>&#123;</div><div class="line">    removeListeners();</div><div class="line">    sPendingTransitions.remove(mSceneRoot);</div><div class="line">    <span class="comment">// Add to running list, handle end to remove it</span></div><div class="line">    <span class="keyword">final</span> ArrayMap&lt;ViewGroup, ArrayList&lt;Transition&gt;&gt; runningTransitions =</div><div class="line">            getRunningTransitions();</div><div class="line">    ArrayList&lt;Transition&gt; currentTransitions = runningTransitions.get(mSceneRoot);</div><div class="line">    ArrayList&lt;Transition&gt; previousRunningTransitions = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">if</span> (currentTransitions == <span class="keyword">null</span>) &#123;</div><div class="line">        currentTransitions = <span class="keyword">new</span> ArrayList&lt;Transition&gt;();</div><div class="line">        runningTransitions.put(mSceneRoot, currentTransitions);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (currentTransitions.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        previousRunningTransitions = <span class="keyword">new</span> ArrayList&lt;Transition&gt;(currentTransitions);</div><div class="line">    &#125;</div><div class="line">    currentTransitions.add(mTransition);</div><div class="line">    mTransition.addListener(<span class="keyword">new</span> Transition.TransitionListenerAdapter() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionEnd</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">            ArrayList&lt;Transition&gt; currentTransitions =</div><div class="line">                    runningTransitions.get(mSceneRoot);</div><div class="line">            currentTransitions.remove(transition);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    mTransition.captureValues(mSceneRoot, <span class="keyword">false</span>);</div><div class="line">    <span class="keyword">if</span> (previousRunningTransitions != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (Transition runningTransition : previousRunningTransitions) &#123;</div><div class="line">            runningTransition.resume(mSceneRoot);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    mTransition.playTransition(mSceneRoot);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>可以看到在<code>mTransition.captureValues(mSceneRoot, false)</code>最后调用<code>playTransition</code>方法进行转场动画。在该方法中会根据布局以及它的在之前捕获的开始与结束的状态来创建动画。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">playTransition</span><span class="params">(ViewGroup sceneRoot)</span> </span>&#123;</div><div class="line">    mStartValuesList = <span class="keyword">new</span> ArrayList&lt;TransitionValues&gt;();</div><div class="line">    mEndValuesList = <span class="keyword">new</span> ArrayList&lt;TransitionValues&gt;();</div><div class="line">    matchStartAndEnd(mStartValues, mEndValues);</div><div class="line"></div><div class="line">    ArrayMap&lt;Animator, AnimationInfo&gt; runningAnimators = getRunningAnimators();</div><div class="line">    <span class="keyword">int</span> numOldAnims = runningAnimators.size();</div><div class="line">    WindowId windowId = sceneRoot.getWindowId();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = numOldAnims - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">        Animator anim = runningAnimators.keyAt(i);</div><div class="line">        <span class="keyword">if</span> (anim != <span class="keyword">null</span>) &#123;</div><div class="line">            AnimationInfo oldInfo = runningAnimators.get(anim);</div><div class="line">            <span class="keyword">if</span> (oldInfo != <span class="keyword">null</span> &amp;&amp; oldInfo.view != <span class="keyword">null</span> &amp;&amp; oldInfo.windowId == windowId) &#123;</div><div class="line">                TransitionValues oldValues = oldInfo.values;</div><div class="line">                View oldView = oldInfo.view;</div><div class="line">                TransitionValues startValues = getTransitionValues(oldView, <span class="keyword">true</span>);</div><div class="line">                TransitionValues endValues = getMatchedTransitionValues(oldView, <span class="keyword">true</span>);</div><div class="line">                <span class="keyword">boolean</span> cancel = (startValues != <span class="keyword">null</span> || endValues != <span class="keyword">null</span>) &amp;&amp;</div><div class="line">                        oldInfo.transition.areValuesChanged(oldValues, endValues);</div><div class="line">                <span class="keyword">if</span> (cancel) &#123;</div><div class="line">                    <span class="keyword">if</span> (anim.isRunning() || anim.isStarted()) &#123;</div><div class="line">                        <span class="keyword">if</span> (DBG) &#123;</div><div class="line">                            Log.d(LOG_TAG, <span class="string">"Canceling anim "</span> + anim);</div><div class="line">                        &#125;</div><div class="line">                        anim.cancel();</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="keyword">if</span> (DBG) &#123;</div><div class="line">                            Log.d(LOG_TAG, <span class="string">"removing anim from info list: "</span> + anim);</div><div class="line">                        &#125;</div><div class="line">                        runningAnimators.remove(anim);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    createAnimators(sceneRoot, mStartValues, mEndValues, mStartValuesList, mEndValuesList);</div><div class="line">    runAnimators();</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>最后通过<code>runAnimators</code>方法执行动画。具体代码这里就不跟进了，感兴趣的同学可以自行查阅。以上就是转场工作的过程。<br><br>从上面的例子以及源代码分析可以得出两个重要的线索，一，Transitions将Animators的观点提取出来，这样Transitions就可以使减少开发人员在Activity和Fragment中写大量的代码：所有的开发者必须做的是设置视图开始和结束的values，这样Transition将根据他们之间的差异自动构建一个动画。二，可以使用Transition内置很简单且方便的改变场景之间的动画(Fade,Slide,Explode)。正如我们前面所看到的这些Transition的优点使我们构建更加复杂Activity和Fragment转场动画时使用几行代码就能搞定，在下一节我们将看到这些特性是如何应用在Activity&amp;Fragment之间的转场。<br><br><br>## Activity和Fragment转场<br>对于Activity或者Fragment之间的转场，我们在<a href="http://icedcap.github.io/2016/06/21/Android%E5%8A%A8%E7%94%BB%E5%AE%8C%E5%85%A8%E6%80%BB%E7%BB%93/#View动画的应用">上篇博文</a>中也简单介绍了,它使用<code>Activity#overridePendingTransition()</code>和<code>FragmentTransaction#setCustomAnimation()</code>来作为Activity和Fragment切换动画。这两个方法只能将<em>Activity/Fragment</em>作为一个整体进行动画切换。而引入<code>Transition</code>框架后更加丰富了动画效果以及API的灵活调用。它使得<em>Activity/Fragment</em>中的视图在它进出其容器的时候也能有动画效果甚至可以将共享视图在不同的Activity/Fragment之间进行动画切换。在介绍<em>Activities</em>和<em>Fragments</em>之间的转场前先介绍下转场要用到的术语，注意下面的列出来的ActivityTransition的术语也同样适用于FragmentTransition：<br><br>-   由A启动B，A称为主叫Activity，B称为被叫Activity<br>-   Activity Transition APIs围绕着<code>exit</code>，<code>enter</code>，<code>return</code>和<code>reenter</code>四种切换方式构建Transition，下面是ActivityA和B的四种切换描述:<br>    + 由A启动B，A退出转场决定了A的视图的动画效果<br>    + 由A启动B，进入B的场景决定了B视图的动画效果<br>    + 由B返回到A，B的返回转场决定了B视图的动画效果<br>    + 由B返回到A，重新进入到A的转场决定了A视图的动画效果<br>-   最后，框架为两种Activity转场方式提供了APIs，这两种转场分别是<em>content transitions</em> 和 <em>shared element transitions</em>每一种方式都允许我们在Activity之间自定义转场动画，并且是一种唯一的方法，如下：<br>    + 内容转场决定了在一个Activity中不共享的被叫视图转场到要进入的或者要退出的下一个Activity的场景<br>    + 共享元素转场决定了一个Activity中共享元素&lt;也称为英雄View&gt;在两个Activity中动画效果<br><br><p style="text-align:center;"><br>    <img src="pic/transition/googleplaynewsstand.gif"><br></p>
+
+<p>如图，很好的展示了内容转场和共享元素转场，Google Play Newsstand应用，尽管我们看不到Newstand的源代码，但我猜想它一定使用了如下的转场：</p>
+<ul>
+<li>在exit和reenter过程中A（主叫Activity）的内容转场为null，这是因为A中没有不共享的视图，在exit和reenter过程中没有动画效果。</li>
+<li>在enter过程中B（被叫Activity）使用了一个自定义的slide-in转场，该转场使用了一个随机的列表item slide到窗口的底部</li>
+<li>在return工程中B使用了TransitionSet，用了两个子Transition并行的过程效果。一个Slide(Gravity.TOP)转场产生视图上半部分的动画效果。另一个是Slide(Gravity.BOTTOM) 转场产生视图下半部分的动画效果。最终的结果是当用户点击返回键返回ActivityA的时候出现”break in half”的效果。</li>
+<li>在enter和reenter过程中共享元素转场都使用了ChangeImageTransform，这是因为在两个Activity转场过程中产生了ImageView的动画效果。</li>
+</ul>
+<p>你也许注意到了在转场过程中的半圆形的动画效果，这个效果将在之后的章节进行应用。而现在我们将问题放简单并且快速熟悉APIs所提供的方法。</p>
+<h3 id="使用Transition框架API应用Activity转场动画"><a href="#使用Transition框架API应用Activity转场动画" class="headerlink" title="使用Transition框架API应用Activity转场动画"></a>使用Transition框架API应用Activity转场动画</h3><p>使用Lollipop APIs所提供的接口来创建一个Activity转场是相对简单的，概括起来需要在你的应用中进行以下几个步骤。接下来的几篇文章也将使用用例和实例来进行切入，但现在我们还有两节内容来好好介绍一番</p>
+<ul>
+<li>为了使用新的转场API我们需要请求Window.FEATURE_ACTIVITY_TRANSITIONS的窗口特征，调用时机放在called和calling activities的时候当然也可以定义在主题xml文件中Material的主题默认该flag是enable的（备注2）</li>
+<li>为主叫Activity和被叫Activity分别设置exit和enter内容转场。使用了Material主题的应用分别默认其内容转场为null和Fade。如果reenter或者return没有明确设置，那么Activity的exit和enter内容转场分别用于reenter和return的动画效果。</li>
+<li>为主叫Activity和被叫Activity分别设置exit和enter的共享元素的转场。使用了Material主题的应用有自己共享元素的exit和enter转场，它们默认被设置为@android:transition/move。如果reenter和return没有明确被设置的话，那么Activity的exit和enter内容转场分别用于reenter和return的动画效果。</li>
+<li>为使用内容转场或共享元素转场来启动一个Activity可以使用startActivity(Context, Bundle)方法，并且将如下创建的Bundle作为参数传递进去：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ActivityOptions.makeSceneTransitionAnimation(activity, pairs).toBundle();</div></pre></td></tr></table></figure>
+<p><code>pair</code>是一个<code>Pair&lt;View, String&gt;</code>对象的数组，<code>Pair&lt;View, String&gt;</code>将共享视图和其名字绑定，千万注意要给共享元素起一个唯一的名字，可以在代码中定义<a href="https://developer.android.com/reference/android/view/View.html#setTransitionName(java.lang.String" target="_blank" rel="external">setTransitionName</a>)也可以在xml中定义<a href="https://developer.android.com/reference/android/view/View.html#attr_android:transitionName" target="_blank" rel="external">attr_android:transitionName</a>，否则的话转场将不会正常工作的。<br>在代码中触发一个return转场可以使用<code>finishAfterTransition()</code>方法来代替<code>finish()</code>方法<br>默认情况下，Material主题的应用有他自己的<em>exit/enter</em>内容转场在<em>exit/reenter</em>转场完成之前首先启动一点点，并且创建一个很小的重叠（overlap）来使得转场更加无缝和动态。如果你想明确的禁止这种行为可以使用<code>setWindowAllowEnterTransitionOverlap()</code>和 <code>setWindowAllowReturnTransitionOverlap()</code>方法或者也可以在主题XML中禁用掉。</p>
+<h3 id="使用Transition框架API应用Fragment转场动画"><a href="#使用Transition框架API应用Fragment转场动画" class="headerlink" title="使用Transition框架API应用Fragment转场动画"></a>使用Transition框架API应用Fragment转场动画</h3><p>如果你使用Fragment转场的话，和Activity转场相比会有些许不同</p>
+<ul>
+<li>在 <em>exit</em>, <em>enter</em>, <em>reenter</em>, 和 <em>return</em>的内容转场中，应该在<code>Fragment</code>中或者在相应的<code>Fragment XML tag</code>上的<code>attributes</code>使用相同的方法</li>
+<li>在<em>enter</em>和<em>reenter</em>的共享元素转场中，也应该在<code>Fragment</code>中或者在相应的<code>Fragment XML tag</code>上的<code>attributes</code>使用相同的方法</li>
+<li>然而在<code>Activity</code>转场中可以使用<code>startActivity()</code>和 <code>finishAfterTransition()</code>显示的触发转场动画。对于<code>Fragment</code>转场，通过<code>FragmentTransition</code>进行<code>added</code>, <code>removed</code>, <code>attached</code>, <code>detached</code>, <code>shown</code>, 或者 <code>hidden</code>的事务操作时候会自动触发转场动画。</li>
+<li>对于共享元素转场，共享元素应该被作为FragmentTransition一部分被指定好。当在FragmentTransition被提交之前调用<code>addSharedElement(View, String)</code>方法时就应该指定好共享元素的视图。这样才能保证共享元素转场动画工作正常。</li>
+</ul>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p></p><p style="text-align: center;"><br>    <img src="pic/transition/activitytransition.gif"><br></p><br>为了实现上述效果，可以分为如下几步<br>1.共享元素转场，这里将图书图片作为共享元素<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.LOLLIPOP)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startBookDetailWithTransition</span><span class="params">(Activity activity, View icon, Book book)</span> </span>&#123;</div><div class="line">    View toolBar = activity.findViewById(R.id.main_appbar);</div><div class="line">    <span class="keyword">final</span> Pair[] pairs = TransitionHelper.createSafeTransitionParticipants(activity,</div><div class="line">            <span class="keyword">new</span> Pair&lt;&gt;(icon, SHARE_ELEMENT_NAME)</div><div class="line">    );</div><div class="line">    ActivityOptions sceneTransitionAnimation = ActivityOptions.makeSceneTransitionAnimation(activity, pairs);</div><div class="line"></div><div class="line">    activity.startActivity(BookDetailActivity.getStartIntent(activity.getBaseContext(), book), sceneTransitionAnimation.toBundle());</div><div class="line">&#125;</div></pre></td></tr></table></figure><p></p>
+<p>2.作为转场共享元素一定要在被叫Activity的<em>enter</em>过程中设置好共享元素，被叫进场时上半部分有一个波纹<em>Reveal</em>的效果，这里先不介绍留作最后一部分<a href="">Fab酷炫转场</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">imageView.setTransitionName(LinearContentAdapter.SHARE_ELEMENT_NAME);</div></pre></td></tr></table></figure></p>
+<p>3.被叫退出时，从中间有一个断裂的动画效果可以使用普通的View动画实现<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animExit</span><span class="params">(ViewGroup up, ViewGroup down)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mFab != <span class="keyword">null</span>) &#123;</div><div class="line">        mFab.startAnimation(AnimationUtils.loadAnimation(<span class="keyword">this</span>, R.anim.fab_fade_expose_out));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">final</span> Animation upOut = AnimationUtils.loadAnimation(<span class="keyword">this</span>, R.anim.transition_up_out);</div><div class="line">    <span class="keyword">final</span> Animation downOut = AnimationUtils.loadAnimation(<span class="keyword">this</span>, R.anim.transition_down_out);</div><div class="line">    up.startAnimation(upOut);</div><div class="line">    down.startAnimation(downOut);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Transition</code>框架在这里主要应用在图片作为共享元素在两个Activity之间的连接效果。<br>除此之外还可以通过XML文件实现共享元素转场的效果。<br>1.首先保证Window Content Transition， 在value/style.xml<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"MaterialAnimations"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.NoActionBar"</span>&gt;</span><span class="xml"></span></div><div class="line">    ...</div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowContentTransitions"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span></span></div><div class="line">    <span class="attr">...</span></div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>当然也可以为整个App指定默认的<code>enter</code> <code>exit</code> 以及共享元素<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"MaterialAnimations"</span> <span class="attr">parent</span>=<span class="string">"@style/Theme.AppCompat.Light.NoActionBar"</span>&gt;</span><span class="xml"></span></div><div class="line">    ...</div><div class="line">    <span class="comment">&lt;!-- specify enter and exit transitions --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowEnterTransition"</span>&gt;</span>@transition/explode<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowExitTransition"</span>&gt;</span>@transition/explode<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- specify shared element transitions --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowSharedElementEnterTransition"</span>&gt;</span>@transition/changebounds<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowSharedElementExitTransition"</span>&gt;</span>@transition/changebounds<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    ...</div></pre></td></tr></table></figure></p>
+<p>2.使用<code>android:transitionName</code>属性定义普通的的共享元素<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--layout/activity_a.xml--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/small_blue_icon"</span></div><div class="line">        <span class="attr">style</span>=<span class="string">"@style/MaterialAnimations.Icon.Small"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/circle"</span></div><div class="line">        <span class="attr">android:transitionName</span>=<span class="string">"@string/blue_name"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--layout/activity_b.xml--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/big_blue_icon"</span></div><div class="line">        <span class="attr">style</span>=<span class="string">"@style/MaterialAnimations.Icon.Big"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/circle"</span></div><div class="line">        <span class="attr">android:transitionName</span>=<span class="string">"@string/blue_name"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>3.最后通过Java代码启动Activity b<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">squareBlue.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        Intent i = <span class="keyword">new</span> Intent(MainActivity.<span class="keyword">this</span>, SharedElementActivity.class);</div><div class="line"></div><div class="line">        View sharedView = blueIconImageView;</div><div class="line">        String transitionName = getString(R.string.blue_name);</div><div class="line"></div><div class="line">        ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(MainActivity.<span class="keyword">this</span>, sharedView, transitionName);</div><div class="line">        startActivity(i, transitionActivityOptions.toBundle());</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>以上就是应用在Activity或者Fragment之间的转场效果，但是在实际开发中我们除了转场动画还会对其他控件进行稍微的动画调整例如在前文例子中经常看到的波纹<code>Reveal</code>效果，或者<code>Fab</code>按钮的出场效果。在下一节中介绍一种常用的FAB按钮应用在转场中的效果，这时候我们要使用<code>Transition</code>和<code>Animation</code>两大框架共同完成复杂的动画效果。所以说<code>Transition</code>不是万全的很多时候都要配合动画来完成转场。</p>
+<h2 id="Fab酷炫转场"><a href="#Fab酷炫转场" class="headerlink" title="Fab酷炫转场"></a>Fab酷炫转场</h2><p></p><p style="text-align: center;"><br>    <img src="pic/transition/FABTransition.gif"><br></p><br>从上图效果看可以将转场分为两个部分一个是fab作为共享元素在两个Activity之间的转场，另外就是在第二个Activity中fab通过波纹效果扩充至整个屏幕的动画。同理Activity退出时也是两部分动画的逆序效果。<p></p>
+<p>1.使用ActivityOptionsCompat和Transition以及共享View实现Activity的转场动画实现。定义两个Activity的共享元素并为其setTransitionName相同的名字<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mFab = (FloatingActionButton) findViewById(R.id.fab);</div><div class="line">mFab.setTransitionName(<span class="string">"reveal"</span>);</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mFloatingActionButton = (ImageView) findViewById(R.id.fab_transition);</div><div class="line">mFloatingActionButton.setTransitionName(<span class="string">"reveal"</span>);</div></pre></td></tr></table></figure>
+<p>显示启动Activity<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">transitionActivity</span><span class="params">()</span> </span>&#123;</div><div class="line">    Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TransitionActivity.class);</div><div class="line">    ActivityOptionsCompat option = ActivityOptionsCompat.makeSceneTransitionAnimation(<span class="keyword">this</span>, mFab, <span class="string">"reveal"</span>);</div><div class="line">    ActivityCompat.startActivity(<span class="keyword">this</span>, intent, option.toBundle());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2.在被启动的Activity启动时完成Transition动画，这里是一个弧形的轨迹，可以通过res/transition/change_bound_with_arg.xml文件来完成，具体如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">transitionSet</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"200"</span></div><div class="line">    <span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/fast_out_linear_in"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">changeBounds</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">arcMotion</span></span></div><div class="line">            <span class="attr">android:maximumAngle</span>=<span class="string">"90"</span></div><div class="line">            <span class="attr">android:minimumHorizontalAngle</span>=<span class="string">"90"</span></div><div class="line">            <span class="attr">android:minimumVerticalAngle</span>=<span class="string">"0"</span>/&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">changeBounds</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">transitionSet</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>通过代码创建<code>Transition</code>对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setEnterAnimation</span><span class="params">()</span> </span>&#123;</div><div class="line">    Transition transition = TransitionInflater.from(<span class="keyword">this</span>).inflateTransition(R.transition.change_bound_with_arc);</div><div class="line">    transition.setDuration(<span class="number">300</span>);</div><div class="line">    getWindow().setSharedElementEnterTransition(transition);</div><div class="line">    transition.addListener(<span class="keyword">new</span> Transition.TransitionListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionStart</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionEnd</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">            animationRevealShow(mRoot);</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionCancel</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionPause</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTransitionResume</span><span class="params">(Transition transition)</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在被叫Activity启动时调用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    setContentView(R.layout.activity_transition);</div><div class="line">    .....        </div><div class="line">    setEnterAnimation();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3.在给弧形移动效果后，执行波纹效果<code>animationRevealShow(mRoot)</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animateRevealShow</span><span class="params">(<span class="keyword">final</span> View view, <span class="keyword">float</span> startRadius,</span></span></div><div class="line">                                   @ColorRes <span class="keyword">final</span> <span class="keyword">int</span> colorRes, <span class="keyword">int</span> x, <span class="keyword">int</span> y,</div><div class="line">                                   <span class="keyword">final</span> OnRevealAnimationListener listener) &#123;</div><div class="line">        <span class="keyword">float</span> finalRadius = (<span class="keyword">float</span>) Math.hypot(view.getWidth(), view.getHeight()) / <span class="number">2</span>;</div><div class="line">        Animator animator = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, finalRadius);</div><div class="line">        animator.setDuration(<span class="number">300</span>);</div><div class="line">        animator.setStartDelay(<span class="number">80l</span>);</div><div class="line">        animator.setInterpolator(<span class="keyword">new</span> FastOutLinearInInterpolator());</div><div class="line">        animator.addListener(<span class="keyword">new</span> AnimatorListenerAdapter() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line"><span class="comment">//                mFloatingActionButton.setVisibility(View.INVISIBLE);</span></div><div class="line">                view.setBackgroundColor(ContextCompat.getColor(TransitionActivity.<span class="keyword">this</span>, colorRes));</div><div class="line">            &#125;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">                view.setVisibility(View.VISIBLE);</div><div class="line">                <span class="keyword">if</span> (listener != <span class="keyword">null</span>) &#123;</div><div class="line">                    listener.onRevealShow();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        animator.start();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>View框架提供了<code>ViewAnimationUtils</code>类来创建一个<code>RevealAnimator</code>波纹动画。在波纹动画过程中主要是对布局背景颜色的填充，故这里回调动画节点进行背景颜色的填充。而这里的view是Activity的root View用于扩充其背景色的，在动画结束后可以做一些“真正的Activity创建的初始化工作”<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animationRevealShow</span><span class="params">(<span class="keyword">final</span> View root)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> cx = (root.getLeft() + root.getRight()) / <span class="number">2</span>;</div><div class="line">        <span class="keyword">int</span> cy = (root.getTop() + root.getBottom()) / <span class="number">2</span>;</div><div class="line">        animateRevealShow(root, mFloatingActionButton.getWidth() / <span class="number">2</span>,</div><div class="line">                R.color.colorAccent, cx, cy, <span class="keyword">new</span> OnRevealAnimationListener() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRevealShow</span><span class="params">()</span> </span>&#123;</div><div class="line">                        initView();</div><div class="line">                    &#125;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRevealHide</span><span class="params">()</span> </span>&#123;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnRevealAnimationListener</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onRevealShow</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onRevealHide</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里使用了一个fade in的效果来呈现最终被启动Activity后的view<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">new</span> Handler(Looper.getMainLooper()).post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            mRoot.setVisibility(View.VISIBLE);</div><div class="line">            Animation animation = AnimationUtils.loadAnimation(TransitionActivity.<span class="keyword">this</span>, android.R.anim.fade_in);</div><div class="line">            animation.setDuration(<span class="number">300</span>);</div><div class="line">            mExit.startAnimation(animation);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>4.退出当前的Activity正好是一个逆向的过程：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</div><div class="line">    animateRevealHide(mRoot, R.color.colorAccent, mFloatingActionButton.getWidth() / <span class="number">2</span>, <span class="keyword">new</span> OnRevealAnimationListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRevealShow</span><span class="params">()</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRevealHide</span><span class="params">()</span> </span>&#123;</div><div class="line">            TransitionActivity.<span class="keyword">super</span>.onBackPressed();</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animateRevealHide</span><span class="params">(<span class="keyword">final</span> View v, @ColorRes <span class="keyword">final</span> <span class="keyword">int</span> color, <span class="keyword">final</span> <span class="keyword">float</span> endRadius, <span class="keyword">final</span> OnRevealAnimationListener listener)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> cx = (v.getLeft() + v.getRight()) / <span class="number">2</span>;</div><div class="line">        <span class="keyword">int</span> cy = (v.getTop() + v.getBottom()) / <span class="number">2</span>;</div><div class="line">        <span class="keyword">float</span> startRadius = v.getWidth() / <span class="number">2</span>;</div><div class="line">        Animator animation = ViewAnimationUtils.createCircularReveal(v, cx, cy, startRadius, endRadius);</div><div class="line">        animation.setDuration(<span class="number">300l</span>);</div><div class="line"><span class="comment">//        animation.setStartDelay(50l);</span></div><div class="line">        animation.setInterpolator(<span class="keyword">new</span> FastOutLinearInInterpolator());</div><div class="line">        animation.addListener(<span class="keyword">new</span> AnimatorListenerAdapter() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">                <span class="keyword">if</span> (<span class="keyword">null</span> != listener) &#123;</div><div class="line">                    listener.onRevealHide();</div><div class="line">                &#125;</div><div class="line">                v.setVisibility(View.INVISIBLE);</div><div class="line">            &#125;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">                v.setBackgroundColor(ContextCompat.getColor(TransitionActivity.<span class="keyword">this</span>, color));</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        animation.start();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong>执行reveal动画的时机必须在activity被attached之后在能完成否则程序会crash，通常的解决办法是监听OnLayoutChangeListener接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">mAppBarLayout.addOnLayoutChangeListener(<span class="keyword">new</span> View.OnLayoutChangeListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLayoutChange</span><span class="params">(View v, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom,</span></span></div><div class="line">                                   <span class="keyword">int</span> oldLeft, <span class="keyword">int</span> oldTop, <span class="keyword">int</span> oldRight, <span class="keyword">int</span> oldBottom) &#123;</div><div class="line">            mAppBarLayout.removeOnLayoutChangeListener(<span class="keyword">this</span>);</div><div class="line">            animRevealShowAppBar(mAppBarLayout, <span class="number">2f</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.LOLLIPOP)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animRevealShowAppBar</span><span class="params">(<span class="keyword">final</span> View view, <span class="keyword">float</span> startRadius)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> cx = (view.getLeft() + view.getRight()) / <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> cy = (view.getTop() + view.getBottom()) / <span class="number">2</span>;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> endRadius = (<span class="keyword">float</span>) Math.hypot(view.getWidth(), view.getHeight()) / <span class="number">2</span>;</div><div class="line">    Animator animator = ViewAnimationUtils.createCircularReveal(view, cx, cy, startRadius, endRadius);</div><div class="line">    animator.setDuration(<span class="number">500</span>);</div><div class="line">    animator.setInterpolator(<span class="keyword">new</span> FastOutLinearInInterpolator());</div><div class="line">    animator.addListener(<span class="keyword">new</span> AnimatorListenerAdapter() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">            mAppBarLayout.setBackgroundColor(ContextCompat.getColor(BookDetailActivity.<span class="keyword">this</span>, R.color.colorPrimary));</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    animator.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://developer.android.com/training/transitions/index.html" target="_blank" rel="external">https://developer.android.com/training/transitions/index.html</a><br><a href="https://github.com/saulmm/Android-Material-Examples" target="_blank" rel="external">https://github.com/saulmm/Android-Material-Examples</a><br><a href="http://www.androiddesignpatterns.com/2014/12/activity-fragment-transitions-in-android-lollipop-part1.html" target="_blank" rel="external">http://www.androiddesignpatterns.com/2014/12/activity-fragment-transitions-in-android-lollipop-part1.html</a></p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/Transition/" rel="tag">#Transition</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/21/Android动画完全总结/" rel="next" title="Android动画完全总结">
+                <i class="fa fa-chevron-left"></i> Android动画完全总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/05/下载漫画只需一个脚本/" rel="prev" title="下载漫画只需一个脚本">
+                下载漫画只需一个脚本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/26/安卓Transition框架/"
+           data-title="安卓Transition框架" data-url="http://icedcap.github.io/2016/06/26/安卓Transition框架/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transition框架"><span class="nav-number">1.</span> <span class="nav-text">Transition框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Transition框架API应用Activity转场动画"><span class="nav-number">1.1.</span> <span class="nav-text">使用Transition框架API应用Activity转场动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Transition框架API应用Fragment转场动画"><span class="nav-number">1.2.</span> <span class="nav-text">使用Transition框架API应用Fragment转场动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践"><span class="nav-number">1.3.</span> <span class="nav-text">实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fab酷炫转场"><span class="nav-number">2.</span> <span class="nav-text">Fab酷炫转场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

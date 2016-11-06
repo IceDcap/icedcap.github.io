@@ -1,0 +1,796 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,design," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="我是一个Material设计的忠实粉丝。它提供了一个酷炫的视觉效果，它的一致性和整体性把一个应用变得更容易实现,也更加美观。2015年谷歌IO大会上又为全世界开发者带来Design Support Library，该库的引用使你没有理由不使用Material设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Design库探索">
+<meta property="og:url" content="http://icedcap.github.io/2016/08/08/exploring-the-new-android-design-support-library/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="我是一个Material设计的忠实粉丝。它提供了一个酷炫的视觉效果，它的一致性和整体性把一个应用变得更容易实现,也更加美观。2015年谷歌IO大会上又为全世界开发者带来Design Support Library，该库的引用使你没有理由不使用Material设计模式">
+<meta property="og:image" content="http://icedcap.github.io/snack_bar1.gif">
+<meta property="og:image" content="http://icedcap.github.io/snack_bar2.png">
+<meta property="og:image" content="http://icedcap.github.io/fab.png">
+<meta property="og:image" content="http://icedcap.github.io/text_input_layout1.gif">
+<meta property="og:image" content="http://icedcap.github.io/text_input_layout2.gif">
+<meta property="og:image" content="http://icedcap.github.io/navigation1.png">
+<meta property="og:image" content="http://icedcap.github.io/navigation2.png">
+<meta property="og:image" content="http://icedcap.github.io/tablayout1.png">
+<meta property="og:image" content="http://icedcap.github.io/tablayout2.png">
+<meta property="og:image" content="http://icedcap.github.io/tablayout3.gif">
+<meta property="og:image" content="http://icedcap.github.io/Coordinator1.gif">
+<meta property="og:image" content="http://icedcap.github.io/enterAlways.gif">
+<meta property="og:image" content="http://icedcap.github.io/enterAlwaysCollapsed.gif">
+<meta property="og:image" content="http://icedcap.github.io/exitUntilCollapsed.gif">
+<meta property="og:image" content="http://icedcap.github.io/pin.gif">
+<meta property="og:image" content="http://icedcap.github.io/Parallax.gif">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Design库探索">
+<meta name="twitter:description" content="我是一个Material设计的忠实粉丝。它提供了一个酷炫的视觉效果，它的一致性和整体性把一个应用变得更容易实现,也更加美观。2015年谷歌IO大会上又为全世界开发者带来Design Support Library，该库的引用使你没有理由不使用Material设计模式">
+<meta name="twitter:image" content="http://icedcap.github.io/snack_bar1.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Design库探索 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Design库探索
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-08T22:02:14+08:00" content="2016-08-08">
+              2016-08-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/08/exploring-the-new-android-design-support-library/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/08/exploring-the-new-android-design-support-library/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我是一个Material设计的忠实粉丝。它提供了一个酷炫的视觉效果，它的一致性和整体性把一个应用变得更容易实现,也更加美观。2015年谷歌IO大会上又为全世界开发者带来Design Support Library，该库的引用使你没有理由不使用<a href="http://www.google.com/design/spec/material-design/introduction.html#" target="_blank" rel="external">Material设计模式</a></p>
+<a id="more"></a>
+<blockquote>
+<p><strong>原文地址：</strong><a href="https://labs.ribot.co.uk/exploring-the-new-android-design-support-library-b7cda56d2c32#.6tck3typb" target="_blank" rel="external">https://labs.ribot.co.uk/exploring-the-new-android-design-support-library-b7cda56d2c32#.6tck3typb</a><br><strong>源码地址：</strong><a href="https://github.com/IceDcap/ExploreDesignLib" target="_blank" rel="external">https://github.com/IceDcap/ExploreDesignLib</a></p>
+</blockquote>
+<p>下面就来看看该库都有那些酷炫的组件。</p>
+<h1 id="SnackBar"><a href="#SnackBar" class="headerlink" title="SnackBar"></a>SnackBar</h1><p style="text-align:center"><br>    <img src="snack_bar1.gif"><font size="1px" color="#7C7C7C">自动消失</font><br></p>
+
+<p>SnackBar的很多<a href="https://developer.android.com/reference/android/support/design/widget/Snackbar.html#setDuration%28int%29" target="_blank" rel="external">属性和方法</a>都秉承了<a href="https://developer.android.com/reference/android/widget/Toast.html" target="_blank" rel="external">Toast</a>控件,SnackBar是一个新的控件允许我们在屏幕底部展示一条快速消息，一旦在底部弹出SnackBar，用户可以使用<a href="https://developer.android.com/reference/android/support/design/widget/Snackbar.html#setAction%28int,%20android.view.View.OnClickListener%29" target="_blank" rel="external">Action</a>进行交互，或者使之消失。如果不做任何操作它会经过几秒种的时间自动消失。</p>
+<p style="text-align:center"><br>    <img src="snack_bar2.png"><font size="1px" color="#7C7C7C">添加action使之与用户交互</font><br></p>
+
+<p>对于开发者来说使用几行模板代码实现SnackBar是非常简单的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Snackbar.make(mDrawerLayout, <span class="string">"Your message"</span>, Snackbar.LENGTH_SHORT)</div><div class="line">    .setAction(getString(R.string.text_undo), <span class="keyword">this</span>)</div><div class="line">    .show();</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong>和Toast一样它是由系统控制的，当你在一时间展示多个SnackBar的时候它们会以队列形式，按顺序展示。</p>
+<h1 id="Floating-Action-Button"><a href="#Floating-Action-Button" class="headerlink" title="Floating Action Button"></a>Floating Action Button</h1><p><a href="http://www.google.co.uk/design/spec/components/buttons-floating-action-button.html" target="_blank" rel="external">FAB</a>是Material设计模式中标准组件：浮动按钮，可以用于任何交互操作，现在通过该库很容易实现该控件。省去了过去使用第三方库的痛苦经历。</p>
+<p>FAB有两种尺寸：</p>
+<ul>
+<li><strong>Normal</strong>（56dp）：大部分场景下使用</li>
+<li><strong>Mini</strong>（40dp）：和其他组件组合时为保证视觉的连续性可以使用该尺寸</li>
+</ul>
+<p style="text-align:center"><br>    <img src="fab.png"><font size="1px" color="#7C7C7C">normal &amp; mini</font><br></p>
+
+<p>默认情况下，FAB会使用应用主题中的accent颜色作为背景颜色，但是我们可以通过属性或者方法很简单的改变它的颜色</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html#attr_android.support.design:fabSize" target="_blank" rel="external">fabSize</a> - 设置FAB尺寸（Normal或者Mini）</li>
+<li><a href="http://developer.android.com/reference/android/view/View.html#attr_android:backgroundTint" target="_blank" rel="external">backgroundTint</a> - 设置背景颜色</li>
+<li>borderWidth - 设置边界宽度</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html#setRippleColor%28int%29" target="_blank" rel="external">rippleColor</a> - 设置点击时候的波纹颜色</li>
+<li><a href="http://developer.android.com/reference/android/widget/ImageView.html#attr_android:src" target="_blank" rel="external">src</a> - 设置FAB中的图标</li>
+</ul>
+<p>FAB的使用也是超级简单：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.FloatingActionButton</span></span></div><div class="line">     <span class="attr">android:id</span>=<span class="string">"@+id/fab_normal"</span></div><div class="line">     <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">     <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">     <span class="attr">android:src</span>=<span class="string">"@drawable/ic_plus"</span></div><div class="line">     <span class="attr">app:fabSize</span>=<span class="string">"normal"</span> /&gt;</div></pre></td></tr></table></figure>
+<h1 id="EditText-Floating-Labels"><a href="#EditText-Floating-Labels" class="headerlink" title="EditText Floating Labels"></a>EditText Floating Labels</h1><p>新TextInputLayout允许我们包裹EditText控件，这样可以在文本域中展示浮动标签。当一个EditText获得焦点后，hint内容将以一个上浮的动画展示在EditText上方。</p>
+<p style="text-align:center"><br>    <img src="text_input_layout1.gif"><br></p>
+
+<p>实现上图效果只需要在EditText上包裹一层TextInputLayout</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.TextInputLayout</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">EditText</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/edit_text_email"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:inputType</span>=<span class="string">"textEmailAddress"</span></div><div class="line">        <span class="attr">android:hint</span>=<span class="string">"@string/hint_email"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.TextInputLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>当然也支持错误信息的展示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setErrorEnabled(<span class="keyword">true</span>);</div><div class="line">setError(getString(R.string.text_error_message));</div></pre></td></tr></table></figure>
+<p style="text-align:center"><br>    <img src="text_input_layout2.gif"><br></p>
+
+<p><strong>注意：</strong>在设置错误信息之前要调用setErrorEnable方法，这样在显示错误信息的时候能确保布局大小不改变。</p>
+<h1 id="Navigation-View"><a href="#Navigation-View" class="headerlink" title="Navigation View"></a>Navigation View</h1><p><a href="http://www.google.com/design/spec/patterns/navigation-drawer.html?utm_campaign=io15&amp;utm_source=dac&amp;utm_medium=blog" target="_blank" rel="external">Navigation Drawer</a>也是在应用中经常看到的效果，以前使用抽屉都是使用第三方库来实现，现在谷歌提供的Design支持库使抽屉的使用更加简单。新的<a href="http://developer.android.com/reference/android/support/design/widget/NavigationView.html?utm_campaign=io15&amp;utm_source=dac&amp;utm_medium=blog" target="_blank" rel="external">NavigationView</a>控件放入<a href="https://developer.android.com/reference/android/support/v4/widget/DrawerLayout.html" target="_blank" rel="external">DrawerLayout</a>中（详见下面代码）并且从menu资源中获取导航条目信息用于展示。</p>
+<p style="text-align:center"><br>    <img src="navigation1.png"><br></p>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:fitsSystemWindows</span>=<span class="string">"true"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">FrameLayout</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/main_content_frame"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.NavigationView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/navigation_view"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></div><div class="line">        <span class="attr">app:headerLayout</span>=<span class="string">"@layout/navigation_header"</span></div><div class="line">        <span class="attr">app:menu</span>=<span class="string">"@menu/drawer"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>该控件有两个关键的属性</p>
+<ul>
+<li><p><strong>Header Layout</strong><br>可选属性，通常引用一个布局作为头视图放在抽屉顶部区域</p>
+</li>
+<li><p><strong>Menu</strong><br>menu属性声明menu资源，用于抽屉中的item条目项，当然它也可以在java代码中通过inflateMenu()方法创建item条目。</p>
+</li>
+</ul>
+<p style="text-align:center"><br>    <img src="navigation2.png"><font size="1px" color="#7C7C7C">菜单可以使用标题也可以不使用</font><br></p>
+
+<p>上图中使用了两种处理导航菜单栏的方法，第一种方法是使用标准的可点击的group item：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span>    </div><div class="line">    <span class="attr">tools:context</span>=<span class="string">".MainActivity"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/navigation_item_1"</span></div><div class="line">            <span class="attr">android:checked</span>=<span class="string">"true"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_android"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"@string/navigation_item_1"</span> /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/navigation_item_2"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_android"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"@string/navigation_item_2"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这里item项通过竖直列表呈现出来，没有副标题，所有的item都属于同一个组。</p>
+<p>第二种方法很相似，但是我们为其设置副标题，如下代码所示，在menu资源中设置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span>                       </div><div class="line">    <span class="attr">tools:context</span>=<span class="string">".MainActivity"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/navigation_subheader"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"@string/nav_header"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">menu</span>&gt;</span></div><div class="line">                <span class="comment">&lt;!-- Menu items go here --&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div><div class="line">         <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这样可以通过一个副标题将item项分成不同的组别。这种方式在特定的需求上是非常有用的。</p>
+<p>当然我们可以使用java代码进行实现，通过调用getMenu()方法得到我们的菜单以及它的所有item对象然后进行相应的设置。</p>
+<p>还有一些其他重要的属性未被介绍：</p>
+<ul>
+<li>itemBackground - 为item设置背景</li>
+<li>itemIconTint - 设置item图标颜色</li>
+<li>itemTextColor - 设置item字体颜色</li>
+</ul>
+<p>为了捕获item点击事件，我们需要设置<a href="http://developer.android.com/reference/android/support/design/widget/NavigationView.OnNavigationItemSelectedListener.html" target="_blank" rel="external">OnNavigationItemSelectedListener</a>监听器。</p>
+<p><strong>注意：</strong>对于API21+以上NavigationView会自动关注status bar的scrim属性。</p>
+<h1 id="TabLayout"><a href="#TabLayout" class="headerlink" title="TabLayout"></a>TabLayout</h1><p>TabLayout是另外一个新组件，它提供了一个可滑动可点击的tab标签。有如下应用场景：</p>
+<p style="text-align:center"><br>    <img src="tablayout1.png"><font size="1px" color="#7C7C7C">标签固定并且充满整个视图</font><br></p>
+
+<p style="text-align:center"><br>    <img src="tablayout2.png"><font size="1px" color="#7C7C7C">标签固定并且居中显示</font><br></p>
+
+<p style="text-align:center"><br>    <img src="tablayout3.gif"><font size="1px" color="#7C7C7C">标签栏可滑动</font><br></p>
+
+<p>开始之前我们需要在布局中定义TabLayout</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.TabLayout</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/sliding_tabs"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">app:tabMode</span>=<span class="string">"fixed"</span></div><div class="line">    <span class="attr">app:tabGravity</span>=<span class="string">"fill"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>这里有几个重要的属性需要指出：</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.html#setTabMode%28int%29" target="_blank" rel="external">tabMode</a> - 设置TabLayout的模式。可以设为fixed或者scrollable</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.html#setTabGravity%28int%29" target="_blank" rel="external">tabGravity</a> - 设置TabLayout的重心，可以是fill也可以是center</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.Tab.html#setText%28int%29" target="_blank" rel="external">setText()</a> - 该方法用于设置要显示的文本</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.Tab.html#setIcon%28int%29" target="_blank" rel="external">setIcon()</a> - 该方法用于设置要显示的图标</li>
+</ul>
+<p>在使用TabLayout时，我们也可以为其设置不同的监听器</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.OnTabSelectedListener.html" target="_blank" rel="external">OnTabSelectedListener</a> - 被选tab</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.TabLayoutOnPageChangeListener.html" target="_blank" rel="external">TabLayoutOnPageChangeListener</a> - 该监听器会同步标签与页面的选择</li>
+<li><a href="http://developer.android.com/reference/android/support/design/widget/TabLayout.ViewPagerOnTabSelectedListener.html" target="_blank" rel="external">ViewPagerOnTabSelectedListener</a> - 该监听器会同步标签与页面被选中的状态</li>
+</ul>
+<p>当完成布局定义后就可以在java代码中进行与ViewPager的关联。通过setupWithViewPager()方法为其绑定ViewPager：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ViewPager pager = (ViewPager)</div><div class="line">rootView.findViewById(R.id.viewPager);</div><div class="line">pager.setAdapter(<span class="keyword">new</span> MyPagerAdapter(getActivity().getSupportFragmentManager()));</div><div class="line"></div><div class="line">TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.sliding_tabs);</div><div class="line">tabLayout.addTab(tabLayout.newTab().setText(<span class="string">"Tab One"</span>));</div><div class="line">tabLayout.addTab(tabLayout.newTab().setText(<span class="string">"Tab Two"</span>));</div><div class="line">tabLayout.addTab(tabLayout.newTab().setText(<span class="string">"Tab Three"</span>));</div><div class="line">tabLayout.setupWithViewPager(pager);</div></pre></td></tr></table></figure>
+<h1 id="Coordinator-Layout"><a href="#Coordinator-Layout" class="headerlink" title="Coordinator Layout"></a>Coordinator Layout</h1><p>CoordinatorLayout将Design库中的组件组合在一起并且提供很多生动的动画效果。</p>
+<p>为保证该组件支持的非常好一定要使用最新版本的Design库。</p>
+<p>该布局增加了两个新的属性可以控制一个视图钉在屏幕上。</p>
+<ul>
+<li>layout_anchor — 使用铆钉定在该布局上</li>
+<li>layout_anchorGravity — 设置该铆钉视图的重心</li>
+</ul>
+<h2 id="Floating-Action-Button-1"><a href="#Floating-Action-Button-1" class="headerlink" title="Floating Action Button"></a>Floating Action Button</h2><p>在之前我们使用的Snackbar中可以看到一个明显的缺点，就是当弹出SnackBar时会覆盖底部的控件。例如我们在屏幕右下角添加一个FAB，当弹出SnackBar时会覆盖FAB。这是我们不想看到的，但是有了CoordinatorLayout问题就迎刃而解。</p>
+<p style="text-align:center"><br>    <img src="Coordinator1.gif"><br></p>
+
+<p>为了实现这种效果的FAB，我们需要使用CoordinatorLayout进行包裹。接下来你需要为FAB设置<strong>layout_gravity</strong>属性</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/main_content"</span>&gt;</div><div class="line"><span class="comment">&lt;!-- Your other views --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.FloatingActionButton</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">”@+id/fab_normal”</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">”wrap_content”</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">”wrap_content”</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">”@drawable/ic_plus”</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"bottom|right"</span></div><div class="line">        <span class="attr">app:fabSize</span>=<span class="string">”normal”</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>最后当需要弹出SnackBar的时候只需把CoordinatorLayout对象作为第一个参数传递给SnackBar即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Snackbar.make(mCoordinator, <span class="string">"Your message"</span>, Snackbar.LENGTH_SHORT)</div><div class="line">    .show();</div></pre></td></tr></table></figure>
+<h2 id="App-Bar"><a href="#App-Bar" class="headerlink" title="App Bar"></a>App Bar</h2><p>对于不同的滑动操作，CoordinatorLayout可以自适应布局。当用户滑动屏幕中的内容时，它允许我们更改视图外观（例如ToolBar）</p>
+<p>为了达到这个目的，我们首先需要为<strong>layout_scrollFlags</strong>设置滑动属性，它可以使视图滚出屏幕或者固定在屏幕上。该属性可以设置如下参数</p>
+<ul>
+<li><p>enterAlways - 快速返回，当向下滑动时，之前滚出的视图变成可见状态</p>
+<p style="text-align:center"><br>  <img src="enterAlways.gif"><font size="1px" color="#7C7C7C">隐藏toolbar，将tab置于顶端</font><br></p>
+</li>
+<li><p>enterAlwaysCollapsed - 顾名思义，这个flag定义的是何时进入（已经消失之后何时再次显示）。假设你定义了一个最小高度（minHeight）同时enterAlways也定义了，那么view将在到达这个最小高度的时候开始显示，并且从这个时候开始慢慢展开，当滚动到顶部的时候展开完。</p>
+<p style="text-align:center"><br>  <img src="enterAlwaysCollapsed.gif"><font size="1px" color="#7C7C7C">toolbar完全滚出屏幕</font><br></p>
+</li>
+<li><p>exitUntilCollapsed - 同样顾名思义，这个flag时定义何时退出，当你定义了一个minHeight，这个view将在滚动到达这个最小高度的时候消失。</p>
+<p style="text-align:center"><br>  <img src="exitUntilCollapsed.gif"><font size="1px" color="#7C7C7C">toolbar部分滚出屏幕并定于顶部</font><br></p>
+
+</li>
+</ul>
+<p><strong>注意：</strong>scroll标致必须在最开始就设置好，这样能保证所声明的视图能从顶部退出，并且留下固定的部分置于顶部</p>
+<p>下面的代码中，我们在recycler view中使用<strong>layout_behavior</strong>属性，为的就是将RecyclerView和CoordinatorLayout协同工作。这也意味着该布局能够应对RecyclerViews滚动事件。设置ToolBar<strong>layout_scrollFlags</strong>的属性能保证当滑动RecyclerView的时候能将捕获到的事件应用在ToolBar的滑动效果上。因为我们还没有在TabLayout上定义该属性,所以它可以固定在屏幕的顶部。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">     </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">app:layout_behavior</span>=</div><div class="line">        <span class="string">"@string/appbar_scrolling_view_behavior"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.AppBarLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">            <span class="attr">...</span></div><div class="line">            <span class="attr">app:layout_scrollFlags</span>=<span class="string">"scroll|enterAlways"</span> /&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">android.support.design.widget.TabLayout</span></span></div><div class="line">            <span class="attr">...</span></div><div class="line">            /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.design.widget.AppBarLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="ToolBars"><a href="#ToolBars" class="headerlink" title="ToolBars"></a>ToolBars</h2><p>现在可以将ToolBar控件定义在<a href="http://developer.android.com/reference/android/support/design/widget/CollapsingToolbarLayout.html?utm_campaign=io15&amp;utm_source=dac&amp;utm_medium=blog" target="_blank" rel="external">CollapsingToolbarLayout</a>，这样可以使我们的布局在屏幕向上滑的过程中快速消失</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.AppBarLayout</span></span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"192dp"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.CollapsingToolbarLayout</span></span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">app:layout_scrollFlags</span>=<span class="string">"scroll|exitUntilCollapsed"</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">                <span class="attr">app:layout_collapseMode</span>=<span class="string">"pin"</span> /&gt;</div><div class="line">        <span class="tag">&lt;/<span class="name">android.support.design.widget.CollapsingToolbarLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.AppBarLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>当使用Toolbar控件时需要设置layout_collapseMode属性：</p>
+<ul>
+<li><p><strong>Pin</strong> - 该属性可以使ToolBar钉与屏幕顶端</p>
+<p style="text-align:center"><br>  <img src="pin.gif"><br></p>
+</li>
+<li><p><strong>Parallax</strong> - 一个视差效果，（例如Image中的图片）。设置<strong>layout_collapseParallaxMultiplier</strong>属性可以控制视差效果</p>
+<p style="text-align:center"><br>  <img src="Parallax.gif"><br></p>
+
+</li>
+</ul>
+<p>另外一个好处就是可以直接在CollapsingToolbarLayout上通过setText方法设置的文本随着滑动由小变大由Toolbar底部内容变为actionbar的标题。</p>
+<h2 id="Custom-Views"><a href="#Custom-Views" class="headerlink" title="Custom Views"></a>Custom Views</h2><p>到这里还没有结束！你可以使用<a href="http://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html?utm_campaign=io15&amp;utm_source=dac&amp;utm_medium=blog" target="_blank" rel="external">behaviour</a>创建自定义视图，通过 <a href="http://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html?utm_campaign=io15&amp;utm_source=dac&amp;utm_medium=blog#onDependentViewChanged%28android.support.design.widget.CoordinatorLayout,%20V,%20android.view.View%29" target="_blank" rel="external">onDependentViewChanged()</a>方法得到自定义视图的事件回调，它也很好的支持touch事件和手势操作。</p>
+<p>所以，还等什么呢？赶紧撸代码吧！</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/design/" rel="tag">#design</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/07/android-application-architecture/" rel="next" title="安卓应用架构">
+                <i class="fa fa-chevron-left"></i> 安卓应用架构
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/22/exploring-meaningful-motion-on-android/" rel="prev" title="安卓酷炫效果探索">
+                安卓酷炫效果探索 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/08/exploring-the-new-android-design-support-library/"
+           data-title="Design库探索" data-url="http://icedcap.github.io/2016/08/08/exploring-the-new-android-design-support-library/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SnackBar"><span class="nav-number">1.</span> <span class="nav-text">SnackBar</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Floating-Action-Button"><span class="nav-number">2.</span> <span class="nav-text">Floating Action Button</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EditText-Floating-Labels"><span class="nav-number">3.</span> <span class="nav-text">EditText Floating Labels</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Navigation-View"><span class="nav-number">4.</span> <span class="nav-text">Navigation View</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TabLayout"><span class="nav-number">5.</span> <span class="nav-text">TabLayout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coordinator-Layout"><span class="nav-number">6.</span> <span class="nav-text">Coordinator Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Floating-Action-Button-1"><span class="nav-number">6.1.</span> <span class="nav-text">Floating Action Button</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#App-Bar"><span class="nav-number">6.2.</span> <span class="nav-text">App Bar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ToolBars"><span class="nav-number">6.3.</span> <span class="nav-text">ToolBars</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Custom-Views"><span class="nav-number">6.4.</span> <span class="nav-text">Custom Views</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="架构,合集," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="安卓架构文章合集（a collection of android Architecture）博客原地址：http://www.jianshu.com/p/1f21e1d375aagithub地址：https://github.com/CameloeAnthony/AndroidArchitectureCollection欢迎star，fork进行收藏，后续会继续更新。
+这是从各大平台上参考的an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Architecture Collection[转]">
+<meta property="og:url" content="http://icedcap.github.io/2016/04/24/test/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="安卓架构文章合集（a collection of android Architecture）博客原地址：http://www.jianshu.com/p/1f21e1d375aagithub地址：https://github.com/CameloeAnthony/AndroidArchitectureCollection欢迎star，fork进行收藏，后续会继续更新。
+这是从各大平台上参考的an">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Architecture Collection[转]">
+<meta name="twitter:description" content="安卓架构文章合集（a collection of android Architecture）博客原地址：http://www.jianshu.com/p/1f21e1d375aagithub地址：https://github.com/CameloeAnthony/AndroidArchitectureCollection欢迎star，fork进行收藏，后续会继续更新。
+这是从各大平台上参考的an">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android Architecture Collection[转] | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Architecture Collection[转]
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-24T21:58:29+08:00" content="2016-04-24">
+              2016-04-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/24/test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/24/test/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>安卓架构文章合集（a collection of android Architecture）<br>博客原地址：<a href="http://www.jianshu.com/p/1f21e1d375aa" target="_blank" rel="external">http://www.jianshu.com/p/1f21e1d375aa</a><br>github地址：<a href="https://github.com/CameloeAnthony/AndroidArchitectureCollection" target="_blank" rel="external">https://github.com/CameloeAnthony/AndroidArchitectureCollection</a><br>欢迎star，fork进行收藏，后续会继续更新。</p>
+<p>这是从各大平台上参考的android架构文章，主要参考自：<br><a href="https://github.com/Juude/Awesome-Android-Architecture" target="_blank" rel="external">Juude/Awesome-Android-Architecture</a></p>
+</blockquote>
+<a id="more"></a>
+<h1 id="1-国内各大平台架构："><a href="#1-国内各大平台架构：" class="headerlink" title="1 国内各大平台架构："></a>1 国内各大平台架构：</h1><ul>
+<li><a href="http://www.uml.org.cn/mobiledev/201310211.asp" target="_blank" rel="external">App工程结构搭建：几种常见Android代码架构分析</a></li>
+<li><a href="http://www.infoq.com/cn/presentations/ctrip-mobile-architecture-evolution" target="_blank" rel="external">携程Mobile架构演化(视频)</a></li>
+<li><a href="http://www.infoq.com/cn/articles/ctrip-android-dynamic-loading" target="_blank" rel="external">携程Android App插件化和动态加载实践</a></li>
+<li><a href="http://www.infoq.com/cn/interviews/tj-taobao-client-arch" target="_blank" rel="external">陶钧谈淘宝客户端应用框架实践</a></li>
+<li><a href="http://www.infoq.com/cn/articles/alibaba-mobile-infrastructure" target="_blank" rel="external">QCon旧金山演讲总结：阿里无线技术架构演进</a></li>
+<li><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution" target="_blank" rel="external">手机淘宝构架演化实践</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1436316754208.html" target="_blank" rel="external">手机淘宝Android客户端架构</a></li>
+<li><a href="http://club.alibabatech.org/resource_detail.htm?topicId=124" target="_blank" rel="external">漫谈移动应用架构设计</a></li>
+<li><a href="http://club.alibabatech.org/resource_detail.htm?topicId=130" target="_blank" rel="external">大规模团队的Android开发</a></li>
+<li><a href="http://club.alibabatech.org/resource_detail.htm?topicId=155" target="_blank" rel="external">支付宝钱包客户端技术架构</a></li>
+<li><a href="http://www.infoq.com/cn/presentations/mobile-baidu-android-platform-solutions" target="_blank" rel="external">手机百度Android平台平台化解决方案</a></li>
+<li><a href="http://www.infoq.com/cn/presentations/evolution-of-android-qq-music-architecture" target="_blank" rel="external">涅盘新生—Android QQ音乐架构演进</a></li>
+<li><a href="http://www.infoq.com/cn/articles/wechat-android-app-architecture" target="_blank" rel="external">微信Android客户端架构演进之路</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAxNDUwMzU3Mw==&amp;mid=401044540&amp;idx=1&amp;sn=24b7d8fb655ae6dd5d989d0cb3c08e90&amp;scene=2&amp;srcid=0106EtxRjD2jHxzomxVPTwY3&amp;from=timeline&amp;isappinstalled=0&amp;uin=NzgwODIwNDgw&amp;key=&amp;devicetype=webwx&amp;version=70000001&amp;lang=zh_CN&amp;pass_ticket=46hW44w3Hxd7VY9rutz7mgLu1JGe2T1AAKNQpxNoYOSGi8NpmNYr%2BAZj%2BiXtRX2F" target="_blank" rel="external">饿了么移动APP的架构演进</a></li>
+</ul>
+<h1 id="2-MVVM-amp-MVP-amp-MVC"><a href="#2-MVVM-amp-MVP-amp-MVC" class="headerlink" title="2 MVVM &amp; MVP &amp; MVC"></a>2 MVVM &amp; MVP &amp; MVC</h1><ul>
+<li><a href="http://tech.vg.no/2015/07/17/android-databinding-goodbye-presenter-hello-viewmodel/" target="_blank" rel="external">ANDROID DATABINDING: GOODBYE PRESENTER, HELLO VIEWMODEL</a><br>（viewmodel，安卓中的databinding）</li>
+<li><a href="http://www.codeproject.com/Articles/166952/MVVM-in-Android" target="_blank" rel="external">MVVM-in-Android</a>（android中的mvvm）</li>
+<li><a href="https://github.com/CameloeAnthony/ZhiHuMVP" target="_blank" rel="external"> ZhiHuMVP github 地址</a>（MVP架构思想，Retrofit RESTful API 框架的配合，RxJava 响应式编程）</li>
+<li><a href="https://github.com/antoniolg/androidmvp" target="_blank" rel="external"> androidmvp github地址</a>（star2000+的MVP实例）</li>
+<li><a href="http://antonioleiva.com/mvp-android/" target="_blank" rel="external">MVP for Android: how to organize the presentation layer</a>（上面这个github对应的文章）</li>
+<li><a href="https://github.com/konmik/konmik.github.io/wiki/Introduction-to-Model-View-Presenter-on-Android" target="_blank" rel="external"> Introduction-to-Model-View-Presenter-on-Android</a>（MVP的介绍，MVP必读经典）</li>
+<li><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0425/2782.html" target="_blank" rel="external">Introduction-to-Model-View-Presenter-on-Android 中文翻译版</a></li>
+<li><a href="https://github.com/spengilley/ActivityFragmentMVP" target="_blank" rel="external">ActivityFragmentMVP github地址</a>（MVP处理Activity和Fragment，使用了Dagger 注入）</li>
+<li><a href="https://github.com/pedrovgs/EffectiveAndroidUI" target="_blank" rel="external"> EffectiveAndroidUI github地址</a>（star 3000+的mvp，mvvm实例）</li>
+<li><a href="https://github.com/glomadrian/MvpCleanArchitecture" target="_blank" rel="external"> MvpCleanArchitecture github地址</a>（使用clean architecture 和mvp的实例）</li>
+<li><a href="https://github.com/saulmm/Material-Movies" target="_blank" rel="external"> Material-Movies github地址</a>（ 使用material design +MVP实现的Material-Movies）</li>
+<li><a href="https://github.com/rallat/EffectiveAndroid" target="_blank" rel="external">EffectiveAndroid github地址</a>（MVP+clean Architecture 项目）</li>
+<li><a href="https://github.com/CameloeAnthony/AndroidMVPDemo" target="_blank" rel="external">AndroidMVPDemo github地址</a>（本文作者MVP demo github地址）</li>
+<li><a href="http://willowtreeapps.com/blog/mvvm-on-android-what-you-need-to-know/" target="_blank" rel="external">MVVM on Android: What You Need to Know</a>(MVVM介绍，这个博客很不错)</li>
+<li><a href="https://developer.android.com/tools/data-binding/guide.html" target="_blank" rel="external">data-bingding guide</a>（data-binding guide官网）</li>
+<li><a href="http://www.cnblogs.com/dxy1982/p/3793895.html" target="_blank" rel="external">Web开发的MVVM模式</a>（MVC VS. MVP VS. MVVM）</li>
+<li><a href="http://www.liuguangli.win/archives/299" target="_blank" rel="external">Android应用开发架构概述</a></li>
+<li><a href="http://objccn.io/issue-13-1/" target="_blank" rel="external">MVVM介绍</a>（iOS中MVVM的一种实现，对概念的理解有帮助）<h1 id="3-Clean-Architecture"><a href="#3-Clean-Architecture" class="headerlink" title="3 Clean Architecture"></a>3 Clean Architecture</h1></li>
+<li><a href="https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="external">The Clean Architecture</a>(clean architecture出处)</li>
+<li><a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">Android-CleanArchitecture github地址</a>（The Clean Architecture文章的例子）</li>
+<li><a href="https://medium.com/ribot-labs/android-application-architecture-8b6e34acda65#.b29vhtdm2" target="_blank" rel="external">Android Application Architecture原文</a> </li>
+<li><a href="http://www.jianshu.com/p/8ca27934c6e6" target="_blank" rel="external">Android Application Architecture中文翻译</a></li>
+<li><a href="http://fernandocejas.com/2015/07/18/architecting-android-the-evolution/" target="_blank" rel="external">Architecting Android…The evolution</a></li>
+<li><a href="http://www.devtf.cn/?p=1083" target="_blank" rel="external">Architecting Android…The evolution中文翻译</a></li>
+</ul>
+<h1 id="4-Flux"><a href="#4-Flux" class="headerlink" title="4 Flux"></a>4 Flux</h1><ul>
+<li><a href="https://armueller.github.io/android/2015/03/29/flux-and-android.html" target="_blank" rel="external">flux and android</a></li>
+<li><a href="https://medium.com/swlh/rxflux-android-architecture-94f77c857aa2#.sfjwchwok" target="_blank" rel="external">rxflux android architecture</a></li>
+<li><a href="https://medium.com/swlh/why-rxflux-5b687f062709#.ltlnlr4cl" target="_blank" rel="external">why rxflux</a></li>
+<li><a href="https://github.com/lgvalle/android-flux-todo-app" target="_blank" rel="external">android flux todo app</a>(<a href="http://www.devtf.cn/?p=1028" target="_blank" rel="external">中文翻译</a>)</li>
+<li><a href="https://github.com/skimarxall/RxFlux" target="_blank" rel="external">RxFlux</a></li>
+<li><a href="https://github.com/naodroid/android-flux" target="_blank" rel="external">android-flux</a></li>
+</ul>
+<h1 id="5-其它"><a href="#5-其它" class="headerlink" title="5 其它"></a>5 其它</h1><ul>
+<li><a href="https://github.com/Juude/Awesome-Android-Architecture/blob/master/Library.md" target="_blank" rel="external">Artchitecture Library</a></li>
+<li><a href="https://plus.google.com/+AndroidDevelopers/posts/3C4GPowmWLb" target="_blank" rel="external">Design for Offline: Android App Architecture Best Practices</a></li>
+<li><a href="http://blog.joanzapata.com/robust-architecture-for-an-android-app/" target="_blank" rel="external">Robust and readable architecture for an Android App</a></li>
+<li><a href="https://events.google.com/io2015/schedule?sid=358c9f91-b6d4-e411-b87f-00155d5066d7#day1/358c9f91-b6d4-e411-b87f-00155d5066d7" target="_blank" rel="external">Android application architecture</a></li>
+<li><a href="https://github.com/googlesamples/android-architecture" target="_blank" rel="external">googlesamples/android-architecture</a>（google官方架构项目）</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3ODg4MDk0Ng==&amp;mid=403539764&amp;idx=1&amp;sn=d30d89e6848a8e13d4da0f5639100e5f#rd" target="_blank" rel="external">google官方MVP架构示例项目解析</a>（上面这个github地址的解析）</li>
+<li><a href="https://github.com/jiangqqlmj" target="_blank" rel="external">jiangqqlmj</a>/<strong><a href="https://github.com/jiangqqlmj/FastDev4Android" target="_blank" rel="external">FastDev4Android</a></strong> （android快速开发框架）</li>
+<li><a href="https://www.zhihu.com/question/21406685" target="_blank" rel="external">Android 开发有什么好的架构么?</a></li>
+<li><a href="https://www.zhihu.com/question/28564947" target="_blank" rel="external">如果从0创建一个Android APP，设计思路是什么？（架构、activity、layout等复用性的考虑），感觉无从下手</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag">#架构</a>
+          
+            <a href="/tags/合集/" rel="tag">#合集</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/" rel="prev" title="从自定义通知栏和桌面小部件到深入理解RemoteViews">
+                从自定义通知栏和桌面小部件到深入理解RemoteViews <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/24/test/"
+           data-title="Android Architecture Collection[转]" data-url="http://icedcap.github.io/2016/04/24/test/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-国内各大平台架构："><span class="nav-number">1.</span> <span class="nav-text">1 国内各大平台架构：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MVVM-amp-MVP-amp-MVC"><span class="nav-number">2.</span> <span class="nav-text">2 MVVM & MVP & MVC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Clean-Architecture"><span class="nav-number">3.</span> <span class="nav-text">3 Clean Architecture</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Flux"><span class="nav-number">4.</span> <span class="nav-text">4 Flux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-其它"><span class="nav-number">5.</span> <span class="nav-text">5 其它</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

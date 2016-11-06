@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,data binding,架构,MVVM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="当去年谷歌IO大会上宣布Data Binding Library时，我就认识到了“oh man, this is the next big thing in Android development”。是的，在发布后的几周里炒的很热，但是到现在又归于平静了。很多开发者都致力于MVP以及Rx系列的架构中，以至于他们没时间去研究数据绑定库。我认为，你不能只是会使用数据绑定库，你需要花些时间去学习它如何架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我眼中的数据绑定库以及MVVM架构">
+<meta property="og:url" content="http://icedcap.github.io/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="当去年谷歌IO大会上宣布Data Binding Library时，我就认识到了“oh man, this is the next big thing in Android development”。是的，在发布后的几周里炒的很热，但是到现在又归于平静了。很多开发者都致力于MVP以及Rx系列的架构中，以至于他们没时间去研究数据绑定库。我认为，你不能只是会使用数据绑定库，你需要花些时间去学习它如何架">
+<meta property="og:image" content="http://icedcap.github.io/nessy-code-with-mvc.png">
+<meta property="og:image" content="http://icedcap.github.io/android-mvp.png">
+<meta property="og:image" content="http://icedcap.github.io/android-mvvm.png">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我眼中的数据绑定库以及MVVM架构">
+<meta name="twitter:description" content="当去年谷歌IO大会上宣布Data Binding Library时，我就认识到了“oh man, this is the next big thing in Android development”。是的，在发布后的几周里炒的很热，但是到现在又归于平静了。很多开发者都致力于MVP以及Rx系列的架构中，以至于他们没时间去研究数据绑定库。我认为，你不能只是会使用数据绑定库，你需要花些时间去学习它如何架">
+<meta name="twitter:image" content="http://icedcap.github.io/nessy-code-with-mvc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 我眼中的数据绑定库以及MVVM架构 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                我眼中的数据绑定库以及MVVM架构
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-06T18:02:14+08:00" content="2016-08-06">
+              2016-08-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当去年谷歌IO大会上宣布Data Binding Library时，我就认识到了“oh man, this is the next big thing in Android development”。是的，在发布后的几周里炒的很热，但是到现在又归于平静了。很多开发者都致力于MVP以及Rx系列的架构中，以至于他们没时间去研究数据绑定库。我认为，你不能只是会使用数据绑定库，你需要花些时间去学习它如何架构在你的应用中，并且利用它写出高质量的可测试的安卓应用。</p>
+<a id="more"></a>
+<blockquote>
+<p>@Josip Jurisic<br><strong>原文地址：</strong><a href="https://medium.com/cobe-mobile/architecting-android-with-data-binding-and-mvvm-in-mind-8874bbec0b0d#.erebxh94l" target="_blank" rel="external">https://medium.com/cobe-mobile/architecting-android-with-data-binding-and-mvvm-in-mind-8874bbec0b0d#.erebxh94l</a></p>
+<p>本篇文章是作者对安卓项目不同架构的个人看法，当然也会分析哪种架构更适合使用数据绑定库。</p>
+</blockquote>
+<p></p><h1><p></p>
+<p><font color="#177283"><b>Model-View-Controller (God objects)</b></font><br></p></h1><br>大部分安卓应用都是采用MVC设计模式，该模式下会在一个Activity或者Fragment中产生超过1000多行的代码，并且代码看上去非常的凌乱丑陋。<p></p>
+<p>在这种情况下，每个Activity/Fragment会扮演着<strong>Controller</strong>的角色（点击事件、item事件、text watcher等）以及<strong>Model</strong>的角色（RestApi调用、数据库调用、业务逻辑等）。XML布局充当<strong>View</strong>角色。</p>
+<p style="text-align:center"><br>    <img src="nessy-code-with-mvc.png"><font size="1px" color="#7C7C7C">安卓中典型的MVC架构</font><br></p>
+
+<p>我们很清楚大部分开发者放弃使用这种模式就是因为项目中需要在这些类中实现新特性。</p>
+<p style="text-align:center"><br>    <font color="#7C7C7C" size="4px"><br>    <i>MVC架构可读性差、可测试性差导致很多开发者放弃使用该架构。</i><br>    </font><br></p>
+
+<p></p><h1><p></p>
+<p><font color="#177283"><b>Model-View-Presenter</b></font><br></p></h1><br>MVP架构模式是我看到目前比较好的应用在安卓上的架构模式。随着大家的关注该模式也是越来越流行，因为该架构的每一层只关心自己这一层的任务，解放了MVC下的耦合性。<p></p>
+<p style="text-align:center"><br>    <img src="android-mvp.png"><font size="1px" color="#7C7C7C">安卓一种优秀的架构模式（MVP+Rx）</font><br></p>
+
+<p>上图中，<em>DataManager</em>就是<strong>Model</strong>层，它持有RestApis（例如Retrofit）、database（SQLite）等对象。Model层的一个典型的场景就是从后台抓取数据，或者保存数据或者为Presenter传递数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataManager</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SomeInteractor someInteractor;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SomeDatabase someDatabase;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DataManager</span><span class="params">(SomeInteractor someInteractor, SomeDatabase someDatabase)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.someInteractor = someInteractor;</div><div class="line">        <span class="keyword">this</span>.someDatabase = someDatabase;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestSomething</span><span class="params">(<span class="keyword">long</span> someId, <span class="keyword">final</span> Observer&lt;PresentationResponseModel&gt; observer)</span> </span>&#123;</div><div class="line">       <span class="comment">//request data from backend, save into database, transform (prepare) data for the presentation model, return to presentation model</span></div><div class="line">       ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Presenter</strong>层位于<em>View</em>层与<em>Model</em>层的中间。Presenter不关心Activity/Fragment/View做什么，它只持有Model层的引用以及View层的引用，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SomePresenterImpl</span> <span class="keyword">implements</span> <span class="title">SomePresenter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SomeView someView;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DataManager dataManager;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SomePresenterImpl</span><span class="params">(SomeView someView, DataManager dataManager)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.someView = someView;</div><div class="line">        <span class="keyword">this</span>.dataManager = dataManager;</div><div class="line">    &#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getSomething</span><span class="params">(<span class="keyword">long</span> someId)</span></span>&#123;</div><div class="line">        <span class="comment">//get object response from model layer, and return it to View Layer </span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>View</strong>层，也就是看得到摸得着的UI界面通常由XML/Activity/Fragment以及View视图组成。Activity/Fragment持有一个Presenter对象的引用，并且在用户交互过程中会调用相应的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SomeView</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">showTitle</span><span class="params">(String title)</span></span>;</div><div class="line"></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p style="text-align:center"><br>    <font color="#7C7C7C" size="4px"><br>    <i>MVP架构可读性好、可测试性好，很多开发者愿意使用该架构。</i><br>    </font><br></p>
+
+
+<p></p><h1><p></p>
+<p><font color="#177283"><b>Model-View-ViewModel</b></font><br></p></h1><br>该架构是应用数据绑定库真正地方。MVVM架构将UI逻辑从业务逻辑中分离出来。<p></p>
+<p style="text-align:center"><br>    <img src="android-mvvm.png"><font size="1px" color="#7C7C7C">安卓中mvvm的架构实现</font><br></p>
+
+<p>在这个例子中，<em>DataManager</em>是<strong>Model</strong>层，和MVP很相似，DataManager持有RestApi（例如Retrofit）、数据库（SQLite）等实例。应用场景是从后台获取数据或者保存数据。它与MVP的Model层的不同点是：MVVM架构下的DataManager会返回Activity/Fragment的相应来代替MVP中的Presenter层。这就意味着业务逻辑的变化会直接影响Activity/Fragment。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataManager</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> SomeInteractor someInteractor;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DataManager</span><span class="params">(SomeInteractor someInteractor)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.someInteractor = someInteractor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getSomething</span><span class="params">(@NonNull <span class="keyword">final</span> ResponseListener&lt;List&lt;SomeResponse&gt;&gt; listener)</span> </span>&#123;</div><div class="line">        <span class="comment">//get data from backend and return data to activity/fragment</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>View</strong>层由Activity/Fragment以及绑定对象组成。典型的场景就是Activity从后台请求数据，获得数据（POJO）并且将它传递给ViewModel层。ViewModel层使用这些新的数据更新UI。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SomeFragment</span> <span class="keyword">extends</span> <span class="title">BaseFragment</span> <span class="keyword">implements</span> <span class="title">ResponseListener</span>&lt;<span class="title">SomeResponse</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> SomeFragmentBinding mSomeFragmentBinding;</div><div class="line">    <span class="meta">@Nullable</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        mSomeFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_something, container, <span class="keyword">false</span>);</div><div class="line">        <span class="keyword">return</span> mSomeFragmentBinding.getRoot();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>XML文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">data</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">variable</span></span></div><div class="line">            <span class="attr">name</span>=<span class="string">"someViewModel"</span></div><div class="line">            <span class="attr">type</span>=<span class="string">"com.android.something.SomeViewModel"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">data</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:onClick</span>=<span class="string">"@&#123;someViewModel.startDetailsActivity()&#125;"</span>     </div><div class="line">    <span class="attr">android:text</span>=<span class="string">"@&#123;someViewModel.someTitle&#125;"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>ViewModel</strong>层位于View层与Model层之间。它将从Model层收到的数据用于更新View层视图。除此之外，它还操作着模型的状态（POJO对象中的字段），并将这些状态作为视图层变化的一个结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SomeViewModel</span> </span>&#123;</div><div class="line"></div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> SomeResponse something;</div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> Context context;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">SomeViewModel</span><span class="params">(Context from, SomeResponse something)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.something = something;</div><div class="line">       <span class="keyword">this</span>.context = from;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> something.getName();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> OnClickListener <span class="title">startDetailsActivity</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//returns onClick listener that starts details activity</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p style="text-align:center"><br>    <font color="#7C7C7C" size="4px"><br>    <i>MVVM架构可读性一般、可测试性一般，很多开发者喜欢使用该架构。</i><br>    </font><br></p>
+
+<p>通过以上总结，因为我还在学习不同的架构模式，所以就我个人观点而言使用MVP不会对项目未来需求造成影响，很多开发者也是持有这个观点。开发安卓应用时，MVP模式是很自然的架构模式，它的可测试性非常好、业务逻辑也是单独隔离。所以使用它不会有太大的麻烦。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/data-binding/" rel="tag">#data binding</a>
+          
+            <a href="/tags/架构/" rel="tag">#架构</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/04/approaching-android-with-mvvm/" rel="next" title="Android Data Binding高级系列之整合MVVM架构">
+                <i class="fa fa-chevron-left"></i> Android Data Binding高级系列之整合MVVM架构
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/07/android-application-architecture/" rel="prev" title="安卓应用架构">
+                安卓应用架构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/"
+           data-title="我眼中的数据绑定库以及MVVM架构" data-url="http://icedcap.github.io/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">
+Model-View-Controller (God objects)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">
+Model-View-Presenter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">
+Model-View-ViewModel</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

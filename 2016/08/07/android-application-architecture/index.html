@@ -1,0 +1,762 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,架构,MVP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章将从标准的Activities和AsyncTasks到现代的以RxJava为驱动的基于MVP的架构进行讨论。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓应用架构">
+<meta property="og:url" content="http://icedcap.github.io/2016/08/07/android-application-architecture/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="本篇文章将从标准的Activities和AsyncTasks到现代的以RxJava为驱动的基于MVP的架构进行讨论。">
+<meta property="og:image" content="http://icedcap.github.io/profile-header.jpeg">
+<meta property="og:image" content="http://icedcap.github.io/initial-architecture.png">
+<meta property="og:image" content="http://icedcap.github.io/RxJava-driven-architecture.png">
+<meta property="og:image" content="http://icedcap.github.io/callback-hell.jpeg">
+<meta property="og:image" content="http://icedcap.github.io/mvp-base-architecture.png">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓应用架构">
+<meta name="twitter:description" content="本篇文章将从标准的Activities和AsyncTasks到现代的以RxJava为驱动的基于MVP的架构进行讨论。">
+<meta name="twitter:image" content="http://icedcap.github.io/profile-header.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 安卓应用架构 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓应用架构
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-07T22:18:14+08:00" content="2016-08-07">
+              2016-08-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/07/android-application-architecture/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/07/android-application-architecture/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><br><font size="4px" color="#7C7C7C">本篇文章将从标准的Activities和AsyncTasks到现代的以RxJava为驱动的基于MVP的架构进行讨论。</font><br></p>
+
+<a id="more"></a>
+<blockquote>
+<p><a href="https://twitter.com/ivacf" target="_blank" rel="external">@Iván Carballo</a><br><strong>原文地址：</strong><a href="https://labs.ribot.co.uk/android-application-architecture-8b6e34acda65#.mfi63yx1z" target="_blank" rel="external">https://labs.ribot.co.uk/android-application-architecture-8b6e34acda65#.mfi63yx1z</a></p>
+</blockquote>
+<p style="text-align:center"><br>    <img src="profile-header.jpeg"><font size="1px" color="#7C7C7C">软件的每一个模块都应该独立，就像油泵的每一个齿轮一样。图片via <a href="https://unsplash.com/chesteralvarez" target="_blank" rel="external">Chester Alvarez</a></font><br></p>
+
+<p>安卓开发生态系统发展的非常快，每周都有新工具的诞生、库的更新发布、大量的技术博客应接不暇。如果你花了一个月的时间在度假，那么等你回来的时候就会有新版本的support库和Play Services的发布。</p>
+<p>我已经在<a href="http://ribot.co.uk/us/" target="_blank" rel="external">ribot团队</a>从事安卓工作有三年时间了。在这期间，我们构建的安卓应用使用到的架构和技术也时刻在更迭中。本文将带你回顾这个过程，为你传授我们的经验，当然也有我们踩过的很多坑，犯过的很多错误。</p>
+<h1 id="回到过去"><a href="#回到过去" class="headerlink" title="回到过去"></a>回到过去</h1><p>将视线回到2012年，那个时候的我们还很原始。那时候第三方库还很少，我们就使用最基本的结构进行安卓开发。不会使用网络方面第三方库，AsyncTask仍然是我们的朋友。下图展示了那个年代大多数应用的结构：</p>
+<p style="text-align:center"><br>    <img src="initial-architecture.png"><font size="1px" color="#7C7C7C">最初的架构</font><br></p>
+
+<p>代码结构分为两层：<strong>data layer</strong>复杂获取/保存REST APIs和数据库中的数据；<strong>view layer</strong>复杂操作数据并显示在界面上。</p>
+<p><strong>APIProvider</strong>提供了很多方法使得Activities/Fragments和容易和REST APIs交互。这些方法使用URLConnection和AsyncTask在单独的线程内执行网络请求，并且将返回的结果通过回调传递给UI。</p>
+<p>类似的<strong>CacheProvider</strong>中的方法负责存取在SharedPreference或者SQLite中的数据。它也会通过回调将结果传递给UI。<br><br></p>
+<font size="4px" color="#7C7C7C">问题：</font>
+
+<p>使用这种结构最大的问题就是View层要编写大量的代码因为它承担的任务太多了。想象一个很普通的场景，一个应用要加载一个博客列表并且将它们缓存在SQLite中，最后用ListView将它们展示在UI上。Activity中要做如下事情：</p>
+<ol>
+<li>在APIProvider中调用loadPosts(callback)方法</li>
+<li>等待APIProvider成功获取数据后再在CacheProvide中调用savePosts(callback)方法</li>
+<li>等待CacheProvide成功保存数据后再将数据展示在ListView中</li>
+<li>如果数据获取失败或者数据保存是被还要分别在UI上展示相应的错误信息</li>
+</ol>
+<p>这只是一个简单的例子，在实际中很可能是REST API获得的数据并不是UI想要展示的数据。因此，在Activity中要做额外的操作比如转换数据过滤数据然后在展示数据。另外一种情况，当loadPosts()方法要传入的参数需要从某处获得，例如一个邮件地址需要Play Services SDK提供。该SDK很可能使用回调进行异步返回结构，这就意味着我们有三层嵌套回调。如果我们继续增加复杂性将会导致回调陷入困境。</p>
+<p>总之：</p>
+<ul>
+<li>Activities和Fragment变的非常庞大并且难以维护</li>
+<li>太多的嵌套回调意味着代码丑陋、可读性差，如果后续进行更改或者增加新特性将会是一件很头疼的事</li>
+<li>单元测试将成为一件挑战，如果不可能就是因为太多的业务逻辑编写在Activity或者Fragment中的原因</li>
+</ul>
+<h1 id="由Rxjava驱动的新架构"><a href="#由Rxjava驱动的新架构" class="headerlink" title="由Rxjava驱动的新架构"></a>由Rxjava驱动的新架构</h1><p>我们遵照上述的结构开发了两年时间，在这期间，我们一直致力于改善上述提到的问题。例如，我们增加了很多帮助类来减少Activity和Fragment中的代码，并且我们在APIProvider使用<a href="http://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley</a>库。尽管做了这些改变，我们的应用仍然是不好测试，而且回调嵌套问题依旧严重。</p>
+<p>直到2014年，我们开始阅读<a href="http://reactivex.io/" target="_blank" rel="external">RxJava</a>。随后使用它做了几个例子，发现它可以解决回调嵌套问题。如果你对reactive编程还不熟悉，可以阅读<a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754" target="_blank" rel="external">这篇文章</a>。简而言之，RxJava允许你通过异步的方式管理数据，并且提供了很多<a href="http://reactivex.io/documentation/operators.html" target="_blank" rel="external">operators</a>，它可以使你异步进行数据的转变、过滤以及组合等操作。</p>
+<p>考虑到我们已经经历了几年的痛苦编程，我们开始考虑如何在新的项目中进行架构，所以我们有了下图：</p>
+<p style="text-align:center"><br>    <img src="RxJava-driven-architecture.png"><font size="1px" color="#7C7C7C">以RxJava为驱动的架构</font><br></p>
+
+<p>和第一种方式类似，该架构可以将数据和视图层进行分隔。<strong>data layer</strong>包含DataManager和一组帮助类；<strong>view layer</strong>由安卓framework组件例如Activity、Fragment以及ViewGroup等组成。</p>
+<p><strong>Helper classes</strong>（图中第三列）有非常具体的职责并且都以简洁的方式实现。例如，很多项目都有访问REST API的帮助类，从数据库中读取数据以及和第三方SDK进行交互。不同的应用会有不一样的帮助类，但是大部分应用都会用到如下帮助类：</p>
+<ul>
+<li>PreferencesHelper：在SharedPreference中存取数据</li>
+<li>DatabaseHelper：操作SQLite数据库</li>
+<li><a href="https://github.com/square/retrofit" target="_blank" rel="external">Retrofit</a>服务：执行REST API的调用，我们开始使用Retrofit来代替Volley是因为它支持RxJava。而且它也是值得使用的优秀库。</li>
+</ul>
+<p>帮助类中的很多public方法都会返回RxJava的Observables对象。</p>
+<p><strong>DataManager</strong>是整个架构的大脑，它使用大量的RxJava Operators对象将从帮助类中获取的数据进行转换、过滤、组合等操作。DataManager的目标就是减少在Activity或者Fragment中进行对数据的操作工作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Observable&lt;Post&gt; <span class="title">loadTodayPosts</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> mRetrofitService.loadPosts()</div><div class="line">                .concatMap(<span class="keyword">new</span> Func1&lt;List&lt;Post&gt;, Observable&lt;Post&gt;&gt;() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> Observable&lt;Post&gt; <span class="title">call</span><span class="params">(List&lt;Post&gt; apiPosts)</span> </span>&#123;</div><div class="line">                        <span class="keyword">return</span> mDatabaseHelper.savePosts(apiPosts);</div><div class="line">                    &#125;</div><div class="line">                &#125;)</div><div class="line">                .filter(<span class="keyword">new</span> Func1&lt;Post, Boolean&gt;() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> Boolean <span class="title">call</span><span class="params">(Post post)</span> </span>&#123;</div><div class="line">                        <span class="keyword">return</span> isToday(post.date);</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码就是DataManager中的一个方法，该方法将做如下几件事：</p>
+<ol>
+<li>调用Retrofit服务中从REST API中获取数据</li>
+<li>使用DatabaseHelper将数据保存到数据库以达到缓存的目的</li>
+<li>过滤数据，得到今天发布的博客数据</li>
+</ol>
+<p><strong>view layer</strong>中的组件Activity、Fragment也会调用这些方法并且订阅RxJava中的Observable。一旦数据层完成数据的获取，就会通知订阅者做出相应的操作。</p>
+<p>该架构下的最后一个元素就是<strong>Event Bus</strong>。event bus 允许我们在数据层进行事件广播，所以在视图层的大多数组件可以接收到这些事件。例如，一个DataManager中的signOut()方法在Observable完成时会发布一个事件，这样视图层的Activity可以接收到这个事件并且做出相应的操作例如UI的更新等。</p>
+<p><br></p>
+<font size="4px" color="#7C7C7C">为什么该架构要好一些呢？</font>
+
+<ul>
+<li>RxJava的Observables和operators解决了嵌套回调带来的问题</li>
+</ul>
+<p style="text-align:center"><br>    <img src="callback-hell.jpeg"><br></p>
+
+<ul>
+<li>DataManager负责了之前在Activity和Fragment中的任务，因此Activity和Fragment更加轻量。</li>
+<li>将Activity和Fragment中的任务迁移到DataManager和帮助类中使得单元测试变的简单。</li>
+<li>明确职责分离，将DataManager作为和数据层交互的唯一入口使得应用的测试更加友好</li>
+</ul>
+<p><br></p>
+<font size="4px" color="#7C7C7C">我们仍存在一些问题</font>
+
+<ul>
+<li>对于大型的非常复杂的项目来说，DataManager将会变动臃肿并且难以维护</li>
+<li>虽然View层的组件Activity和Fragment变的轻量了，但是它们仍然要将RxJava subscriptions中进行操作很多逻辑，分析错误消息等。</li>
+</ul>
+<h1 id="整合MVP"><a href="#整合MVP" class="headerlink" title="整合MVP"></a>整合MVP</h1><p>过去的一年时间里，诸如<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter" target="_blank" rel="external">MVP</a>和<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel" target="_blank" rel="external">MVVM</a>的架构模式在安卓社区流行起来。通过探索这些模式也写了<a href="https://github.com/ivacf/archi" target="_blank" rel="external">项目</a>和<a href="http://icedcap.github.io/">文章</a>，发现MVP对我们现有方法带来了很有价值的提升。因为我们的项目项目架构是两层（view和data），使用MVP是很自然的。我们只需要添加一个新层级presenter并且将部分代码从view层移到presenter层即可。</p>
+<p style="text-align:center"><br>    <img src="mvp-base-architecture.png"><font size="1px" color="#7C7C7C">基于MVP的架构</font><br></p>
+
+<p>数据层保持不变但现在MVP中称为模型层。</p>
+<p><strong>Presenters</strong>层负责从模型中加载数据，并且当得到数据后调用视图层相应的方法。presenter会订阅由DataManager返回的Observables。所以它们必须要处理一些事情例如<a href="http://reactivex.io/documentation/scheduler.html" target="_blank" rel="external">schedulers</a>和<a href="http://reactivex.io/RxJava/javadoc/rx/Subscription.html" target="_blank" rel="external">subscriptions</a>。此外，他们可以分析错误代码或者如果需要会将额外的操作应用到数据流上。例如，如果我们需要过滤一些数据并且这个过滤器是不可能在其他地方被重用，那么在Presenter中实现这个过滤器要比在DataManager中实现有意义的多。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadTodayPosts</span><span class="params">()</span> </span>&#123;</div><div class="line">    mMvpView.showProgressIndicator(<span class="keyword">true</span>);</div><div class="line">    mSubscription = mDataManager.loadTodayPosts().toList()</div><div class="line">            .observeOn(AndroidSchedulers.mainThread())</div><div class="line">            .subscribeOn(Schedulers.io())</div><div class="line">            .subscribe(<span class="keyword">new</span> Subscriber&lt;List&lt;Post&gt;&gt;() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</div><div class="line">                    mMvpView.showProgressIndicator(<span class="keyword">false</span>);</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</div><div class="line">                    mMvpView.showProgressIndicator(<span class="keyword">false</span>);</div><div class="line">                    mMvpView.showError();</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(List&lt;Post&gt; postsList)</span> </span>&#123;</div><div class="line">                    mMvpView.showPosts(postsList);</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>上述代码就是presenter层的一个方法。从代码中可以看到由<em>dataManager.loadTodayPosts()</em>方法返回的Observable被订阅者订阅的一个过程。</p>
+<p><em>mMvpView</em>是presenter中与视图组件相关联的字段。通常情况下MVP的视图层是由 Activity, Fragment或者ViewGroup构成。</p>
+<p>和之前的架构一样，<strong>视图层</strong>包含标准框架中的组件如Activity、Fragment和ViewGroup。但是不同点就是这些组件不会直接去订阅Observables，代替它们订阅的是MvpView接口，该接口也会提供一些简单的方法诸如<em>showError()</em>或者<em>showProgressIndicator()</em>等。当然视图组件也会和处理用户交互事件，例如点击事件，当点击事件发生后会调用presenter中相应的方法。举个例子，如果我们有一个加载list列表的按钮，当按钮被按下后，我们的Activity会在点击事件中调用<em>presenter.loadTodayPosts()</em>方法。</p>
+<blockquote>
+<p>如果你想看到整个MVP架构的工作原理，你可以查阅<a href="https://github.com/ribot/android-boilerplate" target="_blank" rel="external">android-boilerplate</a>这个项目，你也可以看看<a href="https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md" target="_blank" rel="external">Architecture Guidelines</a>这篇文章。</p>
+</blockquote>
+<p><br></p>
+<font size="4px" color="#7C7C7C">MVP好在哪？</font>
+
+<ul>
+<li>Activity和Fragment更加轻量，它们仅仅负责设置更新UI和事件处理，所以它们变得容易维护</li>
+<li>现在我们可以很容易为presenter写单元测试。之前这些代码是view层的一部分所以我们很难编写测试用例。现在完全脱离视图层，整个架构变测试性非常好。</li>
+<li>之前的架构data manager变很臃肿，而使用MVP可以将部分代码迁移到presenter中为data manager瘦身。</li>
+</ul>
+<p><br></p>
+<font size="4px" color="#7C7C7C">我们依旧存在哪些问题？</font>
+
+<ul>
+<li>随着产品迭代代码量加大并且变得复杂的时候，单一的Data Manager依旧是个问题。我们还没有达到这点,但是它的确是个问题,我们认识到,它可能会发生。</li>
+</ul>
+<hr>
+<p>重要提醒，MVP不是最完美的架构模式。实际上，我曾经天真的认为它是独特且完美的架构可以很好的解决所有问题。现阶段，Android生态系统仍然以快速的脚步向前发展，我们必须保持不断探索、阅读、实验的精神，这样才能为构建优秀的安卓应用探索出一条光明的大道。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/架构/" rel="tag">#架构</a>
+          
+            <a href="/tags/MVP/" rel="tag">#MVP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/" rel="next" title="我眼中的数据绑定库以及MVVM架构">
+                <i class="fa fa-chevron-left"></i> 我眼中的数据绑定库以及MVVM架构
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/08/exploring-the-new-android-design-support-library/" rel="prev" title="Design库探索">
+                Design库探索 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/07/android-application-architecture/"
+           data-title="安卓应用架构" data-url="http://icedcap.github.io/2016/08/07/android-application-architecture/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#回到过去"><span class="nav-number">1.</span> <span class="nav-text">回到过去</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#由Rxjava驱动的新架构"><span class="nav-number">2.</span> <span class="nav-text">由Rxjava驱动的新架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整合MVP"><span class="nav-number">3.</span> <span class="nav-text">整合MVP</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,design,动画," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="现在很多公司在打造移动产品时都在追求漂亮的、酷炫的用户交互体验。自从在伦敦参加了一场开发者论坛后，我决定继续深入探讨安卓用户交互的酷炫效果。此时，我将把我的研究成果展示给大家，这篇文章将让大家认识到构建酷炫的安卓交互是非常简单的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓酷炫效果探索">
+<meta property="og:url" content="http://icedcap.github.io/2016/08/22/exploring-meaningful-motion-on-android/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="现在很多公司在打造移动产品时都在追求漂亮的、酷炫的用户交互体验。自从在伦敦参加了一场开发者论坛后，我决定继续深入探讨安卓用户交互的酷炫效果。此时，我将把我的研究成果展示给大家，这篇文章将让大家认识到构建酷炫的安卓交互是非常简单的。">
+<meta property="og:image" content="http://icedcap.github.io/animate.png">
+<meta property="og:image" content="http://icedcap.github.io/Falcon_Pro.gif">
+<meta property="og:image" content="http://icedcap.github.io/medium.gif">
+<meta property="og:image" content="http://icedcap.github.io/ripple1.gif">
+<meta property="og:image" content="http://icedcap.github.io/ripple2.gif">
+<meta property="og:image" content="http://icedcap.github.io/smail_face1.gif">
+<meta property="og:image" content="http://icedcap.github.io/smail_face2.gif">
+<meta property="og:image" content="http://icedcap.github.io/smail_face3.gif">
+<meta property="og:image" content="http://icedcap.github.io/smail_face4.gif">
+<meta property="og:image" content="http://icedcap.github.io/object_animator.gif">
+<meta property="og:image" content="http://icedcap.github.io/fast-out-linear-in.gif">
+<meta property="og:image" content="http://icedcap.github.io/Fast-Out-Slow-In.gif">
+<meta property="og:image" content="http://icedcap.github.io/linear-out-slow-In.gif">
+<meta property="og:image" content="http://icedcap.github.io/accelerate-decelerate.gif">
+<meta property="og:image" content="http://icedcap.github.io/circular-reveal.gif">
+<meta property="og:image" content="http://icedcap.github.io/explode.gif">
+<meta property="og:image" content="http://icedcap.github.io/slide.gif">
+<meta property="og:image" content="http://icedcap.github.io/fade.gif">
+<meta property="og:image" content="http://icedcap.github.io/share-element-transitions.gif">
+<meta property="og:image" content="http://icedcap.github.io/share-element.png">
+<meta property="og:image" content="http://icedcap.github.io/custom-transitions.gif">
+<meta property="og:image" content="http://icedcap.github.io/Vector.gif">
+<meta property="og:image" content="http://icedcap.github.io/animation-plus.gif">
+<meta property="og:image" content="http://icedcap.github.io/plus.png">
+<meta property="og:image" content="http://icedcap.github.io/subtract.png">
+<meta property="og:image" content="http://icedcap.github.io/subtract-add.gif">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓酷炫效果探索">
+<meta name="twitter:description" content="现在很多公司在打造移动产品时都在追求漂亮的、酷炫的用户交互体验。自从在伦敦参加了一场开发者论坛后，我决定继续深入探讨安卓用户交互的酷炫效果。此时，我将把我的研究成果展示给大家，这篇文章将让大家认识到构建酷炫的安卓交互是非常简单的。">
+<meta name="twitter:image" content="http://icedcap.github.io/animate.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 安卓酷炫效果探索 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓酷炫效果探索
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T22:02:14+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/22/exploring-meaningful-motion-on-android/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/exploring-meaningful-motion-on-android/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在很多公司在打造移动产品时都在追求漂亮的、酷炫的用户交互体验。自从在伦敦参加了一场<a href="https://photos.google.com/share/AF1QipMRnZL6gNbS06fnBNtKffRm9HBaxW8iP6w0L1T4nZYLI6s3wi_l8daT6mq4nwPf-w?key=LThZNmFXUUtmNi04bWlEYmVfcWdPenlvaDdCRU13" target="_blank" rel="external">开发者论坛</a>后，我决定继续深入探讨安卓用户交互的酷炫效果。此时，我将把我的研究成果展示给大家，这篇文章将让大家认识到构建酷炫的安卓交互是非常简单的。</p>
+<a id="more"></a>
+<blockquote>
+<p>@Joe Birch<br><a href="https://labs.ribot.co.uk/exploring-meaningful-motion-on-android-1cd95a4bc61d#.a22htb1ud" target="_blank" rel="external">https://labs.ribot.co.uk/exploring-meaningful-motion-on-android-1cd95a4bc61d#.a22htb1ud</a></p>
+</blockquote>
+<p><img src="animate.png"></p>
+<p>本文源代码发布在<a href="https://github.com/hitherejoe/animate" target="_blank" rel="external"><strong>Github</strong></a>上</p>
+<p>我非常喜欢酷炫的动画效果，它不仅能增加用户体验，更能给用户带来视觉的冲击。想象一下你所使用应用是如何通过UI、动画来达到取悦、满足、流畅、自然的用户体验的。</p>
+<p style="text-align:center"><br>    <img src="Falcon_Pro.gif"><font size="1px" color="#7C7C7C">Falcon Pro:一个微小的动画设计都会在用户体验上带来巨大的改变</font><br></p>
+
+<p>现在对比下你所喜欢的应用但是又缺少些酷炫的动画的应用。</p>
+<p style="text-align:center"><br>    <img src="medium.gif"><font size="1px" color="#7C7C7C">Falcon Medium:是我比较喜欢的应用之一，但是它在某些区域上真的是缺少动画来加强体验</font><br></p>
+
+<p><br></p>
+<p><font size="4px" color="#7C7C7C">做一点事就会带来巨大的变化</font><br><br></p>
+<p>我们可以使用如下方法来改善用户体验：</p>
+<ul>
+<li>通过导航栏传递用户信息</li>
+<li>加强基本的层级视图</li>
+<li>突出屏幕上的组件间的变化</li>
+</ul>
+<p>本篇文章的目的就是向你展示提升应用交互体验是多么的简单。好了多说无益，让我们开始吧。</p>
+<h1 id="触摸反馈"><a href="#触摸反馈" class="headerlink" title="触摸反馈"></a>触摸反馈</h1><p>当用户触碰屏幕的时候提供一个反馈效果可以增强用户体验给用户带来一种反馈的交流的感觉。这些动画不会让用户分心,让用户有足够的兴趣继续探索接下来的操作。</p>
+<p>安卓framework为触摸反馈提供了波纹效果。可以通过以下方式来设置视图背景达到：</p>
+<ul>
+<li><strong>?android:attr/selectableItemBackground</strong> - 在视图区域范围内展示波纹效果<p style="text-align:center"><br>  <img src="ripple1.gif"><font size="1px" color="#7C7C7C">波纹效果从触摸点扩充到整个视图背景范围内</font><br></p></li>
+<li><strong>?android:attr/selectableItemBackgroundBorderless</strong> - 以延长视图区域方式展示波纹效果<p style="text-align:center"><br>  <img src="ripple2.gif"><font size="1px" color="#7C7C7C">圆形波纹从触摸点开始扩充到整个视图区域</font><br></p>
+
+</li>
+</ul>
+<h1 id="ViewPropertyAnimator"><a href="#ViewPropertyAnimator" class="headerlink" title="ViewPropertyAnimator"></a>ViewPropertyAnimator</h1><p>从API21引入<a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html" target="_blank" rel="external">视图属性动画</a>，它允许我们使用动画更加简单高效，它的工作原理是使用一组视图属性应用在<a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html" target="_blank" rel="external">Animator</a>对象上。</p>
+<p style="text-align:center"><br>    <img src="smail_face1.gif"><font size="1px" color="#7C7C7C">下面是达到该动画效果所要设置的属性</font><br></p>
+
+<ul>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#alpha%28float%29" target="_blank" rel="external">alpha()</a> - 透明度</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#scaleX%28float%29" target="_blank" rel="external">scaleX()</a> &amp; <a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#scaleY%28float%29" target="_blank" rel="external">scaleY()</a> - x方向和y方向的拉伸动画</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#translationZ%28float%29" target="_blank" rel="external">translationZ()</a> - z轴方向上的移动动画</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#setDuration%28long%29" target="_blank" rel="external">setDuration()</a> - 设置动画持续时间</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#setStartDelay%28long%29" target="_blank" rel="external">setStartDelay()</a> - 设置动画延迟时间</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#setInterpolator%28android.animation.TimeInterpolator%29" target="_blank" rel="external">setInterpolator()</a> - 设置动画插值器</li>
+<li><a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html#setListener%28android.animation.Animator.AnimatorListener%29" target="_blank" rel="external">setListener()</a> - 为动画设置一个监听器从而操作动画开始结束重复或者取消时的逻辑</li>
+</ul>
+<p><strong>注意:</strong>当一个View已经设置监听器了并且想要在该视图上执行其他动画，你要期望使用该监听器的回调，你必须设置该监听器为<strong>null</strong>。</p>
+<p>一个即简单又整洁的代码实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">mButton.animate()</div><div class="line">        .alpha(<span class="number">1f</span>)</div><div class="line">        .scaleX(<span class="number">1f</span>)</div><div class="line">        .scaleY(<span class="number">1f</span>)</div><div class="line">        .translationZ(<span class="number">10f</span>)</div><div class="line">        .setInterpolator(<span class="keyword">new</span> FastOutSlowInInterpolator())</div><div class="line">        .setStartDelay(<span class="number">200</span>)</div><div class="line">        .setListener(<span class="keyword">new</span> Animator.AnimatorListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator animation)</span> </span>&#123; &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>&#123; &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationCancel</span><span class="params">(Animator animation)</span> </span>&#123; &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animator animation)</span> </span>&#123; &#125;</div><div class="line">        &#125;)</div><div class="line">        .start();</div></pre></td></tr></table></figure>
+<p><strong>注意:</strong>随着动画自动启动的同时一旦要停止动画时，我们实际上不需要调用start()方法。在这种情况下直到队列中的下一帧动画更新到达时是不会启动动画的。</p>
+<p style="text-align:center"><br>    <img src="smail_face2.gif"><font size="1px" color="#7C7C7C">应用在FAB上透明度的动画</font><br></p>
+
+<p style="text-align:center"><br>    <img src="smail_face3.gif"><font size="1px" color="#7C7C7C">应用在FAB上xy轴拉伸动画</font><br></p>
+
+<p style="text-align:center"><br>    <img src="smail_face4.gif"><font size="1px" color="#7C7C7C">应用在FAB上z轴移动动画</font><br></p>
+
+<p><strong>注意：</strong>为了向后兼容，你需要在API4及以上使用<a href="https://developer.android.com/reference/android/support/v4/view/ViewCompat.html" target="_blank" rel="external">ViewCompat</a>类来实现ViewPropertyAnimator。</p>
+<h1 id="Object-Animator"><a href="#Object-Animator" class="headerlink" title="Object Animator"></a>Object Animator</h1><p>和<a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html" target="_blank" rel="external">ViewPropertyAnimator</a>类似，<a href="http://developer.android.com/reference/android/animation/ObjectAnimator.html" target="_blank" rel="external">ObjectAnimator</a>允许我们在目标视图（XML或者java代码）上使用不同的属性执行动画。但是也有一些不同点：</p>
+<ul>
+<li>ObjectAnimator只允许在每个实例上使用单一属性应用动画，例如，<strong>Scale X</strong>要在<strong>Scale Y</strong>之后</li>
+<li>但是它也支持自定义的属性<a href="https://developer.android.com/reference/android/util/Property.html" target="_blank" rel="external">Property</a>例如一个视图的<strong>前台动画</strong></li>
+</ul>
+<p>使用自定义属性动画视图的缩放和前台颜色改变效果如下：</p>
+<p style="text-align:center"><br>    <img src="object_animator.gif"><br></p>
+
+<p>使用<a href="https://github.com/hitherejoe/animate/blob/master/app/src/main/java/com/hitherejoe/animate/ui/widget/ForegroundFrame.java#L90" target="_blank" rel="external">自定属性</a>，我们可以调用<a href="http://developer.android.com/reference/android/animation/ObjectAnimator.html#ofInt%28T,%20android.util.Property%3CT,%20java.lang.Integer%3E,%20int...%29" target="_blank" rel="external">ObjectAnimator.ofInt()</a>方法来创建一个ObjectAnimator实例。</p>
+<ul>
+<li><strong>view</strong> 将要进行动画的目标视图</li>
+<li><strong>property</strong> 动画属性</li>
+<li><strong>start color</strong> 动画开始时颜色</li>
+<li><strong>target color</strong> 视图应该有的颜色</li>
+</ul>
+<p>接下来我们要设置估值器（使用<a href="http://developer.android.com/reference/android/animation/ArgbEvaluator.html" target="_blank" rel="external">ArgbEvaluator</a>计算属性颜色变化），在调用<strong>start()</strong>前设置一个延迟</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animateForegroundColor</span><span class="params">(@ColorInt <span class="keyword">final</span> <span class="keyword">int</span> targetColor)</span> </span>&#123;</div><div class="line">    ObjectAnimator animator = </div><div class="line">        ObjectAnimator.ofInt(YOUR_VIEW, FOREGROUND_COLOR, Color.TRANSPARENT, targetColor);</div><div class="line">    animator.setEvaluator(<span class="keyword">new</span> ArgbEvaluator());</div><div class="line">    animator.setStartDelay(DELAY_COLOR_CHANGE);</div><div class="line">    animator.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来，我们需要为视图设置拉伸的动画，拉伸效果也很容易，与颜色动画主要区别有：</p>
+<ul>
+<li>我们使用<a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#ofFloat%28float...%29" target="_blank" rel="external">ObjectAnimator.ofFloat()</a>来创建ObjectAnimator对象，当我们处理视图尺寸的动画时不需要使用以int值的动画，要使用float值。</li>
+<li>这里使用<em>View.SCALE_X</em> 和 <em>View.SCALE_Y</em>属性来代替自定义属性</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resizeView</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> widthHeightRatio = (<span class="keyword">float</span>) getHeight() / (<span class="keyword">float</span>) getWidth();</div><div class="line">    resizeViewProperty(View.SCALE_X, .<span class="number">5f</span>, <span class="number">200</span>);</div><div class="line">    resizeViewProperty(View.SCALE_Y, .<span class="number">5f</span> / widthHeightRatio, <span class="number">250</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resizeViewProperty</span><span class="params">(Property&lt;View, Float&gt; property,</span></span></div><div class="line">                                <span class="keyword">float</span> targetScale, </div><div class="line">                                <span class="keyword">int</span> durationOffset) &#123;</div><div class="line">    ObjectAnimator animator = ObjectAnimator.ofFloat(<span class="keyword">this</span>, property, <span class="number">1f</span>, targetScale);</div><div class="line">    animator.setInterpolator(<span class="keyword">new</span> LinearOutSlowInInterpolator());</div><div class="line">    animator.setStartDelay(DELAY_COLOR_CHANGE + durationOffset);</div><div class="line">    animator.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后，我们需要实现一个将视图移出屏幕的动画。这种情况下，我们使用<a href="http://developer.android.com/reference/android/widget/AdapterViewFlipper.html" target="_blank" rel="external">AdapterViewFlipper</a>控制要移出的视图。在ViewFlipper对象中调用<a href="http://developer.android.com/reference/android/widget/AdapterViewFlipper.html#showNext%28%29" target="_blank" rel="external">showNext()</a>，并且使用我们<a href="https://github.com/hitherejoe/animate/blob/master/app/src/main/java/com/hitherejoe/animate/ui/activity/ObjectAnimatorActivity.java#L42" target="_blank" rel="external">定义的动画</a>应用在移出屏幕的效果，并且在下一帧动画中也使用自定义的<a href="https://github.com/hitherejoe/animate/blob/master/app/src/main/java/com/hitherejoe/animate/ui/activity/ObjectAnimatorActivity.java#L40" target="_blank" rel="external">进场（从屏幕外进入屏幕）动画</a>。</p>
+<h1 id="插值器"><a href="#插值器" class="headerlink" title="插值器"></a>插值器</h1><p><a href="http://developer.android.com/reference/android/view/animation/Interpolator.html" target="_blank" rel="external">Interpolator</a>用于计算动画过程中每一帧的变化比率。它可以控制动画在行进过程中的速度变化。框架中定义了很多种插值器，每一种插值器表现出来的效果也很微妙，我建议你应用在真机上观察每种插值器带来的效果。</p>
+<ul>
+<li>不设置插值器 <a href="https://github.com/hitherejoe/animate/blob/master/images/no_interpolator.gif?raw=true" target="_blank" rel="external">动画</a>效果没有一个速率变化</li>
+<li><p><a href="http://developer.android.com/reference/android/support/v4/view/animation/FastOutLinearInInterpolator.html" target="_blank" rel="external">Fast-out Linear-in</a></p>
+<p style="text-align:center"><br>  <img src="fast-out-linear-in.gif"><font size="1px" color="#7C7C7C">视图动画以加速开始随后以线性方式完成动画</font><br></p>
+</li>
+<li><p><a href="http://developer.android.com/reference/android/support/v4/view/animation/FastOutSlowInInterpolator.html" target="_blank" rel="external">Fast-Out Slow-In</a></p>
+<p style="text-align:center"><br>  <img src="Fast-Out-Slow-In.gif"><font size="1px" color="#7C7C7C">视图动画以加速开始随后以减速方式完成动画</font><br></p></li>
+<li><p><a href="http://developer.android.com/reference/android/support/v4/view/animation/LinearOutSlowInInterpolator.html" target="_blank" rel="external">Linear-Out Slow-In</a></p>
+<p style="text-align:center"><br>  <img src="linear-out-slow-In.gif"><font size="1px" color="#7C7C7C">视图动画以匀速开始随后以减速方式完成动画</font><br></p>
+</li>
+<li><p><a href="http://developer.android.com/reference/android/view/animation/AccelerateDecelerateInterpolator.html" target="_blank" rel="external">Accelerate-Decelerate</a></p>
+<p style="text-align:center"><br>  <img src="accelerate-decelerate.gif"><font size="1px" color="#7C7C7C">视图动画开始时以加速方式呈现，随后减速直到动画结束</font><br></p></li>
+<li><a href="http://developer.android.com/reference/android/view/animation/AccelerateInterpolator.html" target="_blank" rel="external">Accelerate</a> - 视图逐渐的加速直到动画结束</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/DecelerateInterpolator.html" target="_blank" rel="external">Decelerate</a> - 视图逐渐的减速直到动画结束</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/AnticipateInterpolator.html" target="_blank" rel="external">Anticipate</a> - 视图首先以相反的状态做少量动画随后恢复正常动画</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/AnticipateOvershootInterpolator.html" target="_blank" rel="external">Anticipate-Overshoot</a> - 视图首先以相反的状态做少量动画随后恢复正常动画并且在快要结束时以多余当前动画参数进行动画随后恢复结束时的状态</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/BounceInterpolator.html" target="_blank" rel="external">BounceInterpolator</a> - 视图在动画结束前产生一个跳跃的动画效果</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/LinearInterpolator.html" target="_blank" rel="external">LinearInterpolator</a> - 视图由始至终以匀速平滑的效果进行动画</li>
+<li><a href="http://developer.android.com/reference/android/view/animation/OvershootInterpolator.html" target="_blank" rel="external">OvershootInterpolator</a> - 视图以跨越动画参数的效果并且最后恢复动画结束时的效果</li>
+</ul>
+<p><strong>译者注：</strong>这里翻译成中文比较拗口，最好的办法是coding看实际效果。</p>
+<h1 id="弧形揭露效果"><a href="#弧形揭露效果" class="headerlink" title="弧形揭露效果"></a>弧形揭露效果</h1><p><a href="http://developer.android.com/training/material/animations.html#Reveal" target="_blank" rel="external">CircularReveal</a>动画效果使用一个圆形裁剪效果来展示或者隐藏UI元素。它除了提供视觉上的连续性,还会给交互者带来娱乐性和趣味性的用户体验。</p>
+<p style="text-align:center"><br>    <img src="circular-reveal.gif"><br></p><br>上图中，动画开始，我们先使用ViewPropertyAnimator来隐藏FAB，随后进行弧形显示的动画效果。实现这个效果只需简单的设置几个属性就可以达到目的：<br><br>- <strong>startView</strong> 弧形揭露效果最开始的视图（例如一个按钮）<br>- <strong>centerX</strong> 圆弧中心点x轴坐标<br>- <strong>centerY</strong> 圆弧中心点y轴坐标<br>- <strong>targetView</strong> 要显示的视图<br>- <strong>finalRadius</strong> 最终要扩充后的区域对应的圆弧半径<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> centerX = (startView.getLeft() + startView.getRight()) / <span class="number">2</span>;</div><div class="line"><span class="keyword">int</span> centerY = (startView.getTop() + startView.getBottom()) / <span class="number">2</span>;</div><div class="line"><span class="keyword">float</span> finalRadius = (<span class="keyword">float</span>) Math.hypot((<span class="keyword">double</span>) centerX, (<span class="keyword">double</span>) centerY);</div><div class="line">Animator mCircularReveal = ViewAnimationUtils.createCircularReveal(</div><div class="line">  targetView, centerX, centerY, <span class="number">0</span>, finalRadius);</div></pre></td></tr></table></figure><br><br># 窗口转场<br><a href="http://developer.android.com/training/material/animations.html#Transitions" target="_blank" rel="external">转场动画</a>经常用在两个Activity之间的切换，它使得窗口之间的连贯性更加流畅。默认的，我们可以使用框架提供的几种转场效果：<br><br>- <strong>enter</strong> 决定一个Activity视图如何启动的动画效果<br>- <strong>exit</strong> 决定一个Activity视图如何退出的动画效果<br>- <strong>reenter</strong> 决定一个Activity视图如何重新启动的动画效果<br>- <strong>shared elements</strong> 决定Activity之间的共享元素是如何过渡的一个动画效果<br><br>API21之后又引入几个转场效果：<br><br>## Explode<br>explode转场效果允许视图从屏幕的各个角度退出，如下图<br><br><p style="text-align:center"><br>    <img src="explode.gif"><font size="1px" color="#7C7C7C">在网格布局中应用<b>explode</b>效果非常好</font><br></p>
+
+<p>此效果的实现非常简单，首先你需要创建如下transition的XML资源文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">explode</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"300"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>上述代码中我们做到了：</p>
+<ul>
+<li>explode转场动画的声明</li>
+<li>设置动画持续时间</li>
+</ul>
+<p>接下来要做的就是添加到Activity窗体上，我们可以通过Activity的主题也可以通过Java代码，两种方法都能实现：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme.Explode"</span> <span class="attr">parent</span>=<span class="string">"AppTheme.NoActionBar"</span>&gt;</span><span class="xml"></span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowExitTransition"</span>&gt;</span>@transition/slide_explode<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowReenterTransition"</span>&gt;</span>@android:transition/slide_top<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Transition explode = TransitionInflater.from(<span class="keyword">this</span>).inflateTransition(R.transition.explode);</div><div class="line">getWindow().setEnterTransition(explode);</div></pre></td></tr></table></figure>
+<h2 id="Slide"><a href="#Slide" class="headerlink" title="Slide"></a>Slide</h2><p>Slide转场动画允许UI元素在Activity中的右侧或者底部滑入滑出。虽然在之前你就可以实现这种效果了，但是Slide仍然是一个稳定的动画组件。</p>
+<p style="text-align:center"><br>    <img src="slide.gif"><font size="1px" color="#7C7C7C">Slide允许在子视图中<b>连续</b>滑入滑出</font><br></p>
+
+<p>滑入滑出是Activity之间转换最常见的转场效果，我也是特别喜欢这种转场效果，它的实现也是比较简单：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">slide</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/decelerate_cubic"</span></div><div class="line">    <span class="attr">android:slideEdge</span>=<span class="string">"end"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>这里我们做了两件事：</p>
+<ul>
+<li>定义slide，并设置插值器</li>
+<li>设置滑出的方向end（右端）如果向底部滑出就可以使用bottom</li>
+</ul>
+<h2 id="Fade"><a href="#Fade" class="headerlink" title="Fade"></a>Fade</h2><p>Fade转场动画可以实现Activity转场有一个淡入淡出的效果</p>
+<p style="text-align:center"><br>    <img src="fade.gif"><font size="1px" color="#7C7C7C">fade转场是一个即简单又愉悦的转场效果</font><br></p>
+
+<p>创建fade转场：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">fade</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"300"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>这里做了两件事：</p>
+<ul>
+<li>定义fade转场</li>
+<li>设置动画持续事件为300ms</li>
+</ul>
+<h2 id="转场效果优化"><a href="#转场效果优化" class="headerlink" title="转场效果优化"></a>转场效果优化</h2><p>通过实验我发现了一些可以改善上述的转场效果的方法。</p>
+<p><strong>允许窗体内容转场</strong> - 你需要保证你的主题继承自material并将android:windowContentTransitions属性设为true</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowContentTransitions"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>Enable/Disable Transition Overlaps</strong> - 进行转场时,很可能会产生延迟,因为当一个Activity必须等待另一个完成的转场后才能开始它自己的。基于这种情况，你可以将下述属性设为enable来保证转场动画的流畅性</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowAllowEnterTransitionOverlap"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowAllowReturnTransitionOverlap"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>去除转场动画中不想要的视图</strong>某些情况下，我们不想将Activity中的所有视图都表现在转场动画中。我发现在一些情况下，状态栏和toolbar在转场中会产生一些问题。幸运的是，我们可以在转场中去除toolbar和statusbar，让它俩不参与转场动画效果</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">explode</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"200"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">targets</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/navigationBarBackground"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/statusBarBackground"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">targets</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">explode</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>ToolBar和ActionBar</strong> - 当在Activity中使用ActionBar或者ToolBar进行转场动画时，我发现动画过程并不是那么的平滑。为了解决这个问题，我是确保这两个Activity使用同一个Toolbar对象。</p>
+<p><strong>转场持续时间</strong> - 转场过程中你肯定不想让用户等待太长的时间，但是你也不想让组件快速出现。我发现最后的效果就是将转场持续事件设置在200-500ms之间。</p>
+<h1 id="共享元素转场"><a href="#共享元素转场" class="headerlink" title="共享元素转场"></a>共享元素转场</h1><p><a href="http://developer.android.com/training/material/animations.html#Transitions" target="_blank" rel="external">共享元素转场</a>允许我们把共享元素应用在两个Activity之间的转场动画中。如下图所示：</p>
+<p style="text-align:center"><br>    <img src="share-element-transitions.gif"><font size="1px" color="#7C7C7C">这里从第一个Activity中的底部一个视图直接过渡拉伸到第二个Activity中</font><br></p>
+
+<p>在我们的布局中，必须使用<strong>transitionName</strong>属性将所有的共享元素联系起来。下图展示的就是上附动图中的共享视图元素</p>
+<p style="text-align:center"><br>    <img src="share-element.png"><br></p>
+
+<p>为了实现上述的共享元素动画，我们可以在XML中定义<strong>transitionName</strong>属性</p>
+<p>场景1<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">View</span> </span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/view_shared_transition"</span></div><div class="line">            <span class="attr">android:transitionName</span>=<span class="string">"@string/transition_view"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="comment">&lt;!-- Your other views --&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>场景2<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">View</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/view_shared_transition"</span></div><div class="line">        <span class="attr">android:transitionName</span>=<span class="string">"@string/transition_view"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">View</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/view_separator"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/text_detail"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/text_close"</span>/&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>接下来，我们需要在Activity中创建<a href="http://developer.android.com/reference/android/util/Pair.html" target="_blank" rel="external">Pair</a>对象,并将共享元素传入。一旦完成Pair对象就可以将它传入到Activity启动过程(<a href="http://developer.android.com/reference/android/support/v4/app/ActivityOptionsCompat.html" target="_blank" rel="external">ActivityOptionsCompat</a>)中，这样每个Activity都会注意到共享元素的存在。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Pair participants = <span class="keyword">new</span> Pair&lt;&gt;(mSquareView, ViewCompat.getTransitionName(mSquareView));</div><div class="line"></div><div class="line">ActivityOptionsCompat transitionActivityOptions = </div><div class="line">        ActivityOptionsCompat.makeSceneTransitionAnimation(</div><div class="line">                SharedTransitionsActivity.<span class="keyword">this</span>, participants);</div><div class="line"></div><div class="line">ActivityCompat.startActivity(SharedTransitionsActivity.<span class="keyword">this</span>, </div><div class="line">                      intent, transitionActivityOptions.toBundle());</div></pre></td></tr></table></figure>
+<p>以上就是在两个View之间的转场效果，那么如果在第二个Activity中的视图是从底部上滑的一个动画效果呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Slide slide = <span class="keyword">new</span> Slide(Gravity.BOTTOM);</div><div class="line">slide.addTarget(R.id.view_separator);</div><div class="line">slide.addTarget(R.id.text_detail);</div><div class="line">slide.addTarget(R.id.text_close);</div><div class="line">getWindow().setEnterTransition(slide);</div></pre></td></tr></table></figure>
+<p>如你所看到的，我们创建一个新的Slide转场实例，并且把它添加到目标视图上最后设置activity的进场动画。</p>
+<h1 id="自定义转场"><a href="#自定义转场" class="headerlink" title="自定义转场"></a>自定义转场</h1><p>目前为止，我们已经有能力创建自定义的转场效果了。例如我们使用共享元素一步一步的应用在视图的转变上。当我们要展示一个对话框时是非常有用的，如下图所示：</p>
+<p style="text-align:center"><br>    <img src="custom-transitions.gif"><font size="1px" color="#7C7C7C">该效果可以引导用户进行操作</font><br></p>
+
+<p>让我们快速看一该动画过程：</p>
+<ul>
+<li>我们首先创建一个SharedTransition对象,并在点按视图上设置该共享元素的名字，让它变为共享元素</li>
+<li>接下来创建<a href="https://developer.android.com/reference/android/transition/ArcMotion.html" target="_blank" rel="external">ArcMotion</a>实例，它允许我们在两个视图转场过程中产生一个圆弧的效果</li>
+<li>再接下来继承 <a href="http://developer.android.com/reference/android/transition/ChangeBounds.html" target="_blank" rel="external">ChangeBounds</a>类，为两个变形的视图创建自定义的转场（我们为按钮或者FAB定义单独的类）。现在重写该类中的各个方法，这样我们可以得到动画所需的各个属性。我们利用<a href="http://developer.android.com/reference/android/view/ViewPropertyAnimator.html" target="_blank" rel="external">ViewPropertyAnimator</a>实现透明对话框的动画效果，<a href="http://developer.android.com/reference/android/animation/ObjectAnimator.html" target="_blank" rel="external">ObjectAnimator</a>实现两个视图间颜色变化的效果最后通过<a href="http://developer.android.com/reference/android/animation/AnimatorSet.html" target="_blank" rel="external">AnimatorSet</a>将所有的动画组合在一起，完成整体的动画效果。</li>
+</ul>
+<h1 id="矢量动画"><a href="#矢量动画" class="headerlink" title="矢量动画"></a>矢量动画</h1><p>API21以后，<a href="http://developer.android.com/reference/android/graphics/drawable/AnimatedVectorDrawable.html" target="_blank" rel="external">AnimatedVectorDrawable</a>可以应用在<a href="http://developer.android.com/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="external">VectorDrawable</a>的动画属性上并且产生一些意想不到的动画效果，如下图所示</p>
+<p style="text-align:center"><br>    <img src="Vector.gif"><font size="1px" color="#7C7C7C">现在很容易使用drawable做几种不同的动画</font><br></p>
+
+<p>那么我们该怎么做呢？好吧，先看下面这个效果</p>
+<p style="text-align:center"><br>    <img src="animation-plus.gif"><br></p>
+
+<p>由很多不同的文件组成，我们首先创建两个矢量文件每一个文件设置如下属性：</p>
+<ul>
+<li><strong>Height Width</strong> - 矢量图的实际宽高</li>
+<li><strong>Viewport Height &amp; Width</strong> - 声明矢量在在画布上的虚拟大小</li>
+<li><strong>Group Name</strong> - 声明该组下的path</li>
+<li><strong>Pivot X &amp; Y</strong> - 声明用于旋转或者拉伸的中心点坐标</li>
+<li><strong>Path Fill Color</strong> - 声明视图填充色</li>
+<li><strong>Path Data</strong> - 声明矢量图路径的数据</li>
+</ul>
+<p><strong>注意：</strong> 为保持代码整洁干净，所有矢量drawable的属性值都是<a href="https://github.com/hitherejoe/animate/blob/master/app/src/main/res/values/add_remove.xml" target="_blank" rel="external">string类型</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">vector</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">        <span class="attr">android:height</span>=<span class="string">"56dp"</span> </div><div class="line">        <span class="attr">android:width</span>=<span class="string">"56dp"</span></div><div class="line">        <span class="attr">android:viewportHeight</span>=<span class="string">"24.0"</span></div><div class="line">        <span class="attr">android:viewportWidth</span>=<span class="string">"24.0"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">group</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"@string/groupAddRemove"</span></div><div class="line">        <span class="attr">android:pivotX</span>=<span class="string">"12"</span></div><div class="line">        <span class="attr">android:pivotY</span>=<span class="string">"12"</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">path</span> </span></div><div class="line">            <span class="attr">android:fillColor</span>=<span class="string">"@color/stroke_color"</span></div><div class="line">            <span class="attr">android:pathData</span>=<span class="string">"@string/path_add"</span>/&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">vector</span>&gt;</span></div></pre></td></tr></table></figure>
+<p style="text-align:center"><br>    <img src="plus.png"><font size="1px" color="#7C7C7C">上述代码所生成的矢量图效果，命名为ic_add.xml</font><br></p>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">vector</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">        <span class="attr">android:height</span>=<span class="string">"56dp"</span></div><div class="line">        <span class="attr">android:width</span>=<span class="string">"56dp"</span></div><div class="line">        <span class="attr">android:viewportHeight</span>=<span class="string">"24.0"</span></div><div class="line">        <span class="attr">android:viewportWidth</span>=<span class="string">"24.0"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">group</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"@string/groupAddRemove"</span></div><div class="line">        <span class="attr">android:pivotX</span>=<span class="string">"12"</span></div><div class="line">        <span class="attr">android:pivotY</span>=<span class="string">"12"</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">path</span> </span></div><div class="line">            <span class="attr">android:fillColor</span>=<span class="string">"@color/stroke_color"</span> </div><div class="line">            <span class="attr">android:pathData</span>=<span class="string">"@string/path_remove"</span>/&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">vector</span>&gt;</span></div></pre></td></tr></table></figure>
+<p style="text-align:center"><br>    <img src="subtract.png"><font size="1px" color="#7C7C7C">上述代码所生成的矢量图效果，命名为ic_remove.xml</font><br></p>
+
+<p>接下来我们需要声明Animated Vector Drawable文件，该文件主要包括：</p>
+<ul>
+<li>从一种状态到另外一种状态的动画</li>
+<li>旋转动画效果</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">animated-vector</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">android:drawable</span>=<span class="string">"@drawable/ic_add"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">target</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"@string/add"</span></div><div class="line">        <span class="attr">android:animation</span>=<span class="string">"@animator/add_to_remove"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">target</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"@string/groupAddRemove"</span></div><div class="line">        <span class="attr">android:animation</span>=<span class="string">"@animator/rotate_add_to_remove"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">animated-vector</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>接下来就需要创建每一种状态下的目标动画</p>
+<h2 id="drawable状态"><a href="#drawable状态" class="headerlink" title="drawable状态"></a>drawable状态</h2><p>在我们<a href="https://github.com/hitherejoe/animate/blob/master/app/src/main/res/animator/add_to_remove.xml" target="_blank" rel="external">add_to_remove.xml</a>中，我们使用ObjectAnimator来改变动画中的如下属性：</p>
+<ul>
+<li><strong>propertyName</strong> 动画属性名</li>
+<li><strong>valueFrom</strong>  动画开始时的矢量图</li>
+<li><strong>valueTo</strong> 动画结束时的矢量图</li>
+<li><strong>duration</strong>  动画持续时间</li>
+<li><strong>interpolator</strong> 插值器</li>
+<li><strong>valueType</strong> 动画属性类型</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">objectAnimator</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">android:propertyName</span>=<span class="string">"pathData"</span></div><div class="line">    <span class="attr">android:valueFrom</span>=<span class="string">"@string/path_add"</span></div><div class="line">    <span class="attr">android:valueTo</span>=<span class="string">"@string/path_remove"</span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"@integer/duration"</span></div><div class="line">    <span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/fast_out_slow_in"</span></div><div class="line">    <span class="attr">android:valueType</span>=<span class="string">"pathType"</span> /&gt;</div></pre></td></tr></table></figure>
+<h2 id="图形旋转"><a href="#图形旋转" class="headerlink" title="图形旋转"></a>图形旋转</h2><p>我们可以为图形很简单的实现旋转效果，使用旋转属性和旋转值：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">objectAnimator</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">android:propertyName</span>=<span class="string">"rotation"</span></div><div class="line">    <span class="attr">android:valueFrom</span>=<span class="string">"-180"</span></div><div class="line">    <span class="attr">android:valueTo</span>=<span class="string">"0"</span></div><div class="line">    <span class="attr">android:duration</span>=<span class="string">"@integer/duration"</span></div><div class="line">    <span class="attr">android:interpolator</span>=<span class="string">"@android:interpolator/fast_out_slow_in"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>如果达到相反的动画效果（从减号到加号）呢？只需要设置reversed属性即可</p>
+<p style="text-align:center"><br>    <img src="subtract-add.gif"><font size="1px" color="#7C7C7C">看起来效果很棒，不是吗？</font><br></p>
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然只介绍了些皮毛知识，我还是希望本篇文章能为你打开一个思路。在构建酷炫动画效果的这条路上，仍需要大家不断努力探索，接下来我还会在这一方面进行提高。当然你有什么想法或者意见随时跟我反馈。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/design/" rel="tag">#design</a>
+          
+            <a href="/tags/动画/" rel="tag">#动画</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/08/exploring-the-new-android-design-support-library/" rel="next" title="Design库探索">
+                <i class="fa fa-chevron-left"></i> Design库探索
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/28/exploring-the-new-android-permissions-model/" rel="prev" title="新安卓权限机制探索">
+                新安卓权限机制探索 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/22/exploring-meaningful-motion-on-android/"
+           data-title="安卓酷炫效果探索" data-url="http://icedcap.github.io/2016/08/22/exploring-meaningful-motion-on-android/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#触摸反馈"><span class="nav-number">1.</span> <span class="nav-text">触摸反馈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewPropertyAnimator"><span class="nav-number">2.</span> <span class="nav-text">ViewPropertyAnimator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-Animator"><span class="nav-number">3.</span> <span class="nav-text">Object Animator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插值器"><span class="nav-number">4.</span> <span class="nav-text">插值器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#弧形揭露效果"><span class="nav-number">5.</span> <span class="nav-text">弧形揭露效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Slide"><span class="nav-number">5.1.</span> <span class="nav-text">Slide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fade"><span class="nav-number">5.2.</span> <span class="nav-text">Fade</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转场效果优化"><span class="nav-number">5.3.</span> <span class="nav-text">转场效果优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#共享元素转场"><span class="nav-number">6.</span> <span class="nav-text">共享元素转场</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义转场"><span class="nav-number">7.</span> <span class="nav-text">自定义转场</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#矢量动画"><span class="nav-number">8.</span> <span class="nav-text">矢量动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#drawable状态"><span class="nav-number">8.1.</span> <span class="nav-text">drawable状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形旋转"><span class="nav-number">8.2.</span> <span class="nav-text">图形旋转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

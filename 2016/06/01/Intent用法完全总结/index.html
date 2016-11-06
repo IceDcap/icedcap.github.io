@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,Intent," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="对于一个要执行的操作来说，Intent算作是一个抽象描述。比如通过startActivity(Intent)启动一个Activity、sendBroadcast(Intent)发送一个广播或者通过startService bindService和后台服务进行交互。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intent用法完全总结">
+<meta property="og:url" content="http://icedcap.github.io/2016/06/01/Intent用法完全总结/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="对于一个要执行的操作来说，Intent算作是一个抽象描述。比如通过startActivity(Intent)启动一个Activity、sendBroadcast(Intent)发送一个广播或者通过startService bindService和后台服务进行交互。">
+<meta property="og:image" content="http://icedcap.github.io/pic/implicit.jpg">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Intent用法完全总结">
+<meta name="twitter:description" content="对于一个要执行的操作来说，Intent算作是一个抽象描述。比如通过startActivity(Intent)启动一个Activity、sendBroadcast(Intent)发送一个广播或者通过startService bindService和后台服务进行交互。">
+<meta name="twitter:image" content="http://icedcap.github.io/pic/implicit.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Intent用法完全总结 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Intent用法完全总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-01T22:51:16+08:00" content="2016-06-01">
+              2016-06-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/01/Intent用法完全总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/Intent用法完全总结/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于一个要执行的操作来说，<code>Intent</code>算作是一个抽象描述。比如通过<code>startActivity(Intent)</code>启动一个<code>Activity</code>、<code>sendBroadcast(Intent)</code>发送一个广播或者通过<code>startService</code> <code>bindService</code>和后台服务进行交互。<br><a id="more"></a></p>
+<p><code>Intent</code>为执行在不同应用不同组件之间代码的延时运行绑定提供了灵活的支持。最常见的用于启动<code>activities</code>，可以把<code>Intent</code>看做<code>Activity</code>之间的胶水。除此之外，<code>Intent</code>还持有一个数据结构来保存执行动作的抽象描述。</p>
+<hr>
+<h1 id="Intent-对象"><a href="#Intent-对象" class="headerlink" title="Intent 对象"></a>Intent 对象</h1><p>虽说<code>Intent</code>是一个抽象描述，但是对于具体的<code>Intent</code>类来说它可以被归纳为携带一组信息的信使，正是该信使在安卓组件间进行传递才能达到信息传递的效果。</p>
+<h2 id="Intent-结构"><a href="#Intent-结构" class="headerlink" title="Intent 结构"></a>Intent 结构</h2><p>一个<code>Intent</code>对象可以包含以下信息：<br>Action</p>
+<blockquote>
+<p>可以直译为动作，它是<code>Intent</code>的一条‘命令’。具体action以String类型来命名，<code>Intent</code>类中定义了许多action常量来匹配不同的<code>Intent</code>对象。例如<code>ACTION_VIEW</code> <code>ACTION_EDIT</code> <code>ACTION_MAIN</code>等。action的存取可以通过<code>setAction()</code>和<code>getAction()</code>得到。</p>
+</blockquote>
+<p>Data</p>
+<blockquote>
+<p>data结构是要往<code>Intent</code>过滤器中添加的，使用data类型（mimeType属性）通常可以解释为一个规格或者说明书，它既可以是一个Uri表达式也可以是一个mimeType。使用URI表达式时，要按顺序书写Uri每一部分的属性，<strong>注意:</strong>当使用URL属性来指定时，如果不把‘schema’指定清楚的话，所有的URI属性都被忽视。如果‘host’不指定的话，则它的‘port’和‘path’属性都被忽视。</p>
+<p>使用<code>setData()</code>方法只可以设置URI属性的Data，如果设置mimeType属性的Data需要使用<code>setType()</code>方法。对于<code>setDataAndType()</code>方法既可以设置Uri也可以设置MIME，<code>getData()</code>和<code>getType()</code>分别获取URI和MIME类型。</p>
+</blockquote>
+<p>下面是action/data 的例子：</p>
+<ul>
+<li>ACTION_VIEW content://contacts/people/1 显示person表中标识符为1的联系人。</li>
+<li>ACTION_DIAL content://contacts/people/1 显示电话拨号界面并且在显示框中显示person表中标识符为1联系人的电话号码</li>
+<li>ACTION_VIEW tel:123 显示电话拨号界面并且在显示框中填入123.</li>
+<li>ACTION_DIAL tel:123 显示电话拨号界面并且在显示框中填入123.</li>
+<li>ACTION_EDIT content://contacts/people/1 编辑person表中标识符为1的联系人的信息。</li>
+<li>ACTION_VIEW content://contacts/people/ 显示people列表</li>
+<li>ACTION_SET_WALLPAPER 显示设置选择壁纸</li>
+</ul>
+<p>Category</p>
+<blockquote>
+<p>category是<code>Intent</code>中可选部分，以String类型命名并且包含了组件如何操作<code>Intent</code>的额外信息。使用<code>addCategory()</code>方法添加category，使用<code>removeCategory()</code>删除之前添加的category，<code>getCategories()</code>方法可以获取当前设置的category。</p>
+</blockquote>
+<p>Extras</p>
+<blockquote>
+<p>以键值对形式添加的一组额外信息，它将通过<code>Intent</code>递交给组件进行处理。extras可以通过<code>putExtras()</code>和<code>getExtras()</code>方法进行存取操作。</p>
+</blockquote>
+<p>Flags</p>
+<blockquote>
+<p>这里的标记主要指启动Activity的方式，也是<code>Intent</code>可选部分。要是单独讲解Activity启动方式就要另起篇幅了（以后的任务）。</p>
+</blockquote>
+<p>组件名字</p>
+<blockquote>
+<p>这部分也是<code>Intent</code>可选部分，通常是指具体<code>Activity</code> <code>Service</code>和<code>BroadcastReceiver</code>类名。如果设置了，<code>Intent</code>对象将被递交给这个具体的组件进行处理，否则的话，安卓将使用其他信息寻找要启动的组件。组件名字可以通过<code>setComponent()</code>, <code>setClass()</code>, 或者<code>setClassName()</code>来设置，通过<code>getComponent()</code>来获取具体的组件名字。</p>
+</blockquote>
+<h1 id="Intent类型"><a href="#Intent类型" class="headerlink" title="Intent类型"></a>Intent类型</h1><h2 id="显式Intent"><a href="#显式Intent" class="headerlink" title="显式Intent"></a>显式Intent</h2><p>Intent可以分为显式Intent和隐式Intent。平时我们用的最多就是显式Intent比如说在一个应用中经常要切换Activity就是使用的显式Intent。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Explicit Intent by specifying its class name</span></div><div class="line">Intent i = <span class="keyword">new</span> Intent(FirstActivity.<span class="keyword">this</span>, SecondActivity.class);</div><div class="line"></div><div class="line"><span class="comment">// Starts TargetActivity</span></div><div class="line">startActivity(i);</div></pre></td></tr></table></figure></p>
+<p>显式Intent也比较简单只要指定好具体的组件名称即可。在上一节也讲到了通过<code>setComponent()</code>, <code>setClass()</code>, 或者<code>setClassName()</code>方法进行指定组件名，当然也可像上述代码中直接在构造其中指定也是可以的。</p>
+<h2 id="隐式Intent"><a href="#隐式Intent" class="headerlink" title="隐式Intent"></a>隐式Intent</h2><p>这类Intent不会具体指定组件名，而是由安卓框架根据Intent设置的其他信息进行自动匹配。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent read1=<span class="keyword">new</span> Intent();</div><div class="line">read1.setAction(android.content.Intent.ACTION_VIEW);</div><div class="line">read1.setData(ContactsContract.Contacts.CONTENT_URI);</div><div class="line">startActivity(read1);</div></pre></td></tr></table></figure></p>
+<p>上述代码将通过对Intent设置的Action和Data信息启动一个联系人的应用进行显示动作。如果一个手机有多个联系人应用的话将弹出选择器列出所有的联系人应用供用户选择启动。<br>在安卓模拟器中默认打开了系统的联系人应用，如下图：</p>
+<p></p><p style="text-align: center;"><br>    <img src="pic/implicit.jpg"><br></p><br>如果想在目标组件中使用Intent中的信息，可以使用<code>getExtras()</code>方法获取extras数据（前提当然是在Intent设置了extras数据）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Get bundle object at appropriate place in your code</span></div><div class="line">Bundle extras = getIntent().getExtras();</div><div class="line"></div><div class="line"><span class="comment">// Extract data using passed keys</span></div><div class="line">String value1 = extras.getString(<span class="string">"Key1"</span>);</div><div class="line">String value2 = extras.getString(<span class="string">"Key2"</span>);</div></pre></td></tr></table></figure><p></p>
+<p>好了这部分是安卓开发最基本最简单知识点了，也没什么可以说的难点和重点。只要敲上几次代码就会熟悉。Intent中稍微复杂且很有用的知识点就是下面要讲到的过滤器。</p>
+<h1 id="IntentFilter-匹配规则"><a href="#IntentFilter-匹配规则" class="headerlink" title="IntentFilter 匹配规则"></a>IntentFilter 匹配规则</h1><p>对于隐式调用需要Intent能够匹配目标组件的IntentFilter中所设置的过滤信息，如果不匹配将无法启动目标Activity，<code>IntentFilter</code>中的过滤信息包括action、data、category。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">package</span>=<span class="string">"com.icedcap.viewtestdemo"</span></span></div><div class="line">          <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">application</span></span></div><div class="line">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></div><div class="line">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></div><div class="line">        <span class="attr">android:supportsRtl</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:theme</span>=<span class="string">"@style/AppTheme"</span>&gt;</div><div class="line">        ...</div><div class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".SjActivity"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.action.a"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.action.b"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.category.a"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.category.b"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:mimeType</span>=<span class="string">"text/plain"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>为了匹配过滤列表，需要同时匹配过滤列表中的action、category、data信息，否则匹配失败。一个Activity可以有多个intent-filter，若一个intent只要能匹配任何一组intent-filter即可成功启动对应的Activity。</p>
+<p>action的匹配规则</p>
+<blockquote>
+<p>action是一个字符串，系统预定义了一些，同时我们也可以在应用中定义自己的action，如上述代码一样。对于action匹配规则可以总结如下：<strong>action的匹配要求Intent中的action存在且必须和过滤规则中的其中一个action相同即可匹配成功</strong> 另外注意的是action是区分字母大小写的。</p>
+</blockquote>
+<p>category的匹配规则</p>
+<blockquote>
+<p>category是一个字符串，系统预定义了一些，同时我们也可以在应用中定义自己的category，和action不同，我们可以在Intent中不定义category，但是一旦定义了category就要求所有的category和intent-filter中的规则都要匹配才行。我们可以通过<code>intent.addcategory(&quot;com.icedcap.category.a&quot;)</code>或<code>intent.addcategory(&quot;com.icedcap.category.b&quot;)</code>亦或不设置category。不设置category也能匹配的原因是系统在调用startActivity或者startActivityResult的时候会默认为Intent添加<code>android.intent.category.DEFAULT</code>这个category，所以这个category可以匹配前面的过滤规则中的第三个category。同时，为了能够通过隐式调用启动该Activity，就必须在intent-filter中指定<code>android.intent.category.DEFAULT</code>这个category。</p>
+</blockquote>
+<p>data的匹配规则<br>data的匹配和action类似，如果过滤规则中定义了data，那么Intent中必须也要定义可匹配的data。例如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">data</span> <span class="attr">android:schema</span>=<span class="string">"string"</span></span></div><div class="line">    <span class="attr">android:host</span>=<span class="string">"string"</span></div><div class="line">    <span class="attr">android:port</span>=<span class="string">"string"</span></div><div class="line">    <span class="attr">android:path</span>=<span class="string">"string"</span></div><div class="line">    <span class="attr">android:pathPattern</span>=<span class="string">"string"</span></div><div class="line">    <span class="attr">android:pathPrefix</span>=<span class="string">"string"</span></div><div class="line">    <span class="attr">android:mimeType</span>=<span class="string">"string"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>前文中讲到data可以通过Uri或者MimeType来表达：<br>对于Uri结构可以如下归置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;schema&gt;://&lt;host&gt;:&lt;port&gt;/[&lt;path&gt;|&lt;pathPrefix&gt;|&lt;pathPattern&gt;]</div><div class="line">例如：</div><div class="line">content://com.icedcap.project:200/folder/subfolder/etc</div><div class="line">http://www.baidu.com</div></pre></td></tr></table></figure></p>
+<p>对于MimeType来说可以是image/jpeg、audio/mpeg4-generic等。详细的mime类型可以<a href="http://www.w3school.com.cn/media/media_mimeref.asp" target="_blank" rel="external">查看这里</a>。</p>
+<p>对于下面的匹配规则来说<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">data</span> <span class="attr">android:mimeType</span>=<span class="string">"image/*"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>很明显，data需要匹配一个图片格式的数据，虽然上述代码没有对Uri进行匹配规则的设置，但是默认情况下它会匹配Uri的schema为<code>content</code>或者<code>file</code>的data。<br>所以通过以下代码可以匹配该Intent<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">intent.setDataAndType(Uri.parse(<span class="string">"file://ddd.png"</span>), <span class="string">"image/png"</span>);</div></pre></td></tr></table></figure></p>
+<p>以上就是我们Intent的匹配规则。</p>
+<p>最后，我们通过隐式Intent启动一个Activity的时候，最好做一个判断是否有可匹配的Activity可以启动，以免不存在隐式Activity而报错。其做法也非常简单，可以通过PackageManager的resolveActivity方法或者Intent的resolveActivity方法，如果它们找不到可匹配的Activity就会返回null。从而判断是否可被隐式启动。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/Intent/" rel="tag">#Intent</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/30/Android事件分发机制/" rel="next" title="Android事件分发机制">
+                <i class="fa fa-chevron-left"></i> Android事件分发机制
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/21/Android动画完全总结/" rel="prev" title="Android动画完全总结">
+                Android动画完全总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/01/Intent用法完全总结/"
+           data-title="Intent用法完全总结" data-url="http://icedcap.github.io/2016/06/01/Intent用法完全总结/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Intent-对象"><span class="nav-number">1.</span> <span class="nav-text">Intent 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intent-结构"><span class="nav-number">1.1.</span> <span class="nav-text">Intent 结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Intent类型"><span class="nav-number">2.</span> <span class="nav-text">Intent类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显式Intent"><span class="nav-number">2.1.</span> <span class="nav-text">显式Intent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式Intent"><span class="nav-number">2.2.</span> <span class="nav-text">隐式Intent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IntentFilter-匹配规则"><span class="nav-number">3.</span> <span class="nav-text">IntentFilter 匹配规则</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

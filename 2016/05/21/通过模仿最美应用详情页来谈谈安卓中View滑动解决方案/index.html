@@ -1,0 +1,700 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,view,scroll," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言处理View滑动事件并且执行酷炫效果是安卓上层开发的一个难点。与纯自定义View控件相比，实现View滑动效果又可以从动画的角度出发；但是针对滑动后保留控件的事件对象来说动画又存在短板；若从代码复杂度来说实现简单的View滑动又可以通过View自身提供的scrollTo和scrollBy方法辅以Scroller对象来实现；针对复杂滑动效果还是要通过自定义控件处理好各个View事件序列的事件分发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过模仿最美应用详情页来谈谈安卓中View滑动解决方案">
+<meta property="og:url" content="http://icedcap.github.io/2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="前言处理View滑动事件并且执行酷炫效果是安卓上层开发的一个难点。与纯自定义View控件相比，实现View滑动效果又可以从动画的角度出发；但是针对滑动后保留控件的事件对象来说动画又存在短板；若从代码复杂度来说实现简单的View滑动又可以通过View自身提供的scrollTo和scrollBy方法辅以Scroller对象来实现；针对复杂滑动效果还是要通过自定义控件处理好各个View事件序列的事件分发">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/screenshot_zuimei.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/before_scrollto.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/after_scrollto.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/scroller.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/full_demo.gif">
+<meta property="og:image" content="http://icedcap.github.io/pic/view_scroll/the_demo.gif">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过模仿最美应用详情页来谈谈安卓中View滑动解决方案">
+<meta name="twitter:description" content="前言处理View滑动事件并且执行酷炫效果是安卓上层开发的一个难点。与纯自定义View控件相比，实现View滑动效果又可以从动画的角度出发；但是针对滑动后保留控件的事件对象来说动画又存在短板；若从代码复杂度来说实现简单的View滑动又可以通过View自身提供的scrollTo和scrollBy方法辅以Scroller对象来实现；针对复杂滑动效果还是要通过自定义控件处理好各个View事件序列的事件分发">
+<meta name="twitter:image" content="http://icedcap.github.io/pic/view_scroll/screenshot_zuimei.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 通过模仿最美应用详情页来谈谈安卓中View滑动解决方案 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                通过模仿最美应用详情页来谈谈安卓中View滑动解决方案
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-21T22:27:24+08:00" content="2016-05-21">
+              2016-05-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>处理View滑动事件并且执行酷炫效果是安卓上层开发的一个难点。与纯自定义View控件相比，实现View滑动效果又可以从动画的角度出发；但是针对滑动后保留控件的事件对象来说动画又存在短板；若从代码复杂度来说实现简单的View滑动又可以通过View自身提供的<code>scrollTo</code>和<code>scrollBy</code>方法辅以Scroller对象来实现；针对复杂滑动效果还是要通过自定义控件处理好各个View事件序列的事件分发和消费逻辑。</p>
+<p>本篇通过模仿最美应用滑动操作效果来探讨下在Android中实现View滑动的这几种方案，并且对比各方案的优劣性。<br><a id="more"></a></p>
+<p>首先，我们来仔细观察最美应用详情页的滑动动画效果。</p>
+<p style="text-align: center;"><br><img src="pic/view_scroll/screenshot_zuimei.gif"><br></p>
+
+<p>对于最美应用详情页可以在布局上分解为两部分（这里不讨论底部的footer bar），上半部分是一个16:9的图片背景下半部分可以看成是一个存放详情内容的容器(实际上是一个VebView容器，这里为了演示方便采用普通的组件显示内容)。按上滑和下拉两个动作分析的话又可以将组件分解成几部分。首先是下拉动作，头部图片背景有一个拉伸的动画；滑动释放后恢复到原来的位置，图片背景恢复到原来尺寸。对于上滑动作来说，头部图片随着上滑动作滑出屏幕，文本内容区域也随之上滑，可以观察到文本区域上滑速度要大于头部图片区域，上滑叠加部分由文本区域覆盖头部图片；当文本区域内的三个按钮（收藏、分享和下载）滑动到顶部的时候将和顶部返回按钮对齐并且钉于此处。</p>
+<p><strong>注意</strong> 这里去掉了底部的工具栏和下滑弹出APP大按钮，而只是简单分析该页面的主体滑动效果。该效果还是很普通很常见的，我们经常可以看到优秀的App应用于此效果，例如本人最爱的音乐app网易云音乐中歌手简介的页面。</p>
+<p><strong>分析</strong> 安卓中滑动效果的产生需要用户交互即由滑动事件的产生，再到操作View视图，变换其位置。详细的：由用户点击事件开始，到滑动屏幕，再到松开手指的这个过程里，连续的变换View视图的位置以及View动画来实现形形色色的滑动效果。其实这个原理很简单，核心内容就是操作View事件，变化View属性。</p>
+<p>虽然原理简单两句话就概括了，但是在实际开发中确是有一定难度的，尤其是对一些初级开发者来说。不过没关系慢慢理解View框架尤其是View事件分发和View的绘制原理。随着练习的深入慢慢的对这类问题就得心应手了，笔者也准备在后续写两篇关于View事件分发和View视图渲染的文章。虽然网络上已经有很多大牛写了很多关于这类问题的高质量文章，但是为了进一步加深对View框架的理解还是需要自己去实践自己去挖坑再去填坑这样才能真正吃透安卓框架。</p>
+<p>本文的主题是探讨View滑动解决方案，为了不偏离主题，本文将实现一个简略版的滑动效果页面。对于文中涉及到的View事件分发和View绘制原理将不做解释（后续笔者会来填坑）。下面来看看我们的解决方案：</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="动画框架初显身手"><a href="#动画框架初显身手" class="headerlink" title="动画框架初显身手"></a>动画框架初显身手</h2><p>动画框架中有移动的动画效果，无论是应用View动画还是属性动画都可以实现平移的效果。那么问题来了，属性动画是从Android3.0以后引入的如何保证版本兼容性呢？不要着急，还记得笔者上篇博文吗，对，就是使用<code>nineoldandroids</code>库，该库看似是将View应用了属性动画，其实不然，它的实现原理是在3.0以后的版本应用Android提供的属性动画框架，而对于3.0之前的版本则是应用了View动画。View动画有一个短板，那就是它在动画结束后会恢复View之初的模样。虽然可以通过<code>setFillAfter(true)</code>或者<code>android:fillAfter=&quot;true&quot;</code>方法来保持View结束时的残影，但是不能真正改变View的属性，例如，当我们应用View动画进行平移操作时，等到动画结束后我们不能真正改变View的位置。怎么办呢？笔者想到了最笨的方法，使用两个View一个是开始时的状态一个是结束时的状态，在动画未开时前隐藏结束态的View，待到动画结束后隐藏开始态的View，使结束态的View可见。这样是不是太麻烦了呢？没有办法，这就是拆了东墙补西墙的道理，动画框架存在这样的缺点，致使我们采用这种不是办法的办法。</p>
+<p>通过以上分析，对于版本要求苛刻，复杂的滑动效果、并且对于操作View对象强烈的需求是不建议使用动画来解决的。相反对于版本要求明朗(具备使用属性动画的条件)下，使用属性动画来实现滑动效果还是很方便的。</p>
+<p>使用动画实现滑动操作的代码很简单，这里采用<code>nineoldandroids</code>库<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    ...</div><div class="line">    compile 'com.nineoldandroids:library:2.4.0+'    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ObjectAnimator animator = ObjectAnimator.ofFloat(mToolbar, <span class="string">"Y"</span>, isTopToolbar ? mToolbarTop : <span class="number">24</span>);</div><div class="line">animator.start();</div></pre></td></tr></table></figure>
+<p>对于更详细的动画操作可以查阅笔者上篇<a href="http://icedcap.github.io/2016/05/16/%E5%8A%A8%E7%94%BB%E6%80%BB%E7%BB%93/">博文</a></p>
+<h2 id="简单粗暴的使用scrollTo方法"><a href="#简单粗暴的使用scrollTo方法" class="headerlink" title="简单粗暴的使用scrollTo方法"></a>简单粗暴的使用scrollTo方法</h2><p><code>View</code>类中提供了两个滑动操作的方法，它们分别是<code>scrollTo</code>和<code>scrollBy</code>。通过阅读这两个方法的源码，我们了解到<code>scrollTo(int x, int y)</code>方法是滑动到目标位置。而<code>scrollBy(int x, int y)</code>方法则是在原有位置上相对水平方向和竖直方向移动多少个像素，其本质是调用<code>scrollTo</code>方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Set the scrolled position of your view. This will cause a call to</div><div class="line"> * &#123;<span class="doctag">@link</span> #onScrollChanged(int, int, int, int)&#125; and the view will be</div><div class="line"> * invalidated.</div><div class="line"> * <span class="doctag">@param</span> x the x position to scroll to</div><div class="line"> * <span class="doctag">@param</span> y the y position to scroll to</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollTo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mScrollX != x || mScrollY != y) &#123;</div><div class="line">        <span class="keyword">int</span> oldX = mScrollX;</div><div class="line">        <span class="keyword">int</span> oldY = mScrollY;</div><div class="line">        mScrollX = x;</div><div class="line">        mScrollY = y;</div><div class="line">        invalidateParentCaches();</div><div class="line">        onScrollChanged(mScrollX, mScrollY, oldX, oldY);</div><div class="line">        <span class="keyword">if</span> (!awakenScrollBars()) &#123;</div><div class="line">            postInvalidateOnAnimation();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Move the scrolled position of your view. This will cause a call to</div><div class="line"> * &#123;<span class="doctag">@link</span> #onScrollChanged(int, int, int, int)&#125; and the view will be</div><div class="line"> * invalidated.</div><div class="line"> * <span class="doctag">@param</span> x the amount of pixels to scroll by horizontally</div><div class="line"> * <span class="doctag">@param</span> y the amount of pixels to scroll by vertically</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollBy</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">    scrollTo(mScrollX + x, mScrollY + y);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>值得注意的是一旦使用<code>scrollTo</code>方法，会触发<code>onScrollChanged</code>方法的回调。</p>
+<p><strong>注意</strong> 虽然<code>scrollTo</code>方法实现了View的滑动，但是它是一次性的滑动。若要实现连续的滑动效果就需要配合多线程或者通过<a href="http://icedcap.github.io/2016/05/12/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Handler%E6%9C%BA%E5%88%B6/">Handler</a>机制来辅助。解决了连续滑动的效果后，<code>scrollTo</code>还有一个致命的缺点：那就是它只能移动控件中的内容。</p>
+<p>这里给出使用<code>scrollTo</code>方法应用在<code>TextView</code>控件上的效果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> TextView target = (TextView)findViewById(R.id.target_view);</div><div class="line">        target.postDelayed(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                target.scrollBy(-<span class="number">100</span>, <span class="number">0</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
+<p style="text-align: center; "><br><table><br>   <tr><br>       <td><img src="pic/view_scroll/before_scrollto.png"></td><br>       <td><img src="pic/view_scroll/after_scrollto.png"></td><br>   </tr><br></table><br></p><br>可以明显看到在加入上述代码后<code>TextView</code>控件中的内容向右移动了100个像素。所以应用<code>scrollTo</code>方法实现View控件的整体滑动是不切实际的，我们需要另找途径来完成。<br><br>我们在源码中找到了<code>Scroller</code>和<code>OverScroller</code>类，这两个类都是对滑动操作的封装类，在官方文档介绍中<code>OverScroller</code>在某些情况下需要代替<code>Scroller</code>类使用，而且许多滑动控件例如<code>ListView</code>都是操作<code>OverScroller</code>类来完成的。这里我们来简单使用<code>Scroller</code>类来完成一个连续的滑动。<br><br>在阅读<code>Scroller</code>源码的时候发现，该类并没有实际的对View进行位移操作，而只是存储一些滑动变量，和一些计算位移变化的方法而已。文档中给出了一个简单的用法例子如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> Scroller mScroller = <span class="keyword">new</span> Scroller(context);</div><div class="line">...</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">zoomIn</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// Revert any animation currently in progress</span></div><div class="line">    mScroller.forceFinished(<span class="keyword">true</span>);</div><div class="line">    <span class="comment">// Start scrolling by providing a starting point and</span></div><div class="line">    <span class="comment">// the distance to travel</span></div><div class="line">    mScroller.startScroll(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>);</div><div class="line">    <span class="comment">// Invalidate to request a redraw</span></div><div class="line">    invalidate();</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>通过例子，这才恍然大悟，真正实现滑动效果的方法是<code>invalidate</code>重画View视图。在重绘View之前<code>startScroll</code>方法又干了些什么？<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Start scrolling by providing a starting point and the distance to travel.</div><div class="line"> * The scroll will use the default value of 250 milliseconds for the</div><div class="line"> * duration.</div><div class="line"> * </div><div class="line"> * <span class="doctag">@param</span> startX Starting horizontal scroll offset in pixels. Positive</div><div class="line"> *        numbers will scroll the content to the left.</div><div class="line"> * <span class="doctag">@param</span> startY Starting vertical scroll offset in pixels. Positive numbers</div><div class="line"> *        will scroll the content up.</div><div class="line"> * <span class="doctag">@param</span> dx Horizontal distance to travel. Positive numbers will scroll the</div><div class="line"> *        content to the left.</div><div class="line"> * <span class="doctag">@param</span> dy Vertical distance to travel. Positive numbers will scroll the</div><div class="line"> *        content up.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startScroll</span><span class="params">(<span class="keyword">int</span> startX, <span class="keyword">int</span> startY, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy)</span> </span>&#123;</div><div class="line">    startScroll(startX, startY, dx, dy, DEFAULT_DURATION);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Start scrolling by providing a starting point, the distance to travel,</div><div class="line"> * and the duration of the scroll.</div><div class="line"> * </div><div class="line"> * <span class="doctag">@param</span> startX Starting horizontal scroll offset in pixels. Positive</div><div class="line"> *        numbers will scroll the content to the left.</div><div class="line"> * <span class="doctag">@param</span> startY Starting vertical scroll offset in pixels. Positive numbers</div><div class="line"> *        will scroll the content up.</div><div class="line"> * <span class="doctag">@param</span> dx Horizontal distance to travel. Positive numbers will scroll the</div><div class="line"> *        content to the left.</div><div class="line"> * <span class="doctag">@param</span> dy Vertical distance to travel. Positive numbers will scroll the</div><div class="line"> *        content up.</div><div class="line"> * <span class="doctag">@param</span> duration Duration of the scroll in milliseconds.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startScroll</span><span class="params">(<span class="keyword">int</span> startX, <span class="keyword">int</span> startY, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy, <span class="keyword">int</span> duration)</span> </span>&#123;</div><div class="line">    mMode = SCROLL_MODE;</div><div class="line">    mFinished = <span class="keyword">false</span>;</div><div class="line">    mDuration = duration;</div><div class="line">    mStartTime = AnimationUtils.currentAnimationTimeMillis();</div><div class="line">    mStartX = startX;</div><div class="line">    mStartY = startY;</div><div class="line">    mFinalX = startX + dx;</div><div class="line">    mFinalY = startY + dy;</div><div class="line">    mDeltaX = dx;</div><div class="line">    mDeltaY = dy;</div><div class="line">    mDurationReciprocal = <span class="number">1.0f</span> / (<span class="keyword">float</span>) mDuration;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>很明显在这里初始化<code>Scroller</code>的滑动参数变量，主要包括起始坐标、结束坐标，水平和竖直方向上的滑动距离以及持续事件等变量。在初始所有变量后就可以调用<code>invalidate</code>方法，该方法会引起View的重绘过程，致使调用<code>draw</code>方法(这个坑会在后续博文中填补)。<code>draw</code>方法会回调<code>computeScroll</code>方法，而<code>View</code>中的<code>computeScroll</code>方法只是一个空实现方法，所有我们重写该方法，在该方法下调用<code>mScroller.computeScrollOffset()</code>方法来判断当前的滑动是否已经完成，若没有完成我们就可以调用<code>scrollTo</code>方法，并且执行<code>postInvalidate</code>反复的重绘View视图，这样就解决了单独使用<code>scrollTo</code>方法造成的只移动控件内容的效果。<br><br>模仿最美应用这个效果就可以应用以下代码来实现了。<br><strong>注意：</strong> 为了简化操作这里不去监听滑动操作的过程，取而代之的则是利用按钮进行上滑和下拉的操作。对于复杂的操作和功能模块也一并舍弃。这里自定义一个View并继承自<code>LinearLayout</code>(暂且不去实现上滑过程中上部视图与下部视图的速度差，因为线性布局无法产生这种效果)。为了实验效果类名起的也比较随意<code>StretchByScrollerView</code>，首先完成View的构造器<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">StretchByScrollerView</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context);</div><div class="line">        init(context);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        mContext = context;</div><div class="line">        mScroller = <span class="keyword">new</span> Scroller(context);</div><div class="line">        setOrientation(LinearLayout.VERTICAL);</div><div class="line">        DisplayMetrics displayMetrics = <span class="keyword">new</span> DisplayMetrics();</div><div class="line">        WindowManager manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);</div><div class="line">        manager.getDefaultDisplay().getMetrics(displayMetrics);</div><div class="line">        mScreenWidth = displayMetrics.widthPixels;</div><div class="line">        mScreenHeight = displayMetrics.heightPixels;</div><div class="line"></div><div class="line">        mImgHeight = (<span class="keyword">int</span>) (mScreenWidth * ((<span class="keyword">float</span>) <span class="number">9</span> / <span class="number">16</span>));</div><div class="line">        mImageView = <span class="keyword">new</span> ImageView(context);</div><div class="line">        mImageView.setImageDrawable(mContext.getDrawable(R.drawable.img_bg));</div><div class="line">        addView(mImageView, mScreenWidth, mImgHeight);</div><div class="line"></div><div class="line">        <span class="keyword">final</span> LayoutInflater inflater = LayoutInflater.from(mContext);</div><div class="line">        mTitleBar = inflater.inflate(R.layout.title_bar, <span class="keyword">null</span>, <span class="keyword">false</span>);</div><div class="line">        addView(mTitleBar, <span class="keyword">new</span> LayoutParams(-<span class="number">1</span>, -<span class="number">2</span>));</div><div class="line"></div><div class="line">        mToolbar = inflater.inflate(R.layout.tools_bar, <span class="keyword">null</span>, <span class="keyword">false</span>);</div><div class="line">        LayoutParams toolsbarParam = <span class="keyword">new</span> LayoutParams(-<span class="number">1</span>, -<span class="number">2</span>);</div><div class="line">        toolsbarParam.setMargins(<span class="number">0</span>, <span class="number">50</span>, <span class="number">0</span>, <span class="number">50</span>);</div><div class="line">        addView(mToolbar, toolsbarParam);</div><div class="line">        mToolbar.addOnLayoutChangeListener(<span class="keyword">new</span> OnLayoutChangeListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLayoutChange</span><span class="params">(View v, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom, <span class="keyword">int</span> oldLeft, <span class="keyword">int</span> oldTop, <span class="keyword">int</span> oldRight, <span class="keyword">int</span> oldBottom)</span> </span>&#123;</div><div class="line">                mToolbar.removeOnLayoutChangeListener(<span class="keyword">this</span>);</div><div class="line">                mToolbarTop = mToolbar.getTop();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line"></div><div class="line">        LayoutParams params = <span class="keyword">new</span> LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);</div><div class="line">        params.setMarginStart(<span class="number">40</span>);</div><div class="line">        params.setMarginEnd(<span class="number">40</span>);</div><div class="line">        TextView textView = <span class="keyword">new</span> TextView(context);</div><div class="line">        String text = mContext.getString(R.string.details_content);</div><div class="line">        textView.setText(text);</div><div class="line">        textView.setLineSpacing(<span class="number">1</span>, <span class="number">1.5f</span>);</div><div class="line">        textView.setBackgroundColor(Color.WHITE);</div><div class="line">        addView(textView, params);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>在该View下放入三个子View分别是<code>mImageView</code>头部的图片背景、<code>mTitleBar</code>文章标题以及应用图标等和<code>textView</code>文章内容(这里简化使用了<code>TextView</code>控件存放纯文本内容，实际中应该采用<code>WebView</code>从服务器中加载文章内容)<br><br>接下来完成滑动的接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scroll</span><span class="params">(<span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> scrollY = getScrollY();</div><div class="line">    <span class="keyword">int</span> deltaY = y - scrollY;</div><div class="line">    mScroller.startScroll(<span class="number">0</span>, scrollY, <span class="number">0</span>, deltaY, <span class="number">800</span>);</div><div class="line">    invalidate();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">computeScroll</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mScroller.computeScrollOffset()) &#123;</div><div class="line">        scrollTo(mScroller.getCurrX(), mScroller.getCurrY());</div><div class="line">        <span class="keyword">if</span> (isScaleImg) &#123;</div><div class="line">            stretchImg(mScroller.getCurrY());</div><div class="line">        &#125;</div><div class="line">        postInvalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br><br>通过调用<code>scroll</code>方法只是单独的滑动当前的View，如下图所示的效果：<br><br><p style="text-align: center;"><br>    <img src="pic/view_scroll/scroller.gif"><br></p>
+
+
+<p>为了达到原应用的效果需要对头部的背景图片进行缩放操作，这里采用最简单的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stretchImg</span><span class="params">(<span class="keyword">int</span> scrollY)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> factor = Math.abs(scrollY);</div><div class="line">    <span class="keyword">float</span> scaleSize = (<span class="keyword">float</span>) (factor * <span class="number">2</span> + mImgHeight) / mImgHeight;</div><div class="line">    mImageView.setScaleX(scaleSize);</div><div class="line">    mImageView.setScaleY(scaleSize);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过按钮模拟上滑和下拉两个操作来调用上面的滑动接口，具体代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scrollDown</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> imgHeight = mStretchByScrollerView.getImgHeight();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> destY = (<span class="keyword">int</span>) (imgHeight * (<span class="number">1.0f</span> / <span class="number">5</span>));</div><div class="line">    mStretchByScrollerView.setScaleImg(<span class="keyword">true</span>);</div><div class="line">    mStretchByScrollerView.scroll(-destY);</div><div class="line">    mStretchByScrollerView.postDelayed(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            mStretchByScrollerView.scroll(<span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;, <span class="number">800</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scrollUp</span><span class="params">()</span> </span>&#123;</div><div class="line">    mStretchByScrollerView.setScaleImg(<span class="keyword">false</span>);</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> destHeight = mStretchByScrollerView.getImgHeight() + mStretchByScrollerView.getTitlebarHeight();</div><div class="line">    mStretchByScrollerView.scroll(destHeight);</div><div class="line">    mStretchByScrollerView.postDelayed(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            mStretchByScrollerView.setToolBarVisiblity(View.INVISIBLE);</div><div class="line">            setToolbarVisiblity(View.VISIBLE);</div><div class="line">        &#125;</div><div class="line">    &#125;,<span class="number">500</span>);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最终的效果如下图所示</p>
+<p style="text-align: center;"><br>    <img src="pic/view_scroll/full_demo.gif"><br></p>
+
+<p>从最终的效果图来看还是和原版效果相差甚远。首先是下拉，由于这里对<code>ImageView</code>控件调用<code>setScaleX</code>和<code>setScaleY</code>方法进行图片拉伸效果，由于每次传入的参数和拉伸的中点是变化的，导致图片会覆盖底层的View，解决办法就是调整图片拉伸的算法使之适应下拉扩展的距离。其次，在原版的上滑过程中，图片区域上滑速度要明显小于底层内容视图的上滑速度，读者可以在回到文章的开头仔细观察原版滑动效果。针对这个问题，就要否定前文继承<code>LinearLayout</code>的实现了，因为<code>LinearLayout</code>中的每个子View是线性排布的，对于操纵父容器作为一个整体进行滑动时，每个子View也将按着线性顺序进行滑动，不会出现顿挫的滑动效果，除非将每个子View拆解为单独的个体进行滑动。</p>
+<p>下面就针对这些复杂的问题应用最后的大招，从底层出发，彻底改变每个View的滑动效果。</p>
+<h2 id="从底层出发—操作measure-layout过程并且修改View的LayoutParam"><a href="#从底层出发—操作measure-layout过程并且修改View的LayoutParam" class="headerlink" title="从底层出发—操作measure layout过程并且修改View的LayoutParam"></a>从底层出发—操作<code>measure</code> <code>layout</code>过程并且修改View的<code>LayoutParam</code></h2><p>View的绘制过程要经历<code>measure</code> <code>layout</code> 和<code>draw</code>三个过程。<code>LayoutParam</code>在这三个过程中扮演着重要角色，简单来说，它将控制View的大小以及布局位置等。所以通过连续改变<code>LayoutParam</code>位置参数就可以实现View的动态滑动效果。</p>
+<p>这里为了整体实现滑动效果，需要拦截滑动事件不再使用按钮进行模拟上滑和下拉操作。操作滑动事件会涉及到事件分发和拦截，后续博文将详细介绍这部分知识，这里只会简单的概括。</p>
+<p>本节为了实现在上滑过程中头部图片与底部内容视图有一个上滑时间差效果，所以自定义的组件不能继承自线性布局<code>LinearLayout</code>了。这里我们继承自<code>FrameLayout</code>，并完成页面的搭建工作。主要的工作就是操作好自定义视图的<code>measure</code>和<code>layout</code>的过程。</p>
+<p>在自定义父容器中添加两个子视图分别呈现头部图片和底部内容，代码如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StretchScrollView</span> <span class="keyword">extends</span> <span class="title">FrameLayout</span> </span>&#123;   </div><div class="line">    ...</div><div class="line">    <span class="keyword">private</span> ImageView mHeader;</div><div class="line">    <span class="keyword">private</span> ViewGroup mContent;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</div><div class="line">        DisplayMetrics dm = <span class="keyword">new</span> DisplayMetrics();</div><div class="line">        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))</div><div class="line">                .getDefaultDisplay().getMetrics(dm);</div><div class="line">        mImageWidth = mScreenWidth = dm.widthPixels;</div><div class="line">        mScreenHeight = dm.heightPixels;</div><div class="line">        mImageHeight = (<span class="keyword">int</span>) (mImageWidth * (<span class="number">9.0f</span> / <span class="number">16.0f</span>));</div><div class="line">        mHeader = <span class="keyword">new</span> ImageView(context, attrs);</div><div class="line">        mHeader.setId(R.id.header_id);</div><div class="line">        FrameLayout.LayoutParams lp = <span class="keyword">new</span> LayoutParams(mImageWidth, mImageHeight);</div><div class="line">        TypedArray typedArray = getResources().obtainAttributes(attrs, R.styleable.StretchScrollView);</div><div class="line">        <span class="keyword">int</span> headerBackgroundResId = typedArray</div><div class="line">                .getResourceId(R.styleable.StretchScrollView_headerViewBackground, BG_HEADER_RES_ID);</div><div class="line">        mHeader.setImageDrawable(context.getDrawable(headerBackgroundResId));</div><div class="line">        <span class="keyword">this</span>.addView(mHeader, lp);</div><div class="line"></div><div class="line">        <span class="keyword">int</span> contentViewResId = typedArray.getResourceId(R.styleable.StretchScrollView_content, -<span class="number">1</span>);</div><div class="line">        typedArray.recycle();</div><div class="line"></div><div class="line">        FrameLayout.LayoutParams lp2 = <span class="keyword">new</span> LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);</div><div class="line">        LayoutInflater inflater = LayoutInflater.from(context);</div><div class="line">        mContent = (ViewGroup) inflater.inflate(contentViewResId == -<span class="number">1</span> ? R.layout.tools_bar : contentViewResId, <span class="keyword">null</span>);</div><div class="line">        mContent.setId(R.id.content_id);</div><div class="line">        addView(mContent, lp2);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来是自定义View的重点以及难点，它就是<code>measure</code>和<code>layout</code>过程。为了方便演示，这里的头部图片是一个16:9并且铺满屏幕宽度固定大小的一块区域。初始化时图片底部的内容部分是紧挨着图片进行排布的，并且内容部分的高度是依据子控件的高度（wrap_content）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> widthSize = MeasureSpec.getSize(widthMeasureSpec);</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> heightSize = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> widthMode = MeasureSpec.getMode(widthMeasureSpec);</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> heightMode = MeasureSpec.getMode(heightMeasureSpec);</div><div class="line"></div><div class="line">    <span class="keyword">final</span> FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContent.getLayoutParams();</div><div class="line">    mHeader.measure(MeasureSpec.makeMeasureSpec(mCurrImgWidth, MeasureSpec.EXACTLY),</div><div class="line">            MeasureSpec.makeMeasureSpec(mCurrImgHeight, MeasureSpec.EXACTLY));</div><div class="line">    mContent.measure(MeasureSpec.makeMeasureSpec(mScreenWidth, MeasureSpec.EXACTLY),</div><div class="line">            MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.AT_MOST));</div><div class="line"></div><div class="line">    <span class="keyword">int</span> measureHeight = mCurrImgHeight + mContent.getHeight() + mContent.getPaddingBottom() + mContent.getPaddingTop();</div><div class="line">    setMeasuredDimension(widthSize, measureHeight);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在来思考一下，下拉的过程其实就是扩大<code>headerView</code>的宽高值的过程，改变<code>headerView</code>和<code>contentView</code>的布局位置。知道这一点很重要，这个原理就是实现滑动效果的核心思想。下面我们从代码上来实现。<br>先声明一个下拉操作的方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollDown</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> deltaY)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mContentTop &lt; mOriginImgHeight) &#123;</div><div class="line">        mContentTop += deltaY;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        mDeltaImgHeight = deltaY;</div><div class="line">        mDeltaImgWidth = (<span class="keyword">int</span>) (mDeltaImgHeight * (<span class="number">16f</span> / <span class="number">9f</span>));</div><div class="line">        mCurrImgHeight += deltaY;</div><div class="line">        mCurrImgWidth += mDeltaImgWidth;</div><div class="line">        isScrollUp = <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    switchToolbar();</div><div class="line">    requestLayout();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下拉的过程又要从临界点即<code>headerView</code>以原始（16:9铺满屏幕宽度）方式呈现的那个状态分为即将下拉来拉伸<code>headerView</code>背景图片和<code>headerView</code>有一部分或者全部隐藏在屏幕顶部以上区域需要下拉呈现。<code>else</code>里的内容就是操作下拉伸展背景图片的过程。每次通过下拉增距离<code>deltaY</code>来增加<code>headerView</code>的宽高，最后调用<code>requestLayout()</code>方法来从新绘制视图。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> left = -(mCurrImgWidth - mScreenWidth) / <span class="number">2</span>;</div><div class="line">    setChildFrame(mHeader, left, isScrollUp ? (mContentTop - mCurrImgHeight) / <span class="number">2</span> : <span class="number">0</span>, mCurrImgWidth, mCurrImgHeight);</div><div class="line">    setChildFrame(mContent, l, isScrollUp ? mContentTop : mCurrImgHeight, mScreenWidth, mContent.getMeasuredHeight());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setChildFrame</span><span class="params">(View child, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</div><div class="line">    child.layout(l, t, l + width, t + height);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>重新绘制的过程也要经历<code>measure</code> <code>layout</code>以及<code>draw</code>三个过程，所以在<code>onMeasure</code>中重新测量了<code>headerView</code>的高度和宽度，并且在<code>onLayout</code>方法中进行<code>headerView</code>拉伸后的布局。这个过程看似复杂，其实核心思想很简单，无非就是来回折腾View的<code>measure</code> <code>layout</code>以及<code>draw</code>的过程。</p>
+<p>下拉的这个过程已经分析完了，其它的操作过程也都一样，上滑过程中<code>headerView</code>和<code>contentView</code>有一个滑动速度差效果而不是并列一起向上滑。这里利用<code>contentView</code>上滑来覆盖一部分<code>headerView</code>的原理，可以在布局的时候将头部视图的顶部设为<code>(mContentTop - mCurrImgHeight) / 2</code>。</p>
+<p>下面简单介绍滑动操作事件序列的监听过程（这里只是简单实现滑动过程，对于手势以及滑动事件拦截等操作将在后续的博文中进行分析）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    mVelocityTracker.addMovement(event);</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> x = (<span class="keyword">int</span>) event.getX();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> y = (<span class="keyword">int</span>) event.getY();</div><div class="line">    <span class="keyword">int</span> deltaY = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line"></div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">            deltaY = y - mLastY;<span class="comment">//正数下拉，负数上滑</span></div><div class="line">            <span class="keyword">if</span> (deltaY &gt; <span class="number">0</span>) &#123;</div><div class="line">                smoothScrollDown(deltaY);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                smoothScrollUp(deltaY);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">            mVelocityTracker.computeCurrentVelocity(<span class="number">200</span>);</div><div class="line">            <span class="keyword">float</span> velocity = mVelocityTracker.getYVelocity();</div><div class="line">            mVelocityTracker.clear();</div><div class="line">            scrollAfterGesture((<span class="keyword">int</span>) velocity);</div><div class="line">            smoothToResume();</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    mLastX = x;</div><div class="line">    mLastY = y;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollDown</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> deltaY)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mContentTop &lt; mOriginImgHeight) &#123;</div><div class="line">        mContentTop += deltaY;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        mDeltaImgHeight = deltaY;</div><div class="line">        mDeltaImgWidth = (<span class="keyword">int</span>) (mDeltaImgHeight * (<span class="number">16f</span> / <span class="number">9f</span>));</div><div class="line">        mCurrImgHeight += deltaY;</div><div class="line">        mCurrImgWidth += mDeltaImgWidth;</div><div class="line">        isScrollUp = <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    switchToolbar();</div><div class="line">    requestLayout();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollUp</span><span class="params">(<span class="keyword">int</span> deltaY)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mContent.getBottom() &lt;= mScreenHeight) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (mCurrImgHeight &gt; mOriginImgHeight) &#123;</div><div class="line">        mDeltaImgHeight = deltaY;</div><div class="line">        mDeltaImgWidth = (<span class="keyword">int</span>) (mDeltaImgHeight * (<span class="number">16f</span> / <span class="number">9f</span>));</div><div class="line">        <span class="keyword">int</span> tempWidth = mCurrImgWidth + mDeltaImgWidth;</div><div class="line">        mCurrImgWidth = tempWidth &lt; mOriginImgWidth ? mOriginImgWidth : tempWidth;</div><div class="line">        <span class="keyword">int</span> tempHeight = mCurrImgHeight + mDeltaImgHeight;</div><div class="line">        mCurrImgHeight = tempHeight &lt; mOriginImgHeight ? mOriginImgHeight : tempHeight;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">//上滑header没有伸缩效果</span></div><div class="line">        <span class="comment">//为了将header和content产生一个滑动差的效果可以对两个子View使用一个线性关系的deltaY</span></div><div class="line">        isScrollUp = <span class="keyword">true</span>;</div><div class="line">        mContentTop += deltaY;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    switchToolbar();</div><div class="line">    requestLayout();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">switchToolbar</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> View titleBar = mContent.getChildAt(<span class="number">0</span>);</div><div class="line">    <span class="keyword">final</span> View toolBar = mContent.getChildAt(<span class="number">1</span>);</div><div class="line">    <span class="keyword">if</span> (-mContent.getTop() &gt;= titleBar.getHeight() + toolBar.getPaddingTop()) &#123;</div><div class="line">        toolBar.setVisibility(INVISIBLE);</div><div class="line">        mToolBarVisibility.setOnToolbarVisibility(VISIBLE);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        toolBar.setVisibility(VISIBLE);</div><div class="line">        mToolBarVisibility.setOnToolbarVisibility(INVISIBLE);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothToResume</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> resumeHeight = mCurrImgHeight - mOriginImgHeight;</div><div class="line">    <span class="keyword">if</span> (resumeHeight &gt; <span class="number">0</span>) &#123;</div><div class="line">        mCurrImgHeight = mOriginImgHeight;</div><div class="line">        mCurrImgWidth = mOriginImgWidth;</div><div class="line">        requestLayout();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>MotionEvent.ACTION_MOVE</code>的事件序列里可以通过<code>event.getY()</code>得到每次滑动的位置通过记录上次位置并且求得它俩的差值就是我们每次滑动的<code>deltaY</code>的值了，<code>deltaY</code>为正数时代表下拉操作，相反则是上滑的操作。</p>
+<p>最终通过底层修改View的宽高并且重新<code>measure</code>和<code>layout</code>的过程轻松的实现了类似最美应用的滑动效果。</p>
+<p style="text-align: center"><br>    <img src="pic/view_scroll/the_demo.gif"><br></p>
+
+<h1 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h1><p>通过以上三种解决方案的论述以及亲身实践，我们发现从底层出发是最根本的解决之道，因为安卓View框架以及安卓提供的原生控件也都是通过最底层的方法实现的。使用这种方案优点就是从对底层就能解决各种问题，但是缺点也很明确，那就是很复杂，对于初学者较难，要处理很多细节的东西例如<code>measure</code>过程中要处理每个子控件的<code>padding</code>和<code>margin</code>以及<code>MeasureSpec</code>的模式。所以，如果你本身具备这方面的能力，对各种情形考虑周全并能一一解决的当然推荐使用这种方法。</p>
+<p>动画解决方案明显劣势就是版本兼容性问题，其次对于复杂的多控件不规则的滑动效果来说，动画解决方案也捉襟见肘。所以说对于简单的一个view控件来说动画也不失为一个明智的选择，因为它提供了强大的框架和库的支持，只不过对于3.0以下的版本来说若想在滑动结束后还要操作该view的时候就像前文提到的方法增加替身来处理了。</p>
+<p>采用<code>Scroller</code>辅助<code>scrollTo</code>和<code>scrollBy</code>往往是我们最先选择的方法，该方案实现简单，代码量少，与修改底层相比要简单的多。但是它的缺点也很明确就是只能滑动控件里的内容。所以，对于操作View内容的滑动，首选该方案。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>最美应用App</li>
+<li>《Android开发艺术探索》</li>
+<li><a href="https://github.com/Frank-Zhu/PullZoomView" target="_blank" rel="external">PullZoomView</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/view/" rel="tag">#view</a>
+          
+            <a href="/tags/scroll/" rel="tag">#scroll</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/16/动画总结/" rel="next" title="动画总结（译）">
+                <i class="fa fa-chevron-left"></i> 动画总结（译）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/30/Android事件分发机制/" rel="prev" title="Android事件分发机制">
+                Android事件分发机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/"
+           data-title="通过模仿最美应用详情页来谈谈安卓中View滑动解决方案" data-url="http://icedcap.github.io/2016/05/21/通过模仿最美应用详情页来谈谈安卓中View滑动解决方案/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动画框架初显身手"><span class="nav-number">2.1.</span> <span class="nav-text">动画框架初显身手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单粗暴的使用scrollTo方法"><span class="nav-number">2.2.</span> <span class="nav-text">简单粗暴的使用scrollTo方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从底层出发—操作measure-layout过程并且修改View的LayoutParam"><span class="nav-number">2.3.</span> <span class="nav-text">从底层出发—操作measure layout过程并且修改View的LayoutParam</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对比"><span class="nav-number">3.</span> <span class="nav-text">对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

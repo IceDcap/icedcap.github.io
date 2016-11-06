@@ -1,0 +1,773 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="直观地，从RemoteViews名字来看，它类似与一个远程的View，提到远程必然会涉及跨进程的通信。也就是说RemoteViews提供一组基础的操作用于跨进程更新它的界面。RemoteViews在Android中的使用场景有两种，一种是自定义的通知栏，另外一种是桌面小部件。
+
+RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个很重要的UI交互。其原理是通过调用Noti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从自定义通知栏和桌面小部件到深入理解RemoteViews">
+<meta property="og:url" content="http://icedcap.github.io/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="直观地，从RemoteViews名字来看，它类似与一个远程的View，提到远程必然会涉及跨进程的通信。也就是说RemoteViews提供一组基础的操作用于跨进程更新它的界面。RemoteViews在Android中的使用场景有两种，一种是自定义的通知栏，另外一种是桌面小部件。
+
+RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个很重要的UI交互。其原理是通过调用Noti">
+<meta property="og:image" content="http://icedcap.github.io/picture/sample_notification.png">
+<meta property="og:image" content="http://icedcap.github.io/picture/xunlei_notification.png">
+<meta property="og:image" content="http://icedcap.github.io/picture/update_notification.png">
+<meta property="og:image" content="http://icedcap.github.io/picture/appwidget.png">
+<meta property="og:updated_time" content="2016-09-27T11:58:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从自定义通知栏和桌面小部件到深入理解RemoteViews">
+<meta name="twitter:description" content="直观地，从RemoteViews名字来看，它类似与一个远程的View，提到远程必然会涉及跨进程的通信。也就是说RemoteViews提供一组基础的操作用于跨进程更新它的界面。RemoteViews在Android中的使用场景有两种，一种是自定义的通知栏，另外一种是桌面小部件。
+
+RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个很重要的UI交互。其原理是通过调用Noti">
+<meta name="twitter:image" content="http://icedcap.github.io/picture/sample_notification.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 从自定义通知栏和桌面小部件到深入理解RemoteViews | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                从自定义通知栏和桌面小部件到深入理解RemoteViews
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-28T21:48:28+08:00" content="2016-04-28">
+              2016-04-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>直观地，从RemoteViews名字来看，它类似与一个远程的View，提到远程必然会涉及跨进程的通信。也就是说RemoteViews提供一组基础的操作用于跨进程更新它的界面。RemoteViews在Android中的使用场景有两种，一种是自定义的通知栏，另外一种是桌面小部件。</p>
+</blockquote>
+<h2 id="RemoteViews实际应用"><a href="#RemoteViews实际应用" class="headerlink" title="RemoteViews实际应用"></a>RemoteViews实际应用</h2><h3 id="通知栏"><a href="#通知栏" class="headerlink" title="通知栏"></a>通知栏</h3><p>在Android应用开发中，通知栏是一个很重要的UI交互。其原理是通过调用NotificationManager的notify方法来实现的。最基本的实现是使用API提供的默认布局，例如<br><a id="more"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sendNotification</span><span class="params">()</span> </span>&#123;</div><div class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TransitionActivity.class);</div><div class="line">        PendingIntent pendingIntent = PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, intent, <span class="number">0</span>);</div><div class="line">        Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</div><div class="line">                .setTicker(<span class="string">"This is tickerText"</span>)</div><div class="line">                .setSubText(<span class="string">"This is subText"</span>)</div><div class="line">                .setContentText(<span class="string">"This is ContentText"</span>)</div><div class="line">                .setContentTitle(<span class="string">"This is ContentTitle"</span>)</div><div class="line">                .setAutoCancel(<span class="keyword">true</span>)</div><div class="line">                .addAction(R.drawable.ic_no, <span class="string">"cancel"</span>, pendingIntent)</div><div class="line">                .addAction(R.drawable.ic_yes, <span class="string">"confirm"</span>, pendingIntent)</div><div class="line">                .setSmallIcon(R.mipmap.ic_launcher)</div><div class="line">                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.luffy))</div><div class="line">                .build();</div><div class="line">        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);</div><div class="line">        manager.notify(<span class="number">1</span>, notification);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在Android6.0系统上可以得到扩展后的通知如下，关于更详细的Notification开发不是本篇文章讨论的重点，故不做讨论。</p>
+<p style="text-align: center;"><br><img src="picture/sample_notification.png"><br></p>
+
+<p>为了满足个性化需求，我们会用到一些复杂布局的通知，这时候就需要我们自定义布局了。对于这类通知最常见的就是下载进度通知，如下图所示：</p>
+<p style="text-align: center;"><br><img src="picture/xunlei_notification.png"><br><img src="picture/update_notification.png"><br></p>
+
+<p>下面就用代码模拟迅雷下载通知，首先是通知布局<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/icon"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"40dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"40dp"</span></div><div class="line">        <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_margin</span>=<span class="string">"12dp"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@mipmap/ic_xunlei"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/content"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"4dp"</span></div><div class="line">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"4dp"</span></div><div class="line">        <span class="attr">android:layout_marginStart</span>=<span class="string">"4dp"</span></div><div class="line">        <span class="attr">android:layout_marginTop</span>=<span class="string">"4dp"</span></div><div class="line">        <span class="attr">android:layout_toLeftOf</span>=<span class="string">"@+id/btn"</span></div><div class="line">        <span class="attr">android:layout_toRightOf</span>=<span class="string">"@+id/icon"</span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"一个任务正在下载"</span></div><div class="line">            <span class="attr">android:textColor</span>=<span class="string">"#A39F9D"</span></div><div class="line">            <span class="attr">android:textSize</span>=<span class="string">"13sp"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">ProgressBar</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/progressbar"</span></div><div class="line">            <span class="attr">style</span>=<span class="string">"@style/customProgressbar"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_marginBottom</span>=<span class="string">"2dp"</span></div><div class="line">            <span class="attr">android:layout_marginTop</span>=<span class="string">"2dp"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/download_speed"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"总速度：1.0MB/s"</span></div><div class="line">            <span class="attr">android:textColor</span>=<span class="string">"#7C7C7C"</span></div><div class="line">            <span class="attr">android:textSize</span>=<span class="string">"11sp"</span>/&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/btn"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"60dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"25dp"</span></div><div class="line">        <span class="attr">android:layout_alignParentEnd</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:layout_margin</span>=<span class="string">"8dp"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"@drawable/bg_button"</span></div><div class="line">        <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"会员加速"</span></div><div class="line">        <span class="attr">android:textColor</span>=<span class="string">"#fff"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"11sp"</span>/&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>布局中为了美化progressbar缩小了progress的高度和颜色，使得通知中的所有色调都符合产品的统一色调。接下来就是使用RemoteViews来为Notification加载自定义的通知了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">customNotification</span><span class="params">()</span> </span>&#123;</div><div class="line">    Notification notification = <span class="keyword">new</span> Notification.Builder(<span class="keyword">this</span>)</div><div class="line">            .setSmallIcon(R.mipmap.ic_xunlei)</div><div class="line">            .setWhen(System.currentTimeMillis())</div><div class="line">            .setAutoCancel(<span class="keyword">true</span>)</div><div class="line">            .setTicker(<span class="string">"Hello world"</span>)</div><div class="line">            .build();</div><div class="line">    Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, TransitionActivity2.class);</div><div class="line">    PendingIntent pendingIntent = PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, intent, PendingIntent.FLAG_UPDATE_CURRENT);</div><div class="line">    RemoteViews remoteViews = <span class="keyword">new</span> RemoteViews(getPackageName(), R.layout.xunlei_notify);</div><div class="line">    remoteViews.setTextViewText(R.id.download_speed, <span class="string">"总速度：1.0MB/s"</span>);</div><div class="line">    remoteViews.setProgressBar(R.id.progressbar, <span class="number">100</span>, <span class="number">78</span>, <span class="keyword">false</span>);</div><div class="line">    remoteViews.setOnClickPendingIntent(R.id.btn, pendingIntent);</div><div class="line">    notification.contentView = remoteViews;</div><div class="line"></div><div class="line">    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);</div><div class="line">    manager.notify(<span class="number">2</span>, notification);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将<code>remoteViews</code>赋予<code>notification.contentView</code>后Notification的视图就将使用RemoteViews来填充了，<em>值得注意</em>的是为<code>remoteViews</code>中子控件设置属性时，不会通过<code>findViewById</code>的形式得到子控件对象再去设置属性而是通过RemoteViewsAPI方法来设置相应控件的属性值，以下是RemoteViews API中常用于设置子控件的方法：</p>
+<ul>
+<li>setTextViewText(int viewId, CharSequence text) 为TextView设置文字内容</li>
+<li>setImageViewResource(int viewId, int srcId) 为ImageView设置res</li>
+<li>setOnClickPendingIntent(int viewId, PendingIntent pendingIntent) 为控件添加点击事件</li>
+<li>setProgressBar(int viewId, int max, int progress, boolean indeterminate) 设置ProgressBar</li>
+<li>setViewVisibility(int viewId, int visibility) 视图可见性</li>
+</ul>
+<p>RemoteViews没有对所有的控件都提供设置的方法（RemoteViews所支持的View请移步第二部分），所以在开发中尽量避免在通知栏中使用复杂的控件。为什么RemoteViews框架不提供一个findViewById方法来获取每个子View呢？这样也省得调用remoteviews提供的残缺方法了，这里先挖个坑，稍后再填。</p>
+<h3 id="桌面小部件"><a href="#桌面小部件" class="headerlink" title="桌面小部件"></a>桌面小部件</h3><p>广播<code>android.content.BroadcastReceiver</code>子类中包含<code>android.appwidget.AppWidgetProvider</code>类，该类是实现桌面小部件的核心类。该类的核心就是发送广播，接收广播，更新小部件，这时候想一想安卓桌面上的时钟，是不是突然开窍了，通过每一秒都来接收广播达到实时更新的效果。</p>
+<p>对于开发桌面小部件一般可以分为以下几个步骤：</p>
+<p>1.构造小部件的桌面布局。这里模仿网易云音乐并且模拟实现歌曲进度条和红心的更新操作，最后实现的效果如下</p>
+<p><pstyle="text-align: center;"=""><br><img src="picture/appwidget.png" width="50%"><br></pstyle="text-align:></p><p></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">              <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">              <span class="attr">android:layout_height</span>=<span class="string">"100dp"</span></div><div class="line">              <span class="attr">android:background</span>=<span class="string">"@color/bg_widget"</span></div><div class="line">              <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/img"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"center_vertical"</span></div><div class="line">        <span class="attr">android:layout_margin</span>=<span class="string">"8dp"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/img"</span>/&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"center_vertical"</span></div><div class="line">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></div><div class="line">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></div><div class="line">        <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></div><div class="line">                        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">                <span class="attr">android:id</span>=<span class="string">"@+id/music_icon"</span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"15dp"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"15dp"</span></div><div class="line">                <span class="attr">android:src</span>=<span class="string">"@drawable/desk_logo"</span>/&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">                <span class="attr">android:layout_marginStart</span>=<span class="string">"4dp"</span></div><div class="line">                <span class="attr">android:layout_toEndOf</span>=<span class="string">"@+id/music_icon"</span></div><div class="line">                <span class="attr">android:text</span>=<span class="string">"惊天动地-金玟岐"</span></div><div class="line">                <span class="attr">android:textColor</span>=<span class="string">"#fff"</span></div><div class="line">                <span class="attr">android:textSize</span>=<span class="string">"13sp"</span>/&gt;</div><div class="line">        <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">ProgressBar</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/music_progress"</span></div><div class="line">            <span class="attr">style</span>=<span class="string">"@style/musicProgress"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></div><div class="line">            <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></div><div class="line">                        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">                <span class="attr">android:id</span>=<span class="string">"@+id/desk_switch"</span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"25dp"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"25dp"</span></div><div class="line">                <span class="attr">android:src</span>=<span class="string">"@drawable/desk2_switch"</span>/&gt;</div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_toLeftOf</span>=<span class="string">"@+id/music_love"</span></div><div class="line">                <span class="attr">android:layout_toRightOf</span>=<span class="string">"@+id/desk_switch"</span></div><div class="line">                <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">                <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span>&gt;</div><div class="line">                <span class="tag">&lt;<span class="name">ImageView</span> <span class="attr">android:layout_width</span>=<span class="string">"30dp"</span></span></div><div class="line">                           <span class="attr">android:layout_height</span>=<span class="string">"30dp"</span></div><div class="line">                           <span class="attr">android:src</span>=<span class="string">"@drawable/desk2_pre"</span>/&gt;</div><div class="line">                <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">                    <span class="attr">android:id</span>=<span class="string">"@+id/music_play_pause"</span></div><div class="line">                    <span class="attr">android:layout_width</span>=<span class="string">"35dp"</span></div><div class="line">                    <span class="attr">android:layout_height</span>=<span class="string">"35dp"</span></div><div class="line">                    <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></div><div class="line">                    <span class="attr">android:layout_marginStart</span>=<span class="string">"8dp"</span></div><div class="line">                    <span class="attr">android:src</span>=<span class="string">"@drawable/desk2_play"</span>/&gt;</div><div class="line">                <span class="tag">&lt;<span class="name">ImageView</span> <span class="attr">android:layout_width</span>=<span class="string">"30dp"</span></span></div><div class="line">                           <span class="attr">android:layout_height</span>=<span class="string">"30dp"</span></div><div class="line">                           <span class="attr">android:src</span>=<span class="string">"@drawable/desk2_next"</span>/&gt;</div><div class="line">            <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">                <span class="attr">android:id</span>=<span class="string">"@+id/music_love"</span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"28dp"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"28dp"</span></div><div class="line">                <span class="attr">android:layout_alignParentEnd</span>=<span class="string">"true"</span></div><div class="line">                <span class="attr">android:src</span>=<span class="string">"@drawable/desk_love"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>该文件命名为res/layout/music_widget.xml</p>
+<p>2.配置小部件信息。在res/xml/appwidget_provider_info.xml配置如下<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">appwidget-provider</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">                    <span class="attr">android:initialLayout</span>=<span class="string">"@layout/music_widget"</span></div><div class="line">                    <span class="attr">android:minHeight</span>=<span class="string">"100dp"</span></div><div class="line">                    <span class="attr">android:minWidth</span>=<span class="string">"300dp"</span></div><div class="line">                    <span class="attr">android:updatePeriodMillis</span>=<span class="string">"500000000"</span>&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">appwidget-provider</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>从参数名字可以推断出<code>initialLayout</code>是指初始化小部件；<code>minHeight</code>和<code>minWidth</code>设置小部件的最小宽高值；对于<code>updatePeriodMillis</code>是定义小部件自动更新的周期，单位为毫秒。</p>
+<p>3.定义小部件的实现类。 这部分是实现桌面小部件的核心，所有的操作更新逻辑都是从这里<code>AppWidgetProvider</code>类开始的，首先我们自定义一个类<code>MusicWidgetProvider</code>继承自<code>AppWidgetProvider</code>，并且重写<code>onReceive</code>和<code>onUpdate</code>方法。<code>onReceive</code>方法是接收广播的逻辑，本节开头介绍<code>AppWidgetProvider</code>类时，我们就知道了它继承了<code>BroadcastReceiver</code>所以自热而然的就具有接收广播的能力；<code>onUpdate</code>方法是在小部件每次更新时会回调一次，我们可以在该方法中为子控件指定<code>click</code>监听并触发广播。这样一来就可以在两个方法中形成一个回路从而达到更新自己的效果。具体代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.singuloid.myapplication;</div><div class="line"></div><div class="line"><span class="keyword">import</span> android.app.PendingIntent;</div><div class="line"><span class="keyword">import</span> android.appwidget.AppWidgetManager;</div><div class="line"><span class="keyword">import</span> android.appwidget.AppWidgetProvider;</div><div class="line"><span class="keyword">import</span> android.content.ComponentName;</div><div class="line"><span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="keyword">import</span> android.content.Intent;</div><div class="line"><span class="keyword">import</span> android.content.SharedPreferences;</div><div class="line"><span class="keyword">import</span> android.os.AsyncTask;</div><div class="line"><span class="keyword">import</span> android.os.Bundle;</div><div class="line"><span class="keyword">import</span> android.util.Log;</div><div class="line"><span class="keyword">import</span> android.widget.RemoteViews;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author: doushuqi</div><div class="line"> * Date: 16-4-28</div><div class="line"> * Email: shuqi.dou@singuloid.com</div><div class="line"> * LastUpdateTime:</div><div class="line"> * LastUpdateBy:</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MusicWidgetProvider</span> <span class="keyword">extends</span> <span class="title">AppWidgetProvider</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MusicWidgetProvider"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SHAREPREFERENCE_NAME = <span class="string">"music"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SHAREPREFERENCE_KEY_PLAYING = <span class="string">"isplaying"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SHAREPREFERENCE_KEY_LOVE = <span class="string">"love"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SHAREPREFERENCE_KEY_PROGRESS = <span class="string">"progress"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTION_MUSIC_PLAY = <span class="string">"com.icedcap.sample.MUSIC_PLAY"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTION_MUSIC_PAUSE = <span class="string">"com.icedcap.sample.MUSIC_PAUSE"</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTION_MUSIC_LOVE = <span class="string">"com.icedcap.sample.MUSIC_LOVE"</span>;</div><div class="line">    <span class="keyword">private</span> MyTask mMyTask;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onReceive(context, intent);</div><div class="line">        <span class="keyword">final</span> String action = intent.getAction();</div><div class="line">        Log.i(TAG, <span class="string">"action = "</span> + action);</div><div class="line">        <span class="keyword">final</span> RemoteViews remoteViews = <span class="keyword">new</span> RemoteViews(context.getPackageName(), R.layout.music_widget);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (action.equals(ACTION_MUSIC_PLAY)) &#123;</div><div class="line">            emulatePlayMusic(context, remoteViews);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action.equals(ACTION_MUSIC_PAUSE)) &#123;</div><div class="line">            emulatePauseMusic(context, remoteViews);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (action.equals(ACTION_MUSIC_LOVE)) &#123;</div><div class="line">            musicLove(context, remoteViews);</div><div class="line">            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);</div><div class="line">            appWidgetManager.updateAppWidget(<span class="keyword">new</span> ComponentName(context, MusicWidgetProvider.class), remoteViews);</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onUpdate</span><span class="params">(Context context, AppWidgetManager appWidgetManager, <span class="keyword">int</span>[] appWidgetIds)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onUpdate(context, appWidgetManager, appWidgetIds);</div><div class="line">        Log.i(TAG, <span class="string">"------onUpdate----------"</span>);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> totalWidgetIds = appWidgetIds.length;</div><div class="line">        Log.i(TAG, <span class="string">"totalWidgetIds = "</span> + totalWidgetIds);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; totalWidgetIds; i++) &#123;</div><div class="line">            updateWidget(context, appWidgetManager, appWidgetIds[i]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAppWidgetOptionsChanged</span><span class="params">(Context context, AppWidgetManager appWidgetManager, <span class="keyword">int</span> appWidgetId, Bundle newOptions)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateWidget</span><span class="params">(Context context, AppWidgetManager manager, <span class="keyword">int</span> viewId)</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> RemoteViews remoteViews = <span class="keyword">new</span> RemoteViews(context.getPackageName(), R.layout.music_widget);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> isPlaying = context.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).getBoolean(SHAREPREFERENCE_KEY_PLAYING, <span class="keyword">false</span>);</div><div class="line">        Intent click = <span class="keyword">new</span> Intent();</div><div class="line"><span class="comment">//        click.setAction(isPlaying ? ACTION_MUSIC_PAUSE : ACTION_MUSIC_PLAY);</span></div><div class="line">        <span class="keyword">if</span> (!isPlaying) &#123;</div><div class="line">            click.setAction(ACTION_MUSIC_PLAY);</div><div class="line">            remoteViews.setOnClickPendingIntent(R.id.music_play_pause, PendingIntent.getBroadcast(context, <span class="number">0</span>, click, <span class="number">0</span>));</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        click.setAction(ACTION_MUSIC_LOVE);</div><div class="line">        remoteViews.setOnClickPendingIntent(R.id.music_love, PendingIntent.getBroadcast(context, <span class="number">0</span>, click, <span class="number">0</span>));</div><div class="line">        manager.updateAppWidget(viewId, remoteViews);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">emulatePlayMusic</span><span class="params">(Context c, RemoteViews remoteViews)</span> </span>&#123;</div><div class="line">        mMyTask = <span class="keyword">new</span> MyTask(c, remoteViews);</div><div class="line">        mMyTask.execute();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">emulatePauseMusic</span><span class="params">(Context c, RemoteViews r)</span> </span>&#123;</div><div class="line">        writeIsplayingToSharePreference(c, <span class="keyword">false</span>);</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != mMyTask &amp;&amp; !mMyTask.isCancelled()) &#123;</div><div class="line">            mMyTask.cancel(<span class="keyword">true</span>);</div><div class="line">        &#125;</div><div class="line">        r.setImageViewResource(R.id.music_play_pause, R.drawable.desk2_play);</div><div class="line">        r.setProgressBar(R.id.music_progress, <span class="number">100</span>,</div><div class="line">                c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE)</div><div class="line">                        .getInt(SHAREPREFERENCE_KEY_PROGRESS, <span class="number">0</span>), <span class="keyword">false</span>);</div><div class="line">        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(c);</div><div class="line">        appWidgetManager.updateAppWidget(<span class="keyword">new</span> ComponentName(c, MusicWidgetProvider.class), r);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">musicLove</span><span class="params">(Context c, RemoteViews remoteViews)</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> isLove = !c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).getBoolean(SHAREPREFERENCE_KEY_LOVE, <span class="keyword">false</span>);</div><div class="line">        remoteViews.setImageViewResource(R.id.music_love, isLove ? R.drawable.desk_btn_loved : R.drawable.desk_love);</div><div class="line">        writeLoveToSharePreference(c, isLove);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeLoveToSharePreference</span><span class="params">(Context c, <span class="keyword">boolean</span> love)</span> </span>&#123;</div><div class="line">        SharedPreferences.Editor editor = c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).edit();</div><div class="line">        editor.putBoolean(SHAREPREFERENCE_KEY_LOVE, love);</div><div class="line">        editor.apply();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeIsplayingToSharePreference</span><span class="params">(Context c, <span class="keyword">boolean</span> play)</span> </span>&#123;</div><div class="line">        SharedPreferences.Editor editor = c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).edit();</div><div class="line">        editor.putBoolean(SHAREPREFERENCE_KEY_PLAYING, play);</div><div class="line">        editor.apply();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeProgressToSharePreference</span><span class="params">(Context c, <span class="keyword">int</span> progress)</span> </span>&#123;</div><div class="line">        SharedPreferences.Editor editor = c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).edit();</div><div class="line">        editor.putInt(SHAREPREFERENCE_KEY_PROGRESS, progress);</div><div class="line">        editor.apply();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Integer</span>, <span class="title">Integer</span>&gt; </span>&#123;</div><div class="line">        RemoteViews mRemoteViews;</div><div class="line">        Context mContext;</div><div class="line">        <span class="keyword">int</span> mProgress;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyTask</span><span class="params">(Context c, RemoteViews remoteViews)</span> </span>&#123;</div><div class="line">            mRemoteViews = remoteViews;</div><div class="line">            mContext = c;</div><div class="line">            mProgress = c.getSharedPreferences(SHAREPREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SHAREPREFERENCE_KEY_PROGRESS, <span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</div><div class="line">            writeIsplayingToSharePreference(mContext, <span class="keyword">true</span>);</div><div class="line">            mRemoteViews.setImageViewResource(R.id.music_play_pause, R.drawable.desk2_pause);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> Integer <span class="title">doInBackground</span><span class="params">(Void... params)</span> </span>&#123;</div><div class="line">            <span class="keyword">while</span> (mProgress &lt;= <span class="number">100</span>) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    Thread.sleep(<span class="number">30</span>);</div><div class="line">                    publishProgress(mProgress);</div><div class="line">                    mProgress += <span class="number">1</span>;</div><div class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="number">100</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(Integer... values)</span> </span>&#123;</div><div class="line">            mRemoteViews.setProgressBar(R.id.music_progress, <span class="number">100</span>, values[<span class="number">0</span>], <span class="keyword">false</span>);</div><div class="line"></div><div class="line">            writeProgressToSharePreference(mContext, values[<span class="number">0</span>]);</div><div class="line">            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);</div><div class="line">            appWidgetManager.updateAppWidget(<span class="keyword">new</span> ComponentName(mContext, MusicWidgetProvider.class), mRemoteViews);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Integer integer)</span> </span>&#123;</div><div class="line">            writeIsplayingToSharePreference(mContext, <span class="keyword">false</span>);</div><div class="line">            mRemoteViews.setProgressBar(R.id.music_progress, <span class="number">100</span>, <span class="number">0</span>, <span class="keyword">false</span>);</div><div class="line">            mRemoteViews.setImageViewResource(R.id.music_play_pause, R.drawable.desk2_play);</div><div class="line">            writeProgressToSharePreference(mContext, <span class="number">0</span>);</div><div class="line">            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);</div><div class="line">            appWidgetManager.updateAppWidget(<span class="keyword">new</span> ComponentName(mContext, MusicWidgetProvider.class), mRemoteViews);</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>4.在AndroidManifes.xml中声明小部件。 因为<code>AppWidgetProvider</code>是一个广播接收者所以要在<code>AndroidManifest</code>中声明<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".MusicWidgetProvider"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">meta-data</span></span></div><div class="line">                <span class="attr">android:name</span>=<span class="string">"android.appwidget.provider"</span></div><div class="line">                <span class="attr">android:resource</span>=<span class="string">"@xml/appwidget_provide_info"</span>/&gt;</div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.sample.MUSIC_PLAY"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.sample.MUSIC_PAUSE"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.icedcap.sample.MUSIC_LOVE"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.appwidget.action.APPWIDGET_UPDATE"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>对于前三个action我们明白是注册代码中定义的广播，最后一个action则是系统规范必须要这么写。</p>
+<p>除此之外，<code>AppWidgetProvide</code>还提供了一些其他重要的覆写方法，具体的调用时机如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:left">调用时机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onEnable</td>
+<td style="text-align:left">当小部件<strong>第一次</strong>添加到桌面时被调用</td>
+</tr>
+<tr>
+<td>onUpdate</td>
+<td style="text-align:left">小部件被添加时或者每次更新时亦或是在updatePeriodMillis定义的一个周期后也会调用</td>
+</tr>
+<tr>
+<td>onDeleted</td>
+<td style="text-align:left">每次删除（移除）小部件时会调用</td>
+</tr>
+<tr>
+<td>onDisabled</td>
+<td style="text-align:left">当最后一个该类型的桌面小部件移除时会调用</td>
+</tr>
+</tbody>
+</table>
+<p>至此，对于RemoteViews的两个实际用途就已经介绍完了，在下节中会探讨RemoteViews的内部机制。</p>
+<h2 id="RemoteViews内部机制"><a href="#RemoteViews内部机制" class="headerlink" title="RemoteViews内部机制"></a>RemoteViews内部机制</h2><p>通过上节的两个例子可以看出在初始化RemoteViews时会传入两个参数一个是packageName另外一个是layoutId<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">RemoteViews</span><span class="params">(String packageName, <span class="keyword">int</span> layoutId)</span> </span>&#123;...&#125;</div></pre></td></tr></table></figure></p>
+<p>packageName是当前应用的包名，而layoutId是待加载的布局文件。由于RemoteViews是在其他进程中显示UI和更新UI的。这样势必就要受到一些限制，例如在上节中实践过的，不能通过findViewById等普通View所具有的方法。除此之外，RemoteViews不能支持全部的View子类，它仅支持如下类型：</p>
+<ul>
+<li>ViewGroup<ul>
+<li>FrameLayout</li>
+<li>LinearLayout</li>
+<li>RelativeLayout</li>
+<li>GridLayout</li>
+</ul>
+</li>
+<li>View<ul>
+<li>AnalogClock</li>
+<li>Button</li>
+<li>Chronometer</li>
+<li>ImageButton</li>
+<li>ImageView</li>
+<li>ProgressBar</li>
+<li>TextView</li>
+<li>ViewFlipper</li>
+<li>ListView</li>
+<li>GridView</li>
+<li>StackView</li>
+<li>AdapterViewFlipper</li>
+<li>ViewStub</li>
+</ul>
+</li>
+</ul>
+<p>对于上述View的子类型RemoteViews是不支持的,对于自定义的View和<code>android.widget.EditText</code>也都是不允许在RemoteViews中使用的。</p>
+<h3 id="RemoteViews原理简述"><a href="#RemoteViews原理简述" class="headerlink" title="RemoteViews原理简述"></a>RemoteViews原理简述</h3><p>从第一部分的两个例子的实践来看RemoteViews的更新是通过setxxx的方法完成的。事实上，这些set方法是通过反射来实现的。</p>
+<p>对于自定义通知栏和桌面小部件二者是通过<code>NotificationManager</code>和<code>AppWidgetManager</code>来管理的，而它们又是通过<code>Binder</code>分别和<code>SystemServer</code>进程中的<code>NotificationManagerService</code>和<code>AppWidgetService</code>进行通信的，由此可见<code>RemoteViews</code>的加载与更新是在<code>SystemServer</code>中完成的。因此<code>RemoteViews</code>必须具备跨进程间通信等特征，如实现<code>Parcelable</code>接口。</p>
+<p>这时候也就明白了<code>RemoteViews</code>构造方法中传入包名的目的就是为了在<code>SystemServer</code>进程中加载该应用的资源，然后通过<code>LayoutInflater</code>去加载<code>RemoteViews</code>中的布局文件。这时候在远程就完成了<code>RemoteViews</code>的加载过程。</p>
+<p>回到本地，当一系列事件后需要更新<code>RemoteViews</code>的时候。会通过set的反射方法进行更新。从理论上View的所有方法都是可以通过Binder进行传递从而到达<code>SystemServer</code>进行更新的，但是这样难免带来额外的开销，造成界面的卡顿而得不偿失。这时候我们引入Action对象，它同样实现了<code>Parcelable</code>接口，可以IPC进行传递。把对View的每一步操作封装到Action中，然后通过<code>NotificationManager</code>和<code>AppWidgetManager</code>来提交，这样就通过Binder将Action传递到<code>SystemServer</code>进程中。到了<code>SystemServer</code>进程就可以通过<code>RemoteViews</code>的<code>apply</code>和<code>reapply</code>进行更新了。</p>
+<p>以上就是<code>RemoteViews</code>的工作原理，下面通过代码可以细细品味一下。</p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>这一节我们分两条线进行切入首先从API调用开始再次通过AppWidgetManager进行更新操作进行代码跟进，这两条线应该有一个汇聚。首先这里我们选取<code>setTextViewText</code>方法进行切入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTextViewText</span><span class="params">(<span class="keyword">int</span> viewId, CharSequence text)</span> </span>&#123;</div><div class="line">    setCharSequence(viewId, <span class="string">"setText"</span>, text);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCharSequence</span><span class="params">(<span class="keyword">int</span> viewId, String methodName, CharSequence value)</span> </span>&#123;</div><div class="line">    addAction(<span class="keyword">new</span> ReflectionAction(viewId, methodName, ReflectionAction.CHAR_SEQUENCE, value));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码没得说，这里我们来具体观察下<code>addAction</code>和<code>RelfectionAction</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addAction</span><span class="params">(Action a)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (hasLandscapeAndPortraitLayouts()) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"RemoteViews specifying separate landscape and portrait"</span> +</div><div class="line">                <span class="string">" layouts cannot be modified. Instead, fully configure the landscape and"</span> +</div><div class="line">                <span class="string">" portrait layouts individually before constructing the combined layout."</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (mActions == <span class="keyword">null</span>) &#123;</div><div class="line">        mActions = <span class="keyword">new</span> ArrayList&lt;Action&gt;();</div><div class="line">    &#125;</div><div class="line">    mActions.add(a);</div><div class="line"></div><div class="line">    <span class="comment">// update the memory usage stats</span></div><div class="line">    a.updateMemoryUsageEstimate(mMemoryUsageCounter);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>RemoteViews</code>维护着<code>mAction</code>的全局变量，每次进行更新操作的时候都会将一个<code>Action</code>添加进去，然后就没有然后了（这里仅仅是保存在了mAction中，我们不知道谁去将它进行实质性的操作）。下面再看看<code>RelfectionAction</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectionAction</span> <span class="keyword">extends</span> <span class="title">Action</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TAG = <span class="number">2</span>;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    String methodName;</div><div class="line">    <span class="keyword">int</span> type;</div><div class="line">    Object value;</div><div class="line"></div><div class="line">    ReflectionAction(<span class="keyword">int</span> viewId, String methodName, <span class="keyword">int</span> type, Object value) &#123;</div><div class="line">        <span class="keyword">this</span>.viewId = viewId;</div><div class="line">        <span class="keyword">this</span>.methodName = methodName;</div><div class="line">        <span class="keyword">this</span>.type = type;</div><div class="line">        <span class="keyword">this</span>.value = value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ....</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(View root, ViewGroup rootParent, OnClickHandler handler)</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> View view = root.findViewById(viewId);</div><div class="line">        <span class="keyword">if</span> (view == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">        Class&lt;?&gt; param = getParameterType();</div><div class="line">        <span class="keyword">if</span> (param == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ActionException(<span class="string">"bad type: "</span> + <span class="keyword">this</span>.type);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            getMethod(view, <span class="keyword">this</span>.methodName, param).invoke(view, wrapArg(<span class="keyword">this</span>.value));</div><div class="line">        &#125; <span class="keyword">catch</span> (ActionException e) &#123;</div><div class="line">            <span class="keyword">throw</span> e;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ActionException(ex);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>ReflectionAction</code>中封装了<code>viewId</code>，<code>methodName</code>，<code>type</code>以及<code>value</code>并且重写了<code>apply</code>方法。至今我们还不知道这个<code>apply</code>的作用，没关系，我们看一看<code>RemoteViews</code>中的<code>performApply</code>方法做了些什么。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performApply</span><span class="params">(View v, ViewGroup parent, OnClickHandler handler)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mActions != <span class="keyword">null</span>) &#123;</div><div class="line">        handler = handler == <span class="keyword">null</span> ? DEFAULT_ON_CLICK_HANDLER : handler;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> count = mActions.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">            Action a = mActions.get(i);</div><div class="line">            a.apply(v, parent, handler);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很明显更新操作是从这里发出的（当然这是我们假设的因为还没有去验证，如果验证的话就得从<code>NotificationManager</code>和<code>AppWidgetManager</code>中找调用该方法的代码了，这也正是即将进行跟进分析的第二条线）遍历每一次的更新并调用<code>Action</code>的<code>apply</code>方法。这时候再往回看<code>RelfectionAction</code>的<code>apply</code>方法，正是通过反射机制来实现View的操作的。</p>
+<p>这时候我们的<code>setTextViewText</code>方法实现原理就了然于胸了，其他方法大致过程亦如此，这里不再赘述。</p>
+<p>下面我们来看第二条线，从正面切入，就拿桌面小部件例子来看，每次更新<code>RemoteViews</code>都是从<code>AppWidgetManager.updateAppWidget</code>方法开始的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidget</span><span class="params">(<span class="keyword">int</span> appWidgetId, RemoteViews views)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mService == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    updateAppWidget(<span class="keyword">new</span> <span class="keyword">int</span>[] &#123; appWidgetId &#125;, views);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidget</span><span class="params">(<span class="keyword">int</span>[] appWidgetIds, RemoteViews views)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mService == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        mService.updateAppWidgetIds(mPackageName, appWidgetIds, views);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"system server dead?"</span>, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidget</span><span class="params">(ComponentName provider, RemoteViews views)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mService == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        mService.updateAppWidgetProvider(provider, views);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"system server dead?"</span>, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述三种重载方法都是更新<code>RemoteViews</code>的方法，接下来再看<code>mService.updateAppWidgetProvider</code>方法，<code>mService</code>是一个远程接口<code>IAppWidgetService</code>。代码跟到这就要进行IPC，故我们找到远程服务所对应的<code>updateAppWidgetProvider</code>方法。该方法位于源码目录：<em>frameworks/base/services/appwidget/java/com/android/server/appwidget/AppWidgetServiceImpl.java</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidgetProvider</span><span class="params">(ComponentName componentName, RemoteViews views)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> userId = UserHandle.getCallingUserId();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (DEBUG) &#123;</div><div class="line">        Slog.i(TAG, <span class="string">"updateAppWidgetProvider() "</span> + userId);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Make sure the package runs under the caller uid.</span></div><div class="line">    mSecurityPolicy.enforceCallFromPackage(componentName.getPackageName());</div><div class="line"></div><div class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</div><div class="line">        ensureGroupStateLoadedLocked(userId);</div><div class="line"></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> The lookup is enforcing security across users by making</span></div><div class="line">        <span class="comment">// sure the caller can access only its providers.</span></div><div class="line">        ProviderId providerId = <span class="keyword">new</span> ProviderId(Binder.getCallingUid(), componentName);</div><div class="line">        Provider provider = lookupProviderLocked(providerId);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (provider == <span class="keyword">null</span>) &#123;</div><div class="line">            Slog.w(TAG, <span class="string">"Provider doesn't exist "</span> + providerId);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        ArrayList&lt;Widget&gt; instances = provider.widgets;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> N = instances.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</div><div class="line">            Widget widget = instances.get(i);</div><div class="line">            updateAppWidgetInstanceLocked(widget, views, <span class="keyword">false</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateAppWidgetInstanceLocked</span><span class="params">(Widget widget, RemoteViews views,</span></span></div><div class="line">        <span class="keyword">boolean</span> isPartialUpdate) &#123;</div><div class="line">    <span class="keyword">if</span> (widget != <span class="keyword">null</span> &amp;&amp; widget.provider != <span class="keyword">null</span></div><div class="line">            &amp;&amp; !widget.provider.zombie &amp;&amp; !widget.host.zombie) &#123;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isPartialUpdate &amp;&amp; widget.views != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// For a partial update, we merge the new RemoteViews with the old.</span></div><div class="line">            widget.views.mergeRemoteViews(views);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// For a full update we replace the RemoteViews completely.</span></div><div class="line">            widget.views = views;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        scheduleNotifyUpdateAppWidgetLocked(widget, views);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码读到这里，我们发现从本地传进来的<code>RemoteViews</code>对象被赋予了远程进程中的<code>widget.views</code>并且调用<code>scheduleNotifyUpdateAppWidgetLocked</code>方法，接下来再看看该方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scheduleNotifyUpdateAppWidgetLocked</span><span class="params">(Widget widget, RemoteViews updateViews)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (widget == <span class="keyword">null</span> || widget.provider == <span class="keyword">null</span> || widget.provider.zombie</div><div class="line">            || widget.host.callbacks == <span class="keyword">null</span> || widget.host.zombie) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    SomeArgs args = SomeArgs.obtain();</div><div class="line">    args.arg1 = widget.host;</div><div class="line">    args.arg2 = widget.host.callbacks;</div><div class="line">    args.arg3 = updateViews;</div><div class="line">    args.argi1 = widget.appWidgetId;</div><div class="line"></div><div class="line">    mCallbackHandler.obtainMessage(</div><div class="line">            CallbackHandler.MSG_NOTIFY_UPDATE_APP_WIDGET,</div><div class="line">            args).sendToTarget();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好吧，又拐弯了！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">CallbackHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_NOTIFY_UPDATE_APP_WIDGET = <span class="number">1</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_NOTIFY_PROVIDER_CHANGED = <span class="number">2</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_NOTIFY_PROVIDERS_CHANGED = <span class="number">3</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_NOTIFY_VIEW_DATA_CHANGED = <span class="number">4</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CallbackHandler</span><span class="params">(Looper looper)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(looper, <span class="keyword">null</span>, <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message message)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (message.what) &#123;</div><div class="line">            <span class="keyword">case</span> MSG_NOTIFY_UPDATE_APP_WIDGET: &#123;</div><div class="line">                SomeArgs args = (SomeArgs) message.obj;</div><div class="line">                Host host = (Host) args.arg1;</div><div class="line">                IAppWidgetHost callbacks = (IAppWidgetHost) args.arg2;</div><div class="line">                RemoteViews views = (RemoteViews) args.arg3;</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> appWidgetId = args.argi1;</div><div class="line">                args.recycle();</div><div class="line"></div><div class="line">                handleNotifyUpdateAppWidget(host, callbacks, appWidgetId, views);</div><div class="line">            &#125; <span class="keyword">break</span>;</div><div class="line"></div><div class="line">            <span class="keyword">case</span> MSG_NOTIFY_PROVIDER_CHANGED: &#123;</div><div class="line">                SomeArgs args = (SomeArgs) message.obj;</div><div class="line">                Host host = (Host) args.arg1;</div><div class="line">                IAppWidgetHost callbacks = (IAppWidgetHost) args.arg2;</div><div class="line">                AppWidgetProviderInfo info = (AppWidgetProviderInfo)args.arg3;</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> appWidgetId = args.argi1;</div><div class="line">                args.recycle();</div><div class="line"></div><div class="line">                handleNotifyProviderChanged(host, callbacks, appWidgetId, info);</div><div class="line">            &#125; <span class="keyword">break</span>;</div><div class="line"></div><div class="line">            <span class="keyword">case</span> MSG_NOTIFY_PROVIDERS_CHANGED: &#123;</div><div class="line">                SomeArgs args = (SomeArgs) message.obj;</div><div class="line">                Host host = (Host) args.arg1;</div><div class="line">                IAppWidgetHost callbacks = (IAppWidgetHost) args.arg2;</div><div class="line">                args.recycle();</div><div class="line"></div><div class="line">                handleNotifyProvidersChanged(host, callbacks);</div><div class="line">            &#125; <span class="keyword">break</span>;</div><div class="line"></div><div class="line">            <span class="keyword">case</span> MSG_NOTIFY_VIEW_DATA_CHANGED: &#123;</div><div class="line">                SomeArgs args = (SomeArgs) message.obj;</div><div class="line">                Host host = (Host) args.arg1;</div><div class="line">                IAppWidgetHost callbacks = (IAppWidgetHost) args.arg2;</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> appWidgetId = args.argi1;</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> viewId = args.argi2;</div><div class="line">                args.recycle();</div><div class="line"></div><div class="line">                handleNotifyAppWidgetViewDataChanged(host, callbacks, appWidgetId, viewId);</div><div class="line">            &#125; <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>沿着这条线继续！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleNotifyUpdateAppWidget</span><span class="params">(Host host, IAppWidgetHost callbacks,</span></span></div><div class="line">        <span class="keyword">int</span> appWidgetId, RemoteViews views) &#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        callbacks.updateAppWidget(appWidgetId, views);</div><div class="line">    &#125; <span class="keyword">catch</span> (RemoteException re) &#123;</div><div class="line">        <span class="keyword">synchronized</span> (mLock) &#123;</div><div class="line">            Slog.e(TAG, <span class="string">"Widget host dead: "</span> + host.id, re);</div><div class="line">            host.callbacks = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>终于的终于，找到了更新<code>RemoteViews</code>真正的类和方法<code>callbacks.updateAppWidget(appWidgetId, views)</code>，看到<code>IAppWidgetHost</code>又是一个远程接口，我们找到实现它的远程服务<code>AppWidgetHost.Callbacks</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Callbacks</span> <span class="keyword">extends</span> <span class="title">IAppWidgetHost</span>.<span class="title">Stub</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidget</span><span class="params">(<span class="keyword">int</span> appWidgetId, RemoteViews views)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (isLocalBinder() &amp;&amp; views != <span class="keyword">null</span>) &#123;</div><div class="line">            views = views.clone();</div><div class="line">        &#125;</div><div class="line">        Message msg = mHandler.obtainMessage(HANDLE_UPDATE, appWidgetId, <span class="number">0</span>, views);</div><div class="line">        msg.sendToTarget();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">providerChanged</span><span class="params">(<span class="keyword">int</span> appWidgetId, AppWidgetProviderInfo info)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (isLocalBinder() &amp;&amp; info != <span class="keyword">null</span>) &#123;</div><div class="line">            info = info.clone();</div><div class="line">        &#125;</div><div class="line">        Message msg = mHandler.obtainMessage(HANDLE_PROVIDER_CHANGED,</div><div class="line">                appWidgetId, <span class="number">0</span>, info);</div><div class="line">        msg.sendToTarget();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">providersChanged</span><span class="params">()</span> </span>&#123;</div><div class="line">        mHandler.obtainMessage(HANDLE_PROVIDERS_CHANGED).sendToTarget();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">viewDataChanged</span><span class="params">(<span class="keyword">int</span> appWidgetId, <span class="keyword">int</span> viewId)</span> </span>&#123;</div><div class="line">        Message msg = mHandler.obtainMessage(HANDLE_VIEW_DATA_CHANGED,</div><div class="line">                appWidgetId, viewId);</div><div class="line">        msg.sendToTarget();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里将<code>Remoteviews</code>克隆了一份赋予<code>views</code>并且通过<code>Handler</code>转发，我们看一下转发后的具体操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UpdateHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UpdateHandler</span><span class="params">(Looper looper)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(looper);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (msg.what) &#123;</div><div class="line">            <span class="keyword">case</span> HANDLE_UPDATE: &#123;</div><div class="line">                updateAppWidgetView(msg.arg1, (RemoteViews)msg.obj);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">case</span> HANDLE_PROVIDER_CHANGED: &#123;</div><div class="line">                onProviderChanged(msg.arg1, (AppWidgetProviderInfo)msg.obj);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">case</span> HANDLE_PROVIDERS_CHANGED: &#123;</div><div class="line">                onProvidersChanged();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">case</span> HANDLE_VIEW_DATA_CHANGED: &#123;</div><div class="line">                viewDataChanged(msg.arg1, msg.arg2);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">updateAppWidgetView</span><span class="params">(<span class="keyword">int</span> appWidgetId, RemoteViews views)</span> </span>&#123;</div><div class="line">    AppWidgetHostView v;</div><div class="line">    <span class="keyword">synchronized</span> (mViews) &#123;</div><div class="line">        v = mViews.get(appWidgetId);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (v != <span class="keyword">null</span>) &#123;</div><div class="line">        v.updateAppWidget(views);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里出现了<code>AppWidgetHostView</code>类，估计它就是最终的操作类了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAppWidget</span><span class="params">(RemoteViews remoteViews)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (LOGD) Log.d(TAG, <span class="string">"updateAppWidget called mOld="</span> + mOld);</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> recycled = <span class="keyword">false</span>;</div><div class="line">    View content = <span class="keyword">null</span>;</div><div class="line">    Exception exception = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// Capture the old view into a bitmap so we can do the crossfade.</span></div><div class="line">    <span class="keyword">if</span> (CROSSFADE) &#123;</div><div class="line">        <span class="keyword">if</span> (mFadeStartTime &lt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (mView != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> width = mView.getWidth();</div><div class="line">                <span class="keyword">final</span> <span class="keyword">int</span> height = mView.getHeight();</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    mOld = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);</div><div class="line">                &#125; <span class="keyword">catch</span> (OutOfMemoryError e) &#123;</div><div class="line">                    <span class="comment">// we just won't do the fade</span></div><div class="line">                    mOld = <span class="keyword">null</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (mOld != <span class="keyword">null</span>) &#123;</div><div class="line">                    <span class="comment">//mView.drawIntoBitmap(mOld);</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (remoteViews == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (mViewMode == VIEW_MODE_DEFAULT) &#123;</div><div class="line">            <span class="comment">// We've already done this -- nothing to do.</span></div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        content = getDefaultView();</div><div class="line">        mLayoutId = -<span class="number">1</span>;</div><div class="line">        mViewMode = VIEW_MODE_DEFAULT;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// Prepare a local reference to the remote Context so we're ready to</span></div><div class="line">        <span class="comment">// inflate any requested LayoutParams.</span></div><div class="line">        mRemoteContext = getRemoteContext();</div><div class="line">        <span class="keyword">int</span> layoutId = remoteViews.getLayoutId();</div><div class="line"></div><div class="line">        <span class="comment">// If our stale view has been prepared to match active, and the new</span></div><div class="line">        <span class="comment">// layout matches, try recycling it</span></div><div class="line">        <span class="keyword">if</span> (content == <span class="keyword">null</span> &amp;&amp; layoutId == mLayoutId) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                remoteViews.reapply(mContext, mView, mOnClickHandler);</div><div class="line">                content = mView;</div><div class="line">                recycled = <span class="keyword">true</span>;</div><div class="line">                <span class="keyword">if</span> (LOGD) Log.d(TAG, <span class="string">"was able to recycled existing layout"</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</div><div class="line">                exception = e;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// Try normal RemoteView inflation</span></div><div class="line">        <span class="keyword">if</span> (content == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                content = remoteViews.apply(mContext, <span class="keyword">this</span>, mOnClickHandler);</div><div class="line">                <span class="keyword">if</span> (LOGD) Log.d(TAG, <span class="string">"had to inflate new layout"</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</div><div class="line">                exception = e;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mLayoutId = layoutId;</div><div class="line">        mViewMode = VIEW_MODE_CONTENT;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (content == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (mViewMode == VIEW_MODE_ERROR) &#123;</div><div class="line">            <span class="comment">// We've already done this -- nothing to do.</span></div><div class="line">            <span class="keyword">return</span> ;</div><div class="line">        &#125;</div><div class="line">        Log.w(TAG, <span class="string">"updateAppWidget couldn't find any view, using error view"</span>, exception);</div><div class="line">        content = getErrorView();</div><div class="line">        mViewMode = VIEW_MODE_ERROR;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!recycled) &#123;</div><div class="line">        prepareView(content);</div><div class="line">        addView(content);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (mView != content) &#123;</div><div class="line">        removeView(mView);</div><div class="line">        mView = content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (CROSSFADE) &#123;</div><div class="line">        <span class="keyword">if</span> (mFadeStartTime &lt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="comment">// if there is already an animation in progress, don't do anything --</span></div><div class="line">            <span class="comment">// the new view will pop in on top of the old one during the cross fade,</span></div><div class="line">            <span class="comment">// and that looks okay.</span></div><div class="line">            mFadeStartTime = SystemClock.uptimeMillis();</div><div class="line">            invalidate();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了终于明了了，首先通过<code>layoutId</code>来匹配是否来自同一个<code>RemoteViews</code>如果匹配上则说明此次是更新操作否则就是第一次调用该方法即第一次来填充<code>RemoteViews</code>视图，在这两种条件下我们分别对应调用<code>RemoteViews</code>的<code>reapply</code>和<code>apply</code>方法来更新和填充<code>RemoteViews</code>。现在已经真相大白了，也验证了我们之前的假设在<code>apply</code>加载在<code>reapply</code>中进行更新。</p>
+<p>通过从API操作和Manager正面更新两条线的代码跟进分析，我们已经熟悉了<code>RemoteViews</code>的工作原理，相对来说还是比较简单的，但它的思想是值得学习的，小小的<code>RemoteViews</code>机制也构成了复杂的Android框架的一部分,它运用了java反射机制、IPC本地与远程进程间的通信、并且多次使用Handler进行Message转发操作等一些关键的知识点，这些都是值得每一个开发者熟练掌握并运用。</p>
+<p><a href="https://github.com/IceDcap/RemoteViewsDemo" target="_blank" rel="external">本文源码demo托管在本人的Github仓库中，感兴趣的可以下载查看</a></p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/24/test/" rel="next" title="Android Architecture Collection[转]">
+                <i class="fa fa-chevron-left"></i> Android Architecture Collection[转]
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/12/深入理解Handler机制/" rel="prev" title="深入理解Handler机制">
+                深入理解Handler机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/"
+           data-title="从自定义通知栏和桌面小部件到深入理解RemoteViews" data-url="http://icedcap.github.io/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RemoteViews实际应用"><span class="nav-number">1.</span> <span class="nav-text">RemoteViews实际应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通知栏"><span class="nav-number">1.1.</span> <span class="nav-text">通知栏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面小部件"><span class="nav-number">1.2.</span> <span class="nav-text">桌面小部件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RemoteViews内部机制"><span class="nav-number">2.</span> <span class="nav-text">RemoteViews内部机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews原理简述"><span class="nav-number">2.1.</span> <span class="nav-text">RemoteViews原理简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码分析"><span class="nav-number">2.2.</span> <span class="nav-text">源码分析</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Life is like a boat." />
+  <meta name="keywords" content="构建工具,Android," />
 
 
 
@@ -84,15 +84,30 @@
 
 
 
-<meta name="description" content="Life is like a boat.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ice.D.cap">
-<meta property="og:url" content="http://icedcap.github.io/index.html">
+<meta name="description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：
+    
+
+
+根目录下的settings.build文件在初始化阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle基础篇">
+<meta property="og:url" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/index.html">
 <meta property="og:site_name" content="Ice.D.cap">
-<meta property="og:description" content="Life is like a boat.">
+<meta property="og:description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：
+    
+
+
+根目录下的settings.build文件在初始化阶">
+<meta property="og:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png">
+<meta property="og:updated_time" content="2016-12-10T08:34:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ice.D.cap">
-<meta name="twitter:description" content="Life is like a boat.">
+<meta name="twitter:title" content="Gradle基础篇">
+<meta name="twitter:description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：
+    
+
+
+根目录下的settings.build文件在初始化阶">
+<meta name="twitter:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png">
 
 
 
@@ -113,10 +128,10 @@
 
 
 
-  <link rel="canonical" href="http://icedcap.github.io/"/>
+  <link rel="canonical" href="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/"/>
 
 
-  <title> Ice.D.cap </title>
+  <title> Gradle基础篇 | Ice.D.cap </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -137,9 +152,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -218,9 +231,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -240,10 +253,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/12/10/beginner-gradle-part-two/" itemprop="url">
-                  Gradle基础篇
-                </a>
+                Gradle基础篇
               
             
           </h1>
@@ -309,9 +319,7 @@
       
 
       
-        
-          
-            <a id="more"></a>
+        <a id="more"></a>
 <h1 id="Gradle构建基础"><a href="#Gradle构建基础" class="headerlink" title="Gradle构建基础"></a>Gradle构建基础</h1><p>在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：</p>
 <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png" width="35%"><br></p>
 
@@ -389,1179 +397,61 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">defaultTasks &apos;clean&apos;, &apos;iD&apos;</div></pre></td></tr></table></figure>
 <p>这里我配置了<code>clean</code>和<code>installDebug</code>为默认的任务，每次命令行输入gradle或者./gradlew不加任何任务名时会默认构建<code>clean</code>和<code>installDebug</code>两个任务。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/07/beginner-gradle-part-one/" itemprop="url">
-                  Gradle 前传---- Gradle Wrapper
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-07T21:25:33+08:00" content="2016-12-07">
-              2016-12-07
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/构建工具/" itemprop="url" rel="index">
-                    <span itemprop="name">构建工具</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
+            <a href="/tags/构建工具/" rel="tag">#构建工具</a>
           
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/12/07/beginner-gradle-part-one/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/07/beginner-gradle-part-one/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
+            <a href="/tags/Android/" rel="tag">#Android</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
-
-<p>Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用<code>Gradle Wrapper</code>可以避免这个问题，并且能够保证构建是可重复的。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/07/beginner-gradle-part-one/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/07/beginner-gradle-part-one/" rel="next" title="Gradle 前传---- Gradle Wrapper">
+                <i class="fa fa-chevron-left"></i> Gradle 前传---- Gradle Wrapper
+              </a>
+            
           </div>
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/18/android-mk/" itemprop="url">
-                  JNI开发之Android.mk
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-18T21:44:16+08:00" content="2016-09-18">
-              2016-09-18
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/18/android-mk/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/18/android-mk/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>ndk build脚本Android.mk,是c/c++文件和Android NDK直接的粘合剂。</p>
-<h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p>Android.mk文件位于项目目录jni/下的首层目录，并且描述了你构建系统中的资源以及共享库。它只是GNUmakefile构建复杂系统中的一个小小片段。Android.mk文件定义了Application.mk中设置的项目范围，构建系统以及你离开时未定义的环境变量。它也可以重新为指定的模块重写项目范围的设置。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/18/android-mk/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/28/exploring-the-new-android-permissions-model/" itemprop="url">
-                  新安卓权限机制探索
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-28T20:12:16+08:00" content="2016-08-28">
-              2016-08-28
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/28/exploring-the-new-android-permissions-model/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/28/exploring-the-new-android-permissions-model/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p style="text-align:center"><br>    <img src="http://icedcap.github.io/2016/08/28/exploring-the-new-android-permissions-model/profile-header.jpg"><br></p>
-
-<p>随着Android M 的发布，安卓权限机制无论是对用户呈现方式还是对开发者都发生了变化。本篇文章我将带领大家探索这些变化，探索它是如何提高用户体验，对于开发者又是如何实现这种新权限机制的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/28/exploring-the-new-android-permissions-model/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/22/exploring-meaningful-motion-on-android/" itemprop="url">
-                  安卓酷炫效果探索
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-22T22:02:14+08:00" content="2016-08-22">
-              2016-08-22
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/22/exploring-meaningful-motion-on-android/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/exploring-meaningful-motion-on-android/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>现在很多公司在打造移动产品时都在追求漂亮的、酷炫的用户交互体验。自从在伦敦参加了一场<a href="https://photos.google.com/share/AF1QipMRnZL6gNbS06fnBNtKffRm9HBaxW8iP6w0L1T4nZYLI6s3wi_l8daT6mq4nwPf-w?key=LThZNmFXUUtmNi04bWlEYmVfcWdPenlvaDdCRU13">开发者论坛</a>后，我决定继续深入探讨安卓用户交互的酷炫效果。此时，我将把我的研究成果展示给大家，这篇文章将让大家认识到构建酷炫的安卓交互是非常简单的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/22/exploring-meaningful-motion-on-android/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/08/exploring-the-new-android-design-support-library/" itemprop="url">
-                  Design库探索
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-08T22:02:14+08:00" content="2016-08-08">
-              2016-08-08
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/08/exploring-the-new-android-design-support-library/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/08/exploring-the-new-android-design-support-library/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>我是一个Material设计的忠实粉丝。它提供了一个酷炫的视觉效果，它的一致性和整体性把一个应用变得更容易实现,也更加美观。2015年谷歌IO大会上又为全世界开发者带来Design Support Library，该库的引用使你没有理由不使用<a href="http://www.google.com/design/spec/material-design/introduction.html#">Material设计模式</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/08/exploring-the-new-android-design-support-library/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/07/android-application-architecture/" itemprop="url">
-                  安卓应用架构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-07T22:18:14+08:00" content="2016-08-07">
-              2016-08-07
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/07/android-application-architecture/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/07/android-application-architecture/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><br><font size="4px" color="#7C7C7C">本篇文章将从标准的Activities和AsyncTasks到现代的以RxJava为驱动的基于MVP的架构进行讨论。</font><br/></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/07/android-application-architecture/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/" itemprop="url">
-                  我眼中的数据绑定库以及MVVM架构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-06T18:02:14+08:00" content="2016-08-06">
-              2016-08-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>当去年谷歌IO大会上宣布Data Binding Library时，我就认识到了“oh man, this is the next big thing in Android development”。是的，在发布后的几周里炒的很热，但是到现在又归于平静了。很多开发者都致力于MVP以及Rx系列的架构中，以至于他们没时间去研究数据绑定库。我认为，你不能只是会使用数据绑定库，你需要花些时间去学习它如何架构在你的应用中，并且利用它写出高质量的可测试的安卓应用。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/06/architecting-android-with-data-binding-and-mvvm-in-mind/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/04/approaching-android-with-mvvm/" itemprop="url">
-                  Android Data Binding高级系列之整合MVVM架构
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-04T22:18:14+08:00" content="2016-08-04">
-              2016-08-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/04/approaching-android-with-mvvm/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/04/approaching-android-with-mvvm/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在折腾<em>Android Data Binding</em>库一段时间后，我决定将它应用到<em>Model-View-ViewModel</em>架构中。为了实验这个想法，我和<a href="https://twitter.com/matto1990">@matto1990</a>一起撸了一个应用<a href="https://github.com/hitherejoe/HackerNewsReader">HackerNewsReader</a>,并使用mvvm来实现。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/04/approaching-android-with-mvvm/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/03/loading-images-with-data-binding/" itemprop="url">
-                  Android Data Binding高级系列之图片加载
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-03T21:38:02+08:00" content="2016-08-03">
-              2016-08-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/03/loading-images-with-data-binding/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/03/loading-images-with-data-binding/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>有没有尝试安卓数据绑定库？知道怎么使用它加载图片吗？本篇文章将带来两个例子展示如何加载图片。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/03/loading-images-with-data-binding/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
+  </div>
 
 
           </div>
@@ -1569,6 +459,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/beginner-gradle-part-two/"
+           data-title="Gradle基础篇" data-url="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -1588,8 +486,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/default_avatar.jpg"
@@ -1668,6 +575,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle构建基础"><span class="nav-number">1.</span> <span class="nav-text">Gradle构建基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle任务和简单的自定义构建"><span class="nav-number">2.</span> <span class="nav-text">Gradle任务和简单的自定义构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BuildConfig设置"><span class="nav-number">2.1.</span> <span class="nav-text">BuildConfig设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目范围设置"><span class="nav-number">2.2.</span> <span class="nav-text">项目范围设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目属性"><span class="nav-number">2.3.</span> <span class="nav-text">项目属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认任务配置"><span class="nav-number">2.4.</span> <span class="nav-text">默认任务配置</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -1771,6 +689,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 

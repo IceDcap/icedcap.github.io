@@ -87,18 +87,19 @@
 <meta name="description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gradle基础篇">
-<meta property="og:url" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/index.html">
+<meta property="og:url" content="http://icedcap.github.io/2016/11/01/beginner-gradle-part-two/index.html">
 <meta property="og:site_name" content="Ice.D.cap">
 <meta property="og:description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/source-sets.png">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/variant.png">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/variant-filter.png">
-<meta property="og:updated_time" content="2016-12-17T01:37:51.000Z">
+<meta property="og:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-file-location.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/source-sets.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/variant.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/variant-filter.png">
+<meta property="og:updated_time" content="2016-12-18T06:17:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gradle基础篇">
 <meta name="twitter:description" content="Gradle构建基础在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：">
-<meta name="twitter:image" content="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png">
+<meta name="twitter:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
 
 
 
@@ -119,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/"/>
+  <link rel="canonical" href="http://icedcap.github.io/2016/11/01/beginner-gradle-part-two/"/>
 
 
   <title> Gradle基础篇 | Ice.D.cap </title>
@@ -256,8 +257,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-10T21:10:33+08:00" content="2016-12-10">
-              2016-12-10
+            <time itemprop="dateCreated" datetime="2016-11-01T21:10:33+08:00" content="2016-11-01">
+              2016-11-01
             </time>
           </span>
 
@@ -286,8 +287,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/10/beginner-gradle-part-two/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/beginner-gradle-part-two/" itemprop="commentsCount"></span>
+                <a href="/2016/11/01/beginner-gradle-part-two/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/01/beginner-gradle-part-two/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,8 +311,10 @@
       
 
       
-        <h1 id="Gradle构建基础"><a href="#Gradle构建基础" class="headerlink" title="Gradle构建基础"></a>Gradle构建基础</h1><p>在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：<br><a id="more"></a></p>
-<p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/gradle-file-location.png" width="35%"><br></p>
+        <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+
+<h1 id="Gradle构建基础"><a href="#Gradle构建基础" class="headerlink" title="Gradle构建基础"></a>Gradle构建基础</h1><p>在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：<br><a id="more"></a></p>
+<p style="text-align: center;"><br>    <img src="pic/gradle-file-location.png" width="35%"><br></p>
 
 <ul>
 <li>根目录下的settings.build文件在初始化阶段被执行，并且定义了那些模块应该包含在构建内<ul>
@@ -431,7 +434,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">        ...</div><div class="line">        staging.initWith(buildTypes.debug)</div><div class="line">        staging &#123;</div><div class="line">            applicationIdSuffix <span class="string">".staging"</span></div><div class="line">            versionNameSuffix <span class="string">"-staging"</span></div><div class="line">            debuggable <span class="keyword">false</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p><code>initWith()</code>方法创建一个新的构建类型，并且复制了一个已经存在的构建类型的所有属性到新的构建类型中。</p>
 <p>无论是多构建类型还是多product flavor的定义都会产生多个sourceSet来存放这些不同构建类型和不同产品定制之间的不同资源文件，例如，一个<em>Constants.java</em>类文件在不同构建类型下肯定是不同的或者每个构建类型或定制产品的首页布局有所不同等等。</p>
-<p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/source-sets.png" width="40%"><br></p>
+<p style="text-align: center;"><br>    <img src="pic/source-sets.png" width="40%"><br></p>
 
 <p>这里提出一个问题当我在定义product flavor时也会定义不同的sourceSets，当在构建不同的的版本时比如付费版release版时这些源集是如何合并的呢？哈哈，先挖个坑，之后再填！</p>
 <p>对于依赖来说，比如我只想在debug版本中添加logging框架怎么办？很简单上小节<a href="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/#依赖管理">依赖管理</a>我们也讲到了使用debugCompile的scope。</p>
@@ -442,7 +445,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">flavorDimensions <span class="string">"color"</span>, <span class="string">"price"</span></div><div class="line">    productFlavors &#123;</div><div class="line">        red &#123;</div><div class="line">            flavorDimension <span class="string">"color"</span></div><div class="line">            applicationId <span class="string">'com.example.red'</span></div><div class="line">            versionCode <span class="number">3</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        blue &#123;</div><div class="line">            flavorDimension <span class="string">"color"</span></div><div class="line">            applicationId <span class="string">'com.example.blue'</span></div><div class="line">            versionCode <span class="number">4</span></div><div class="line">            minSdkVersion <span class="number">14</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        free &#123;</div><div class="line">            flavorDimension <span class="string">"price"</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        paid &#123;</div><div class="line">            flavorDimension <span class="string">"price"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>有了维度就意味着构建版本又可以组合为新的构建版本对于不同flavor配置了相同的属性那么就会按照维度设置的顺序进行覆盖。例如上面的color维度的属性将会覆盖price维度的属性。</p>
 <h2 id="构建variant"><a href="#构建variant" class="headerlink" title="构建variant"></a>构建variant</h2><p>好了，开始填补上面挖的坑了。<br>构建variant就是构建这些构建类型和productflavor的结合体，在我机器上配置了两个维度的productflavor和两个构建类型，然后分别生成如下的构建variant：</p>
-<p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/variant.png" width="60%"><br></p>
+<p style="text-align: center;"><br>    <img src="pic/variant.png" width="60%"><br></p>
 
 <p>有了构建variant就可以使用gradle命令构建了（IDE也有相应的按钮进行构建，不过笔者更喜欢全程使用命令行）。一个Android项目默认有debug和release两种构建类型所以可以使用<code>gradle assembleDebug</code>和<code>gradle assembleRelease</code>来分别构建两个版本的apk，单独使用<code>gradle assemble</code>命令是构建这两个版本的apk。当又定义了productflavor后呢？我们可以使用<code>gradle assembleRed</code>来构建red版的debug和release两个apk。使用<code>gradle assembleDebug</code>可以生产red版和blue版的测试版本apk，而使用<code>gradle assembleBlueDebug</code>只会生成blue的release版本。</p>
 <p><strong>多版本结合如何合并sourceSets中的资源呢？</strong><br>多版本结合后的sourceSet资源是按照一定的优先级进行合并覆盖的。首先Gradle的Android插件在打包应用之前将main文件夹下的代码和构建类型sourceSet下的代码合并在一起，此外library项目也可以提供额外的资源，这些也需要合并。这样同样适用于manifest文件。例如在应用的debug variant中可能需要额外的Android权限来存储log文件，而你不想在main里中声明该权限，因为会吓跑用户。相反可以在debug版本中单独定义sourceSet把该权限放到这个sourceSet中。所以资源以及manifest的有限构建顺序如下：</p>
@@ -454,7 +457,7 @@
 <p>最后，所有的variant可以通过过滤来构建。比如如下配置：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">android.variantFilter &#123; variant -&gt;</div><div class="line">    <span class="keyword">if</span> (variant.buildType.name.equals(<span class="string">'release'</span>)) &#123;</div><div class="line">        variant.getFlavors().each() &#123; flavor -&gt;</div><div class="line">            <span class="keyword">if</span> (flavor.name.equals(<span class="string">'blue'</span>)) &#123;</div><div class="line">                variant.setIgnore(<span class="keyword">true</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这时候我在查看我的所有variant如下：</p>
-<p></p><p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/pic/variant-filter.png" width="60%"><br></p><br>很显然过滤掉了release和blue的结合variant。<p></p>
+<p></p><p style="text-align: center;"><br>    <img src="pic/variant-filter.png" width="60%"><br></p><br>很显然过滤掉了release和blue的结合variant。<p></p>
 <h1 id="签名配置"><a href="#签名配置" class="headerlink" title="签名配置"></a>签名配置</h1><p>对于签名配置来说比较简单，代码如下：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">signingConfigs&#123;</div><div class="line">    release &#123;</div><div class="line">        keyAlias <span class="string">'myapp.keystore'</span></div><div class="line">        keyPassword <span class="string">'xxx'</span></div><div class="line">        storePassword <span class="string">'xxx'</span></div><div class="line">        storeFile file(<span class="string">'myapp.keystore'</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">buildTypes &#123;</div><div class="line">    ...</div><div class="line">    release &#123;</div><div class="line">        signingConfig signingConfigs.release</div><div class="line">        minifyEnabled <span class="keyword">false</span></div><div class="line">        proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
@@ -490,13 +493,17 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/07/beginner-gradle-part-one/" rel="next" title="Gradle 前传---- Gradle Wrapper">
-                <i class="fa fa-chevron-left"></i> Gradle 前传---- Gradle Wrapper
+              <a href="/2016/10/30/beginner-gradle-part-one/" rel="next" title="Gradle前传">
+                <i class="fa fa-chevron-left"></i> Gradle前传
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/26/beginner-gradle-part-three/" rel="prev" title="Gradle高级篇">
+                Gradle高级篇 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -522,8 +529,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/10/beginner-gradle-part-two/"
-           data-title="Gradle基础篇" data-url="http://icedcap.github.io/2016/12/10/beginner-gradle-part-two/">
+      <div class="ds-thread" data-thread-key="2016/11/01/beginner-gradle-part-two/"
+           data-title="Gradle基础篇" data-url="http://icedcap.github.io/2016/11/01/beginner-gradle-part-two/">
       </div>
     
   </div>
@@ -568,7 +575,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

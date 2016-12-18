@@ -241,8 +241,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/12/10/beginner-gradle-part-two/" itemprop="url">
-                  Gradle基础篇
+                <a class="post-title-link" href="/2016/11/26/beginner-gradle-part-three/" itemprop="url">
+                  Gradle高级篇
                 </a>
               
             
@@ -255,8 +255,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-10T21:10:33+08:00" content="2016-12-10">
-              2016-12-10
+            <time itemprop="dateCreated" datetime="2016-11-26T23:20:39+08:00" content="2016-11-26">
+              2016-11-26
             </time>
           </span>
 
@@ -285,8 +285,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/10/beginner-gradle-part-two/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/beginner-gradle-part-two/" itemprop="commentsCount"></span>
+                <a href="/2016/11/26/beginner-gradle-part-three/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/beginner-gradle-part-three/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,9 +310,11 @@
 
       
         
-          <h1 id="Gradle构建基础"><a href="#Gradle构建基础" class="headerlink" title="Gradle构建基础"></a>Gradle构建基础</h1><p>在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：<br>
+          <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+
+<p>本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/10/beginner-gradle-part-two/#more" rel="contents">
+            <a class="btn" href="/2016/11/26/beginner-gradle-part-three/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -363,8 +365,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/12/07/beginner-gradle-part-one/" itemprop="url">
-                  Gradle 前传---- Gradle Wrapper
+                <a class="post-title-link" href="/2016/11/01/beginner-gradle-part-two/" itemprop="url">
+                  Gradle基础篇
                 </a>
               
             
@@ -377,8 +379,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-07T21:25:33+08:00" content="2016-12-07">
-              2016-12-07
+            <time itemprop="dateCreated" datetime="2016-11-01T21:10:33+08:00" content="2016-11-01">
+              2016-11-01
             </time>
           </span>
 
@@ -407,8 +409,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/07/beginner-gradle-part-one/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/07/beginner-gradle-part-one/" itemprop="commentsCount"></span>
+                <a href="/2016/11/01/beginner-gradle-part-two/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/01/beginner-gradle-part-two/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -432,11 +434,135 @@
 
       
         
-          <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+          <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+
+<h1 id="Gradle构建基础"><a href="#Gradle构建基础" class="headerlink" title="Gradle构建基础"></a>Gradle构建基础</h1><p>在AndroidStudio创建一个安卓项目时会自动生成三个Gradle文件，其中两个build.gradle和一个settings.gradle文件。他们的后缀都是.gradle，并且如果在项目中创建一个module也会随之生成一个build.gradle文件。初始化后的这三个gradle文件结构如下所示：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/01/beginner-gradle-part-two/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/30/beginner-gradle-part-one/" itemprop="url">
+                  Gradle前传
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-30T21:25:33+08:00" content="2016-10-30">
+              2016-10-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/构建工具/" itemprop="url" rel="index">
+                    <span itemprop="name">构建工具</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/30/beginner-gradle-part-one/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/30/beginner-gradle-part-one/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
 
 <p>Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用<code>Gradle Wrapper</code>可以避免这个问题，并且能够保证构建是可重复的。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/07/beginner-gradle-part-one/#more" rel="contents">
+            <a class="btn" href="/2016/10/30/beginner-gradle-part-one/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1359,128 +1485,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/03/loading-images-with-data-binding/" itemprop="url">
-                  Android Data Binding高级系列之图片加载
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-03T21:38:02+08:00" content="2016-08-03">
-              2016-08-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/03/loading-images-with-data-binding/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/03/loading-images-with-data-binding/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>有没有尝试安卓数据绑定库？知道怎么使用它加载图片吗？本篇文章将带来两个例子展示如何加载图片。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/03/loading-images-with-data-binding/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1526,7 +1530,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

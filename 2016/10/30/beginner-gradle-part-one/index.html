@@ -86,18 +86,18 @@
 
 <meta name="description" content="Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用Gradle Wrapper可以避免这个问题，并且能够保证构建是可重复的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Gradle 前传---- Gradle Wrapper">
-<meta property="og:url" content="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/index.html">
+<meta property="og:title" content="Gradle前传">
+<meta property="og:url" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/index.html">
 <meta property="og:site_name" content="Ice.D.cap">
 <meta property="og:description" content="Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用Gradle Wrapper可以避免这个问题，并且能够保证构建是可重复的。">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_logo.png">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/as_project_ structure.png">
-<meta property="og:image" content="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_wrapper_generate.png">
-<meta property="og:updated_time" content="2016-12-10T06:51:07.000Z">
+<meta property="og:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/as_project_ structure.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle_wrapper_generate.png">
+<meta property="og:updated_time" content="2016-12-18T06:19:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Gradle 前传---- Gradle Wrapper">
+<meta name="twitter:title" content="Gradle前传">
 <meta name="twitter:description" content="Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用Gradle Wrapper可以避免这个问题，并且能够保证构建是可重复的。">
-<meta name="twitter:image" content="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_logo.png">
+<meta name="twitter:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
 
 
 
@@ -118,10 +118,10 @@
 
 
 
-  <link rel="canonical" href="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/"/>
+  <link rel="canonical" href="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/"/>
 
 
-  <title> Gradle 前传---- Gradle Wrapper | Ice.D.cap </title>
+  <title> Gradle前传 | Ice.D.cap </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -243,7 +243,7 @@
             
             
               
-                Gradle 前传---- Gradle Wrapper
+                Gradle前传
               
             
           </h1>
@@ -255,8 +255,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-07T21:25:33+08:00" content="2016-12-07">
-              2016-12-07
+            <time itemprop="dateCreated" datetime="2016-10-30T21:25:33+08:00" content="2016-10-30">
+              2016-10-30
             </time>
           </span>
 
@@ -285,8 +285,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/07/beginner-gradle-part-one/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/07/beginner-gradle-part-one/" itemprop="commentsCount"></span>
+                <a href="/2016/10/30/beginner-gradle-part-one/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/30/beginner-gradle-part-one/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -309,13 +309,13 @@
       
 
       
-        <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+        <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
 
 <p>Gradle是一个不断迭代的工具，往往在一个新版本的使用上会打破向后兼容问题，这时候使用<code>Gradle Wrapper</code>可以避免这个问题，并且能够保证构建是可重复的。<br><a id="more"></a></p>
 <p>Grdle Wrapper分别为各个操作系统提供了执行工具，Windows上是一个batch文件，而Linux/Unix是一个shell脚本。当运行这个脚本的时候，所需要的Gradle版本会自动下载到本地，当然如果已经下载过了，他就会直接使用该版本的Gradle进行构建工作。Gradle Wrapper存在的意义就是它可以不借助开发者机器或者自构建系统依然可以运行Wrapper，然后由Wrapper搞定剩余的部分。因此，在开发者的机器上或者构建服务器上没有安装正确的Gradle依然可以通过Wrapper进行构建。此外，Gradle还建议把Wrapper文件添加到你的版本控制系统中。</p>
 <p><strong>注意：</strong>运行Gradle Wrapper和直接运行Gradle进行构建是没什么不同的。</p>
 <h1 id="Gradle-Wrapper的获取"><a href="#Gradle-Wrapper的获取" class="headerlink" title="Gradle Wrapper的获取"></a>Gradle Wrapper的获取</h1><p>当使用Android Studio创建一个项目时，IDE会自动为你生成一个Gradle Wrapper的文件夹，如下图所示：</p>
-<p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/as_project_ structure.png" width="50%"><br></p>
+<p style="text-align: center;"><br>    <img src="pic/as_project_ structure.png" width="50%"><br></p>
 
 <p>图中可以看到gradle目录下的wrapper包含两个文件一个是<code>gradle-wrapper.jar</code>一个是<code>gradle-wrapper.properties</code>，当然在项目的根目录下还包括<code>gradlew</code>和<code>gradlew.bat</code>两个执行文件，总共这四个文件及其目录结构就是Gradle Wrapper的全部相关内容。</p>
 <p>如果脱离了Android Studio来进行项目构建怎么办呢？答案当然是选用Gradle Wrapper了。但是首要问题还是如何生成类似于Android Studio那样自动生成的Wrapper文件呢？其实还是要先安装Gradle的，然后才能得到Wrapper。</p>
@@ -327,7 +327,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">task wrapper(type: Wrapper) &#123;</div><div class="line">    gradleVersion = &apos;2.14.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>执行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradle wrapper</div></pre></td></tr></table></figure></p>
 <p>从而生成wrapper环境：</p>
-<p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/pic/gradle_wrapper_generate.png" width="50%"><br></p>
+<p style="text-align: center;"><br>    <img src="pic/gradle_wrapper_generate.png" width="50%"><br></p>
 
 <p>当然在Gradle后续的版本中已经内置了wrapper任务，所以可以不使用<code>build.gradle</code>配置文件而是通过如下命令来生成Wrapper环境</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradle wrapper --gradle-version 2.14.1</div></pre></td></tr></table></figure>
@@ -398,7 +398,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/12/10/beginner-gradle-part-two/" rel="prev" title="Gradle基础篇">
+              <a href="/2016/11/01/beginner-gradle-part-two/" rel="prev" title="Gradle基础篇">
                 Gradle基础篇 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -426,8 +426,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/07/beginner-gradle-part-one/"
-           data-title="Gradle 前传---- Gradle Wrapper" data-url="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/">
+      <div class="ds-thread" data-thread-key="2016/10/30/beginner-gradle-part-one/"
+           data-title="Gradle前传" data-url="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/">
       </div>
     
   </div>
@@ -472,7 +472,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

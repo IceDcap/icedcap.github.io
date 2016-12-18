@@ -1,0 +1,715 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="构建工具,Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle高级篇">
+<meta property="og:url" content="http://icedcap.github.io/2016/11/26/beginner-gradle-part-three/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta property="og:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle_advance_build_optimize.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-profiling.png">
+<meta property="og:updated_time" content="2016-12-18T06:18:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle高级篇">
+<meta name="twitter:description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta name="twitter:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://icedcap.github.io/2016/11/26/beginner-gradle-part-three/"/>
+
+
+  <title> Gradle高级篇 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Gradle高级篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-26T23:20:39+08:00" content="2016-11-26">
+              2016-11-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/构建工具/" itemprop="url" rel="index">
+                    <span itemprop="name">构建工具</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/26/beginner-gradle-part-three/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/beginner-gradle-part-three/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
+
+<p>本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。</p>
+<a id="more"></a>
+<h1 id="多模块项目构建"><a href="#多模块项目构建" class="headerlink" title="多模块项目构建"></a>多模块项目构建</h1><h1 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h1><h1 id="Groovy入门与自定义插件和任务"><a href="#Groovy入门与自定义插件和任务" class="headerlink" title="Groovy入门与自定义插件和任务"></a>Groovy入门与自定义插件和任务</h1><h1 id="高级自定义构建"><a href="#高级自定义构建" class="headerlink" title="高级自定义构建"></a>高级自定义构建</h1><p><a href="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/#Gradle任务和简单的自定义构建">基础篇</a>中已经介绍了一些基础的自定义构建包括构建版本、BuildConfig的使用、默认任务等。对于高级自定义构建主要是针对APK优化、构建速度、以及Lint进行自定义构建。</p>
+<h2 id="APK瘦身"><a href="#APK瘦身" class="headerlink" title="APK瘦身"></a>APK瘦身</h2><p>随着项目的迭代APK的大小也是有增无减，而且大部分的APK都有缩减size的潜力。这时我们要明白APK增大的原因有哪些？首先不可避免的是新需求导致更多的功能注入其次是很多时候为了快速迭代使用了一些比较重的依赖库最后就是增加了很多资源密度并且有的未被使用到。所以我们要针对后两点为apk瘦身。</p>
+<h3 id="混淆器ProGuard"><a href="#混淆器ProGuard" class="headerlink" title="混淆器ProGuard"></a>混淆器ProGuard</h3><p>ProGuard是一个Java工具，它不仅可以缩减APK的大小，还可以在编译期优化、混淆和预校验你的代码。它通过应用中所有的代码路径来找到未被使用的代码，并将其删除，不仅这样他还会重命名类和字段来进行混淆，使得逆向工程师更难理解代码。</p>
+<p>好了如何开启ProGuard呢？在构建类型中有一个<code>minifyEnabled</code>的布尔类型属性将它设为true即表示开启ProGuard。并且在构建release版本时<code>proguardRelease</code>任务会被执行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">    release &#123;</div><div class="line">        minifyEnabled <span class="keyword">true</span></div><div class="line">        proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>值得注意的是，当开启ProGuard后在构建APK时很有可能删除一些你不希望被删除的代码，导致应用运行崩溃，这也是很多工程师不愿意使用它的原因。为了解决这个问题，你需要定义ProGuard规则，排除那些被删除或混淆的类。我们可以使用<code>proguardFiles</code>属性来定义ProGuard规则的文件。例如，为了保留一个类，你可以像下面这样添加一条简单的规则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-keep public class &lt;MyClass&gt;</div></pre></td></tr></table></figure>
+<p><code>getDefaultProguardFile(&#39;proguard-android.txt&#39;)</code>方法从Android SDK的tools/proguard文件夹下的proguard-android.txt文件中获取默认的ProGuard设置，除此之外，在单个模块下还有<code>proguard-rules.pro</code>文件来记录ProGuard规则，所以你可以在该文件下定义那些类不需要混淆或者不需要删除。</p>
+<blockquote>
+<p>有关ProGuard更多内容访问官方文档<a href="http://developer.android.com/tools/help/proguard.html" target="_blank" rel="external">http://developer.android.com/tools/help/proguard.html</a></p>
+</blockquote>
+<h3 id="资源缩减"><a href="#资源缩减" class="headerlink" title="资源缩减"></a>资源缩减</h3><p>当给APK打包时，Gradle和Gradle的Android插件可以在构建期间删除所有未使用的资源。如果你有旧的资源忘记删除，那么这个功能非常有用。另外一个当加入很多资源依赖库时而只使用其中一小部分那么可以定义配置来打包使用到的资源。</p>
+<p>首先可以使用<code>shrinkResources</code>属性，将其设为true时，在构建过程中会自动判断哪些资源没有被使用并将其排除在APK之外。</p>
+<p>使用该功能有一个前提就是必须开启ProGuard。因为缩减资源的工作方式是直到代码引用这些资源被删除之前，Android构建工具不能指出哪些资源没有被用到。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">    release &#123;</div><div class="line">        minifyEnabled <span class="keyword">true</span></div><div class="line">        shrinkResources <span class="keyword">true</span></div><div class="line">        proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果想要看到资源到底在构建后缩减了多少，那么可以使用<code>sharinkReleaseResources</code>任务来打印出包缩小的信息。</p>
+<p>当然也可以通过构建命令添加<code>--info</code>标志，来获得APK缩减资源的概览：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradlew clean assembleRelease --info</div></pre></td></tr></table></figure>
+<p>这种方式可以移除过多的资源，特别是那些被动态使用的资源可能被意外的删除，为了防止这种情况的发生，可以在res/raw/下创建keep.xml文件，并且定义这些例外：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="tag">&lt;<span class="name">resources</span> <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></span></div><div class="line">    <span class="attr">tools:keep</span>=<span class="string">"@layout/keep_me,@layout/also_used_*"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>keep.xml文件本身也会在最终结果中剥离出来。</p>
+<p>除了使用<code>shrinkResources</code>外还可以在<code>defaultConfig</code>中使用<code>resConfig</code>属性来配置要保留的资源。例如某一个依赖库中含有世界各国的语言资源包，而我们只需要英文和中文的支持并不想将其他的语言也打包到APK中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultConfig &#123;</div><div class="line">        resConfigs <span class="string">"en"</span>, <span class="string">"zh-rCN"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="加速构建"><a href="#加速构建" class="headerlink" title="加速构建"></a>加速构建</h2><p>提高构建速度也算是高级自定义构建的核心内容了，通过前两篇的Gradle介绍，我们知道Gradle构建是分为三个阶段的：配置阶段、模块依赖阶段、任务执行阶段。所以构建提速也要从这三个阶段入手。</p>
+<h3 id="Gradle参数或者AndroidStudio设置"><a href="#Gradle参数或者AndroidStudio设置" class="headerlink" title="Gradle参数或者AndroidStudio设置"></a>Gradle参数或者AndroidStudio设置</h3><p>Gradle和AndroidStudio都在一下三个方面为构建提速提供了支持：</p>
+<ul>
+<li>并行构建</li>
+<li>首次构建启动Gradle daemon，下次构建时省去进程启动过程</li>
+<li>调整Java虚拟机参数来加速编译过程</li>
+<li>多模块可配属性Configure on demand</li>
+</ul>
+<p></p><p style="text-align: center;"><br>    <img src="pic/gradle_advance_build_optimize.png" width="100%"><br></p><br>上图中使用AndroidStudio的设置可以看到Configure on demand挑勾了，它是默认开启的。在grade中可以在gradle.propertes文件中设置如下：<p></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">org.gradle.configureondemand=true</div></pre></td></tr></table></figure>
+<p>这句话表示它会忽略正在执行的task不需要的模块来限制在配置阶段的时间消化。</p>
+<p>除了configureondemand外同样在gradle.propertes文件下设置是否开启并行构建、是否开启daemon、配置Java虚拟机参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">org.gradle.parallel=true</div><div class="line">org.gradle.daemon=true</div><div class="line">org.gradle.jvmargs=-Xms256m -Xmx1024m</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong>Xms参数用来设置初始内存大小，Xmx用来设置最大内存。</p>
+<blockquote>
+<p>如果想将这些属性设置为系统级别，从而适用到本台机器上的所有Gradle项目上。那么你可以在Gradle的home文件夹下配置gradle.properties文件。grade的home目录通常位于系统的home目录下的.gradle隐藏文件下。对于Windows来说位于%UserProfile%.gradle下。</p>
+</blockquote>
+<h3 id="构建过程profile报告"><a href="#构建过程profile报告" class="headerlink" title="构建过程profile报告"></a>构建过程profile报告</h3><p>如果想找出构建中让速度变慢的真正原因，那么可以拆分整个构建过程。并为其生成一份构建报告。使用–profile标志就可以实现这一点。通常生成的报告为html格式并位于根目录下的build/reports/profile下：</p>
+<p><img src="pic/gradle-advance-profiling.png" alt="profile report"></p>
+<h3 id="Jack-amp-Jill"><a href="#Jack-amp-Jill" class="headerlink" title="Jack&amp;Jill"></a>Jack&amp;Jill</h3><p>Jack和Jill是实验工具从构建工具21.1.1以及Gradle插件1.0.0以后引入。</p>
+<p>Jack（Java Android Compiler kit）是一个新的Android构建工具链，其可以直接编译Java源码为Android Dalvik的可执行格式。它有自己的.jack依赖库格式，也采用了打包和缩减。Jill（Jack Intermediate Library Linker）是一个可以将.aar和.jar文件转换成.jack依赖库的工具。这些工具还在试验阶段。可用来简化Android构建过程并且缩短构建时间，但是不建议在项目生产中使用该工具进行构建。使用Jack和Jill可以通过<code>useJack</code>属性开启：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    buildToolsRevision <span class="string">'22.0.1'</span> <span class="comment"># 必须21.1.1以上并且插件版本大于等于1.0.0</span></div><div class="line">    defaultConfig &#123;</div><div class="line">        useJack <span class="keyword">true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也可以单独应用在不同的构建脚本中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    productFlavors &#123;</div><div class="line">        regular &#123;</div><div class="line">            useJack = <span class="keyword">false</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        experimental &#123;</div><div class="line">            useJack = <span class="keyword">true</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>只要设置了<code>useJack</code>为true，就再也不能通过ProGuard进行缩小和混淆了，但是仍然可以使用ProGuard的语法规则来指定某些规则和异常。</p>
+<h2 id="Lint"><a href="#Lint" class="headerlink" title="Lint"></a>Lint</h2><p>当通过Gradle执行一个release任务时，代码就会执行一个Lint检查。Lint是一种静态代码分析工具，它会在你的布局和Java代码中标记潜在的bug。在某些情况下甚至会阻塞整个构建过程，当然可以通过<code>abortOnError</code>属性来配置是否阻塞整个构建过程：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnerror <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述配置对于一个非Gradle项目迁移到Gradle的项目来说非常重要，因为迁移到Gradle项目上一般会存在一些潜在的bug例如.9图片不正确亦或是资源文件不全都会被Lint检查出来导致构架中断。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/构建工具/" rel="tag">#构建工具</a>
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/01/beginner-gradle-part-two/" rel="next" title="Gradle基础篇">
+                <i class="fa fa-chevron-left"></i> Gradle基础篇
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/26/beginner-gradle-part-three/"
+           data-title="Gradle高级篇" data-url="http://icedcap.github.io/2016/11/26/beginner-gradle-part-three/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多模块项目构建"><span class="nav-number">1.</span> <span class="nav-text">多模块项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行测试"><span class="nav-number">2.</span> <span class="nav-text">运行测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy入门与自定义插件和任务"><span class="nav-number">3.</span> <span class="nav-text">Groovy入门与自定义插件和任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级自定义构建"><span class="nav-number">4.</span> <span class="nav-text">高级自定义构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APK瘦身"><span class="nav-number">4.1.</span> <span class="nav-text">APK瘦身</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#混淆器ProGuard"><span class="nav-number">4.1.1.</span> <span class="nav-text">混淆器ProGuard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源缩减"><span class="nav-number">4.1.2.</span> <span class="nav-text">资源缩减</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速构建"><span class="nav-number">4.2.</span> <span class="nav-text">加速构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle参数或者AndroidStudio设置"><span class="nav-number">4.2.1.</span> <span class="nav-text">Gradle参数或者AndroidStudio设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建过程profile报告"><span class="nav-number">4.2.2.</span> <span class="nav-text">构建过程profile报告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jack-amp-Jill"><span class="nav-number">4.2.3.</span> <span class="nav-text">Jack&Jill</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lint"><span class="nav-number">4.3.</span> <span class="nav-text">Lint</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

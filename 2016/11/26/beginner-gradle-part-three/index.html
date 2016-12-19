@@ -84,19 +84,24 @@
 
 
 
-<meta name="description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta name="description" content="本篇介绍Gradle的高级玩法，主要包括多模块项目构建、测试任务构建、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gradle高级篇">
 <meta property="og:url" content="http://icedcap.github.io/2016/11/26/beginner-gradle-part-three/index.html">
 <meta property="og:site_name" content="Ice.D.cap">
-<meta property="og:description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta property="og:description" content="本篇介绍Gradle的高级玩法，主要包括多模块项目构建、测试任务构建、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
 <meta property="og:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-junit.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-test-report.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-android-test.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-android-test-report.png">
+<meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-converage.png">
 <meta property="og:image" content="http://icedcap.github.io/pic/gradle_advance_build_optimize.png">
 <meta property="og:image" content="http://icedcap.github.io/pic/gradle-advance-profiling.png">
-<meta property="og:updated_time" content="2016-12-18T06:18:07.000Z">
+<meta property="og:updated_time" content="2016-12-18T14:09:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gradle高级篇">
-<meta name="twitter:description" content="本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
+<meta name="twitter:description" content="本篇介绍Gradle的高级玩法，主要包括多模块项目构建、测试任务构建、Groovy入门与自定义插件和任务，最后是高级自定义构建。">
 <meta name="twitter:image" content="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png">
 
 
@@ -311,9 +316,51 @@
       
         <p style="text-align: center;"><br>    <img src="http://icedcap.github.io/2016/10/30/beginner-gradle-part-one/pic/gradle_logo.png"><br></p>
 
-<p>本篇介绍Gradle的高级应用，主要包括多模块项目构建、运行测试、Groovy入门与自定义插件和任务，最后是高级自定义构建。</p>
+<p>本篇介绍Gradle的高级玩法，主要包括多模块项目构建、测试任务构建、Groovy入门与自定义插件和任务，最后是高级自定义构建。</p>
 <a id="more"></a>
-<h1 id="多模块项目构建"><a href="#多模块项目构建" class="headerlink" title="多模块项目构建"></a>多模块项目构建</h1><h1 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h1><h1 id="Groovy入门与自定义插件和任务"><a href="#Groovy入门与自定义插件和任务" class="headerlink" title="Groovy入门与自定义插件和任务"></a>Groovy入门与自定义插件和任务</h1><h1 id="高级自定义构建"><a href="#高级自定义构建" class="headerlink" title="高级自定义构建"></a>高级自定义构建</h1><p><a href="http://icedcap.github.io/2016/12/07/beginner-gradle-part-one/#Gradle任务和简单的自定义构建">基础篇</a>中已经介绍了一些基础的自定义构建包括构建版本、BuildConfig的使用、默认任务等。对于高级自定义构建主要是针对APK优化、构建速度、以及Lint进行自定义构建。</p>
+<h1 id="多模块项目构建"><a href="#多模块项目构建" class="headerlink" title="多模块项目构建"></a>多模块项目构建</h1><p>to be continue</p>
+<h1 id="测试任务的构建"><a href="#测试任务的构建" class="headerlink" title="测试任务的构建"></a>测试任务的构建</h1><p>测试主要包括单元测试、功能测试以及测试覆盖率。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>JUnit是一个非常受欢迎的单元测试依赖库，已经有十几年的历史了。它可以很容易的编写测试，同时确保他们的可读性。</p>
+<blockquote>
+<p><strong>注意：</strong>单元测试用例只对业务逻辑有效，对和Android SDK相关的代码无效。</p>
+</blockquote>
+<p>当使用AndroidStudio创建一个新项目时，它会默认使用JUnit单元测试库，并在build.gradle加入JUnit依赖库以及创建相应的test文件夹。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    ...</div><div class="line">    testCompile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p style="text-align: center;"><br>    <img src="pic/gradle-advance-junit.png" width="60%"><br></p>
+
+<p>这里的依赖scope使用的是<code>testCompile</code>可以保证依赖库只在运行测试时构建，正式打包apk时不会将JUnit打包进去。</p>
+<p>如果只想在某一个构建版本中使用JUnit，可以更改依赖scope。例如为自定义flavor版本paid依赖JUnit库：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    testPaidCompile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编写完测试用例后就可以使用<code>gradlew test</code>进行所有的测试了。如果只想测试某一个测试版本，比如debug可以使用<code>gradlew testDebug</code>进行该版本的测试。如果一个测试用例失败了，则Gradle会在命令行界面上打印错误信息。如果所有的测试用例都运行成功则Gradle会打印<strong>BUILD SUCCESSFUL</strong>信息。</p>
+<p>如果测试在一开始就失败了，那么它会中断接下来的测试，也就是说后面的测试用例无法被执行，这时可以使用<code>-containue</code>标记来避免构建中断：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradlew test -<span class="keyword">continue</span></div></pre></td></tr></table></figure>
+<p>测试用例运行成功后还会在build/reports/tests目录下为每一个构建版本生成各自的测试报告，如下：</p>
+<p style="text-align: center;"><br>    <img src="pic/gradle-advance-test-report.png" width="100%"><br></p>
+
+
+<h2 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h2><p>功能测试用于测试应用中的几个组件是否可以一起正常工作。例如，你可以创建一个功能测试用例来确认某个按钮是否打开了一个新的Activity。Android中有几个功能测试框架，但最简单最基础的测试框架是<strong>Espresso</strong>框架。</p>
+<p>和单元测试一样AndroidStudio在创建项目的时候就已将依赖了Espresso库并且在androidTest目录下创建了相应的功能测试类。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(dir: <span class="string">'libs'</span>, <span class="keyword">include</span>: [<span class="string">'*.jar'</span>])</div><div class="line">    androidTestCompile(<span class="string">'com.android.support.test.espresso:espresso-core:2.2.2'</span>, &#123;</div><div class="line">        exclude group: <span class="string">'com.android.support'</span>, module: <span class="string">'support-annotations'</span></div><div class="line">    &#125;)</div><div class="line">    compile <span class="string">'com.android.support:appcompat-v7:25.0.1'</span></div><div class="line">    testCompile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p style="text-align: center;"><br>    <img src="pic/gradle-advance-android-test.png" width="60%"><br></p>
+
+<blockquote>
+<p><strong>注意：</strong>对于Espresso库如何使用，笔者这里不再赘述。</p>
+</blockquote>
+<p>在运行Espresso测试之前，你需要确保你有设备或者模拟器相连，如果没有设备或模拟器相连，那么构建时就会抛出异常。</p>
+<p>使用<code>./gradlew connectedCheck</code>来运行Espresso测试。该任务将会执行<code>connectedAndroidTest</code>和<code>createDebugCoverageReport</code>。其中<code>connectedAndroidTest</code>用来在所有连接设备的debug构建上运行全部测试用例。而<code>createDebugCoverageReport</code>则用来创建一份测试报告。测试报告位于build/reportes/androidTests下：</p>
+<p style="text-align: center;"><br>    <img src="pic/gradle-advance-android-test-report.png" width="100%"><br></p>
+
+<h2 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h2><p>在开始为Android项目编写测试用例之后，最好知道你的代码被测试用例覆盖了多少。针对Java的测试覆盖工具有很多，其中最受欢迎的是Jacoco。Jacoco也是默认被包含的依赖包。</p>
+<p>只需要在构建类型代码块中设置<code>testCoverageEnabled = true</code>即可激活测试覆盖率，并且在构建时生成覆盖率报告。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">    debug &#123;</div><div class="line">        testCoverageEnabled <span class="keyword">true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行<code>./gradlew connectedCheck</code>时，会自动创建覆盖率报告。创建报告自身的任务是<code>createDebugConverageReport</code>。可以之间运行该任务，但是<code>createConverageReport</code>依赖<code>connectedCheck</code>所以不能分开执行它们，并且保证有设备或者模拟器相连。</p>
+<p style="text-align: center;"><br>    <img src="pic/gradle-advance-converage.png" width="100%"><br></p>
+
+<p>由于未定义任何测试用例而是直接使用AndroidStudio初始项目时的用例所以覆盖率为0。</p>
+<p>如果想为Jacoco指定具体的版本，可以在构建类型代码块中定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">    jacoco &#123;</div><div class="line">        toolVersion = <span class="string">"0.7.5.201505241946"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Groovy入门与自定义插件和任务"><a href="#Groovy入门与自定义插件和任务" class="headerlink" title="Groovy入门与自定义插件和任务"></a>Groovy入门与自定义插件和任务</h1><p>to be continue</p>
+<h1 id="高级自定义构建"><a href="#高级自定义构建" class="headerlink" title="高级自定义构建"></a>高级自定义构建</h1><p><a href="http://icedcap.github.io/2016/11/01/beginner-gradle-part-two/#Gradle任务和简单的自定义构建">基础篇</a>中已经介绍了一些基础的自定义构建包括构建版本、BuildConfig的使用、默认任务等。对于高级自定义构建主要是针对APK优化、构建速度、以及Lint进行自定义构建。</p>
 <h2 id="APK瘦身"><a href="#APK瘦身" class="headerlink" title="APK瘦身"></a>APK瘦身</h2><p>随着项目的迭代APK的大小也是有增无减，而且大部分的APK都有缩减size的潜力。这时我们要明白APK增大的原因有哪些？首先不可避免的是新需求导致更多的功能注入其次是很多时候为了快速迭代使用了一些比较重的依赖库最后就是增加了很多资源密度并且有的未被使用到。所以我们要针对后两点为apk瘦身。</p>
 <h3 id="混淆器ProGuard"><a href="#混淆器ProGuard" class="headerlink" title="混淆器ProGuard"></a>混淆器ProGuard</h3><p>ProGuard是一个Java工具，它不仅可以缩减APK的大小，还可以在编译期优化、混淆和预校验你的代码。它通过应用中所有的代码路径来找到未被使用的代码，并将其删除，不仅这样他还会重命名类和字段来进行混淆，使得逆向工程师更难理解代码。</p>
 <p>好了如何开启ProGuard呢？在构建类型中有一个<code>minifyEnabled</code>的布尔类型属性将它设为true即表示开启ProGuard。并且在构建release版本时<code>proguardRelease</code>任务会被执行。</p>
@@ -550,7 +597,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多模块项目构建"><span class="nav-number">1.</span> <span class="nav-text">多模块项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行测试"><span class="nav-number">2.</span> <span class="nav-text">运行测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy入门与自定义插件和任务"><span class="nav-number">3.</span> <span class="nav-text">Groovy入门与自定义插件和任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级自定义构建"><span class="nav-number">4.</span> <span class="nav-text">高级自定义构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APK瘦身"><span class="nav-number">4.1.</span> <span class="nav-text">APK瘦身</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#混淆器ProGuard"><span class="nav-number">4.1.1.</span> <span class="nav-text">混淆器ProGuard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源缩减"><span class="nav-number">4.1.2.</span> <span class="nav-text">资源缩减</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速构建"><span class="nav-number">4.2.</span> <span class="nav-text">加速构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle参数或者AndroidStudio设置"><span class="nav-number">4.2.1.</span> <span class="nav-text">Gradle参数或者AndroidStudio设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建过程profile报告"><span class="nav-number">4.2.2.</span> <span class="nav-text">构建过程profile报告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jack-amp-Jill"><span class="nav-number">4.2.3.</span> <span class="nav-text">Jack&Jill</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lint"><span class="nav-number">4.3.</span> <span class="nav-text">Lint</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多模块项目构建"><span class="nav-number">1.</span> <span class="nav-text">多模块项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试任务的构建"><span class="nav-number">2.</span> <span class="nav-text">测试任务的构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试"><span class="nav-number">2.1.</span> <span class="nav-text">单元测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能测试"><span class="nav-number">2.2.</span> <span class="nav-text">功能测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试覆盖率"><span class="nav-number">2.3.</span> <span class="nav-text">测试覆盖率</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy入门与自定义插件和任务"><span class="nav-number">3.</span> <span class="nav-text">Groovy入门与自定义插件和任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级自定义构建"><span class="nav-number">4.</span> <span class="nav-text">高级自定义构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APK瘦身"><span class="nav-number">4.1.</span> <span class="nav-text">APK瘦身</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#混淆器ProGuard"><span class="nav-number">4.1.1.</span> <span class="nav-text">混淆器ProGuard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源缩减"><span class="nav-number">4.1.2.</span> <span class="nav-text">资源缩减</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速构建"><span class="nav-number">4.2.</span> <span class="nav-text">加速构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle参数或者AndroidStudio设置"><span class="nav-number">4.2.1.</span> <span class="nav-text">Gradle参数或者AndroidStudio设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建过程profile报告"><span class="nav-number">4.2.2.</span> <span class="nav-text">构建过程profile报告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jack-amp-Jill"><span class="nav-number">4.2.3.</span> <span class="nav-text">Jack&Jill</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lint"><span class="nav-number">4.3.</span> <span class="nav-text">Lint</span></a></li></ol></li></ol></div>
             
           </div>
         </section>

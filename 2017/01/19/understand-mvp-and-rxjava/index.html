@@ -1,0 +1,720 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="架构,Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="MVP+RxJava是最近一两年讨论最热的技术，也许你最近还在讨论他们？
+    via @Hanna Jung in Dribble.
+
+我们了解这种架构模式并且已经运用到实际项目中了，但是我们真的能在该架构模式下获得高效的利益吗？MVP和RxJava库能为用户带来价值吗或者能帮助开发者提升迭代速度吗？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我对MVP以及RxJava的浅薄认识">
+<meta property="og:url" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="MVP+RxJava是最近一两年讨论最热的技术，也许你最近还在讨论他们？
+    via @Hanna Jung in Dribble.
+
+我们了解这种架构模式并且已经运用到实际项目中了，但是我们真的能在该架构模式下获得高效的利益吗？MVP和RxJava库能为用户带来价值吗或者能帮助开发者提升迭代速度吗？">
+<meta property="og:image" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/per-img.gif">
+<meta property="og:image" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/construct-layer.png">
+<meta property="og:updated_time" content="2017-03-31T07:27:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我对MVP以及RxJava的浅薄认识">
+<meta name="twitter:description" content="MVP+RxJava是最近一两年讨论最热的技术，也许你最近还在讨论他们？
+    via @Hanna Jung in Dribble.
+
+我们了解这种架构模式并且已经运用到实际项目中了，但是我们真的能在该架构模式下获得高效的利益吗？MVP和RxJava库能为用户带来价值吗或者能帮助开发者提升迭代速度吗？">
+<meta name="twitter:image" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/per-img.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/"/>
+
+
+  <title> 我对MVP以及RxJava的浅薄认识 | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                我对MVP以及RxJava的浅薄认识
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-19T20:09:22+08:00" content="2017-01-19">
+              2017-01-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/19/understand-mvp-and-rxjava/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/19/understand-mvp-and-rxjava/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MVP+RxJava是最近一两年讨论最热的技术，也许你最近还在讨论他们？</p>
+<p style="text-align:center"><br>    <img src="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/per-img.gif"><font size="1px" color="#7C7C7C">via @Hanna Jung in Dribble.</font><br></p>
+
+<p>我们了解这种架构模式并且已经运用到实际项目中了，但是我们真的能在该架构模式下获得高效的利益吗？MVP和RxJava库能为用户带来价值吗或者能帮助开发者提升迭代速度吗？</p>
+<a id="more"></a>
+<p>我们都知道MVP能带来两方面的好处：</p>
+<ul>
+<li>简洁的代码</li>
+<li>完全可测试的业务逻辑</li>
+</ul>
+<p>这就是为什么使用MVP+RxJava，因为基于以上两点我们可以在未来的迭代中更加快速。</p>
+<h1 id="架构背景"><a href="#架构背景" class="headerlink" title="架构背景"></a>架构背景</h1><p>首先在我们对架构知识理解的基础上对代码逻辑分为三（或者更多）层：</p>
+<ul>
+<li><strong>数据层（Data）：</strong>负责从磁盘、网络或者其他实体提供数据。例如，用户位置信息、服务器数据等</li>
+<li><strong>领域层（Domain）：</strong>通常在该层编写可复用的业务逻辑代码来用于数据层和UI层的交互。例如，对位置信息做一些操作等</li>
+<li><strong>UI层（或者描述层Presentation）：</strong>界面显示或者用户交互的直接目标。例如，一个按钮的点击等行为</li>
+</ul>
+<p style="text-align:center"><br>    <img src="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/construct-layer.png"><font size="1px" color="#7C7C7C">架构分层</font><br></p>
+
+<p>在上图的分层中，对于<em>数据层</em>来说，应该保有高百分比可测试性的代码，我们通常不对网络或者存储类进行测试；对于<em>领域层</em>应该是可100%测试的代码；最大的挑战是对UI层代码的测试。</p>
+<p>有了对分层架构的基本认识后，我们需要将MVP引入到分层中：</p>
+<p style="text-align:center"><br>    <font color="#7C7C7C" size="4px"><br>    <i>MVP is a pattern used only in the UI layer.</i><br>    </font><br></p>
+
+<p>将大量的业务逻辑从UI层移到Presenter层，并且归为相应的类文件，这样也有利于单元测试。</p>
+<p>那么，RxJava呢？</p>
+<p style="text-align:center"><br>    <font color="#7C7C7C" size="4px"><br>    <i>RxJava is a library to have these 3 layers communicate with each other.</i><br>    </font><br></p>
+
+<p>有了以上知识，我们使用MVP来创建一个UI层的逻辑：</p>
+<h2 id="描述层"><a href="#描述层" class="headerlink" title="描述层"></a>描述层</h2><p>首先第一步需要清楚将要与用户交互的View都有哪些视图状态。我们不需要关心视图是什么（Activity、Fragment、View 等）因为我们只需要调用接口（StateView）就能完成。</p>
+<h3 id="通用的MVP框架"><a href="#通用的MVP框架" class="headerlink" title="通用的MVP框架"></a>通用的MVP框架</h3><p>在描述层要定义的动作最少应该有两个，一个是start一个是stop。对于StateView来说可以随着状态的变化而动态更新。视图状态决定当前视图所显示的内容。</p>
+<p>Presenter.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Presenter</span>&lt;<span class="title">S</span>, <span class="title">V</span> <span class="keyword">extends</span> <span class="title">StateView</span>&lt;<span class="title">S</span>&gt;&gt; </span>&#123;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onStart</span><span class="params">(V view)</span></span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>StateView.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StateView</span>&lt;<span class="title">S</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateState</span><span class="params">(S state)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>首先，我们启动一个Presenter，Presenter将会收到所有在领域层需要观察的Rx observables并且更新相应的视图。例如检查用户是否登陆</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">accountInteractor.isUserLoggedIn()</div></pre></td></tr></table></figure>
+<p>接着，转换数据并且判断视图状态做相应的视图变化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">accountInteractor.isUserLoggedIn()</div><div class="line">    .map(isUserLoggedIn -&gt; <span class="keyword">new</span> FilterButtonState(isUserLoggedIn))</div></pre></td></tr></table></figure>
+<p>最后，我们在onStart中启动并且更新视图</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">onStart</span><span class="params">(StateView&lt;FilterButtonState&gt; view)</span></span>&#123;</div><div class="line">    subscription = accountInteractor.isUserLoggedIn()</div><div class="line">        .map(isUserLoggedIn -&gt; <span class="keyword">new</span> FilterButtonState(isUserLoggedIn))</div><div class="line">        .subscribe(view::updateState)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当我们停止一个Presenter时，我们需要注销相应的被观察者以防止内存泄漏。</p>
+<p>整个代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@ViewScope</span> <span class="comment">// dagger 2 scope</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FilterButtonPresenter</span> <span class="keyword">implements</span> <span class="title">Presenter</span>&lt;<span class="title">FilterButtonState</span>, <span class="title">StateView</span>&lt;<span class="title">FilterButtonState</span>&gt;&gt; </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">final</span> AccountInteractor accountInteractor;</div><div class="line">  Subscription subscription;</div><div class="line"></div><div class="line">  <span class="meta">@Inject</span> <span class="comment">// dagger 2 dependency injection</span></div><div class="line">  FilterButtonPresenter(AccountInteractor accountInteractor)&#123;</div><div class="line">    <span class="keyword">this</span>.accountInteractor = accountInteractor;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onStart</span><span class="params">(StateView&lt;FilterButtonState&gt; view)</span></span>&#123;</div><div class="line">    subscription = accountInteractor.isUserLoggedIn()</div><div class="line">                    .map(isUserLoggedIn -&gt; <span class="keyword">new</span> FilterButtonState(isUserLoggedIn))</div><div class="line">                    .subscribe(view::updateState);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span></span>&#123;</div><div class="line">    subscription.unsubscribe();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@AllArgsConstructor</span>  <span class="comment">// lombok</span></div><div class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterButtonState</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> enabled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>FilterButtonPresenterTest.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(MockitoJUnitRunner.class)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FilterButtonPresenterTest</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Mock</span></div><div class="line">  AccountInteractor accountInteractor;</div><div class="line">  <span class="meta">@Mock</span></div><div class="line">  StateView&lt;FilterButtonState&gt; view;</div><div class="line">  <span class="meta">@InjectMocks</span></div><div class="line">  FilterButtonPresenter testee;</div><div class="line"></div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">userIsLoggedIn</span><span class="params">()</span></span>&#123;</div><div class="line">    given(accountInteractor.isUserLoggedIn())</div><div class="line">      .willReturn(just(<span class="keyword">true</span>));</div><div class="line">    </div><div class="line">    <span class="comment">// When </span></div><div class="line">    testee.onStart(view);</div><div class="line"></div><div class="line">    <span class="comment">// Then</span></div><div class="line">    verify(view)</div><div class="line">      .updateState(<span class="keyword">new</span> FilterButtonState(<span class="keyword">true</span>));</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">userIsLoggedOut</span><span class="params">()</span></span>&#123;</div><div class="line">    given(accountInteractor.isUserLoggedIn())</div><div class="line">      .willReturn(just(<span class="keyword">false</span>));</div><div class="line">    </div><div class="line">    <span class="comment">// When </span></div><div class="line">    testee.onStart(view);</div><div class="line"></div><div class="line">    <span class="comment">// Then</span></div><div class="line">    verify(view)</div><div class="line">      .updateState(<span class="keyword">new</span> FilterButtonState(<span class="keyword">false</span>));</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="UI层"><a href="#UI层" class="headerlink" title="UI层"></a>UI层</h2><p>使用已经定义好的视图状态类来更新相应的UI组件。</p>
+<p>FilterButtonActivity.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">StateView</span>&lt;<span class="title">FilterButtonState</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> Button button;</div><div class="line">  <span class="meta">@Inject</span></div><div class="line">  FilterButtonPresenter presenter;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="comment">// set some content views</span></div><div class="line">    Component.activity(<span class="keyword">this</span>).inject(<span class="keyword">this</span>); <span class="comment">// dagger 2 injection</span></div><div class="line">    presenter.start(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</div><div class="line">      presenter.stop();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateState</span><span class="params">(FilterButtonState state)</span> </span>&#123;</div><div class="line">    button.setEnabled(state.enabled);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里出现一个问题值得我们深思，我们是要在Activity的相应生命周期中调用Presenter的start和stop吗？还是其他时机也需要调用？</p>
+<p>如果我们只是简单的在onStart/onDestroy生命周期中调用start和stop，但我们的activity异常退出怎么办？onSaveedInstance要不要调用相应的状态保存呢？这些事情是很头疼的。再如设备开启了接电保护后，我们不希望在onStop后的Activity中一直运行Presenter的action，那么我们就需要在onStop中执行presenter.stop()。</p>
+<h1 id="进一步说明"><a href="#进一步说明" class="headerlink" title="进一步说明"></a>进一步说明</h1><ul>
+<li>当计划使用MVP时，一定要把握好视图的可能出现的状态。</li>
+<li>如果你要开发一个全部交互的app，那么数据层与领域层以及领域层与UI层都要使用RxJava库来进行通信。这样也比使用从数据层的视图状态来更新UI层的方式更加简单</li>
+<li>如果定义两个或者两个以上不同的Presenter时需要清楚UI的状态（例如， 用户从一个ListView中选择一个Item并你想同时更新两个不同的UI），那么建议使用视图状态来动态更新UI</li>
+<li>有些情况基于用户与UI界面的交互我们需要更新领域层或者数据层的信息，简单的可以在Presenter中添加相应的方法，在UI交互的时候调用这些方法。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag">#架构</a>
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/22/android-performance-avoid-using-enum/" rel="next" title="避免在安卓项目中使用枚举">
+                <i class="fa fa-chevron-left"></i> 避免在安卓项目中使用枚举
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/19/understand-mvp-and-rxjava/"
+           data-title="我对MVP以及RxJava的浅薄认识" data-url="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构背景"><span class="nav-number">1.</span> <span class="nav-text">架构背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#描述层"><span class="nav-number">1.1.</span> <span class="nav-text">描述层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用的MVP框架"><span class="nav-number">1.1.1.</span> <span class="nav-text">通用的MVP框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.1.2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.1.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UI层"><span class="nav-number">1.2.</span> <span class="nav-text">UI层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进一步说明"><span class="nav-number">2.</span> <span class="nav-text">进一步说明</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"io-github-icedcap"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

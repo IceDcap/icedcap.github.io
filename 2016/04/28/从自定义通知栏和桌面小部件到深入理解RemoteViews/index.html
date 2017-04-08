@@ -116,7 +116,7 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: '0',
+      userId: 'undefined',
       author: '博主'
     }
   };
@@ -293,7 +293,7 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -508,8 +508,11 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/"
-           data-title="从自定义通知栏和桌面小部件到深入理解RemoteViews" data-url="http://icedcap.github.io/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -554,7 +557,7 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -571,7 +574,7 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -750,30 +753,35 @@ RemoteViews实际应用通知栏在Android应用开发中，通知栏是一个�
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"io-github-icedcap"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'io-github-icedcap';
+      var disqus_identifier = '2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/';
+      var disqus_title = "从自定义通知栏和桌面小部件到深入理解RemoteViews";
+      var disqus_url = 'http://icedcap.github.io/2016/04/28/从自定义通知栏和桌面小部件到深入理解RemoteViews/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 

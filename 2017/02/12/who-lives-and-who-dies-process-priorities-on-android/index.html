@@ -1,0 +1,707 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="受限于移动设备的内存和电池资源，我们在开发App时要考虑其生死存亡之际要做最后的“挣扎”。首先最重要的一点就是当进程被杀时内存回收相关的尽量不要影响到用户。事实上，Android进程回收是遵循一个金字塔优先级的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生死有命，富贵在天 — 进程优先级(译)">
+<meta property="og:url" content="http://icedcap.github.io/2017/02/12/who-lives-and-who-dies-process-priorities-on-android/index.html">
+<meta property="og:site_name" content="Ice.D.cap">
+<meta property="og:description" content="受限于移动设备的内存和电池资源，我们在开发App时要考虑其生死存亡之际要做最后的“挣扎”。首先最重要的一点就是当进程被杀时内存回收相关的尽量不要影响到用户。事实上，Android进程回收是遵循一个金字塔优先级的。">
+<meta property="og:image" content="http://icedcap.github.io/001.png">
+<meta property="og:updated_time" content="2017-04-08T13:31:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="生死有命，富贵在天 — 进程优先级(译)">
+<meta name="twitter:description" content="受限于移动设备的内存和电池资源，我们在开发App时要考虑其生死存亡之际要做最后的“挣扎”。首先最重要的一点就是当进程被杀时内存回收相关的尽量不要影响到用户。事实上，Android进程回收是遵循一个金字塔优先级的。">
+<meta name="twitter:image" content="http://icedcap.github.io/001.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://icedcap.github.io/2017/02/12/who-lives-and-who-dies-process-priorities-on-android/"/>
+
+
+  <title> 生死有命，富贵在天 — 进程优先级(译) | Ice.D.cap </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ice.D.cap</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My life is so much more interesting inside my head.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                生死有命，富贵在天 — 进程优先级(译)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-12T23:34:11+08:00" content="2017-02-12">
+              2017-02-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/优化/" itemprop="url" rel="index">
+                    <span itemprop="name">优化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/12/who-lives-and-who-dies-process-priorities-on-android/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/02/12/who-lives-and-who-dies-process-priorities-on-android/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>受限于移动设备的内存和电池资源，我们在开发App时要考虑其生死存亡之际要做最后的“挣扎”。首先最重要的一点就是当进程被杀时内存回收相关的尽量不要影响到用户。事实上，Android进程回收是遵循一个金字塔优先级的。<br><a id="more"></a></p>
+<h1 id="Android进程优先级"><a href="#Android进程优先级" class="headerlink" title="Android进程优先级"></a>Android进程优先级</h1><p>你会发现安卓中最重要的进程叫做前台进程，然后是可见进程、服务进程、后台进程以及空进程（<a href="https://developer.android.com/guide/components/processes-and-threads.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog#Lifecycle" target="_blank" rel="external">官方文档</a>）</p>
+<p>注意，安卓系统杀死的是应用进程不是某个组件（activity、service），当然这里不去探讨GC机制是怎样回收内存的。</p>
+<p style="text-align:center"><br>    <img src="001.png"><font size="1px" color="#7C7C7C"></font><br></p>
+
+<h2 id="前台进程"><a href="#前台进程" class="headerlink" title="前台进程"></a>前台进程</h2><p>你会想正在与用户交互的东西是最重要的需要保证活着的，这应该完全正确。但是“正在与用户交互”这个定义有点模糊。<strong>当前的前台 Activity</strong> 毫无争议属于这一类，它是已经调用了 onResume() 方法但还没有收到 onPause() 调用的 Activity 。</p>
+<p>一些 activity 在依靠他们自己的同时，也可能依赖 bound service 。<strong>任何进程，如果它持有一个绑定到前台 activity 的服务，那么它也被赋予了同样的前台优先级。</strong>这完全符合直觉，如果前台 activity 认为和那个服务保持持久连接很重要，那么保持这个服务活着就对 activity 和 Android 很重要。对于正在与前台服务交互的 content provider 也是如此。</p>
+<p>但是谁说用户能察觉到的只有 activity ？如果正在播放的音乐突然停止或导航方向突然消失，我一定会很恼火。幸好，Android 可以让服务使用 startForeground() 方法成为高优先级前台服务。这绝对是媒体播放的最佳实践，但是这里要问一个重要问题“如果服务停止了，用户会立刻察觉到吗？”。前台服务应该仅被用于关键的、可被立刻察觉的场景。</p>
+<blockquote>
+<p><strong>注意：</strong>要成为前台服务需要在服务中包含一个通知以便让用户注意到这个服务正在运行。如果你觉得你的使用场景不需要这个通知，那么前台服务对你可能不是正确的选择（是的，成为前台服务并不要求一定运行在后台，见下文）。</p>
+</blockquote>
+<p>在接收关键生命周期方法时会让一个进程临时提升为前台进程，包括任何服务的生命周期方法（onCreate(), onStartCommand() 和 onDestroy()） 和任何广播接收器 onReceive() 方法。这样做确保了这些组件的操作是有效的原子操作，每个组件都能执行完成而不被杀掉。</p>
+<h2 id="可见进程"><a href="#可见进程" class="headerlink" title="可见进程"></a>可见进程</h2><p>等下，我想我已经谈到了当前的 activity？你会发现 <strong>activity 可见的时候不一定在前台。</strong>一个简单的例子是前台的 activity 使用对话框启动了一个新的 activity 或者一个透明 activity 。另一个例子是当你调用运行时权限对话框时（事实上它就是一个 activity！）。</p>
+<p>在收到 onStart() 和收到 onStop() 方法期间的 activity 是可见 activity 。在这两个方法调用之间，你可以做所有可见 activity 能做的事情（实时更新屏幕等）。</p>
+<p>和前台 activity 类似，可见 activity 的 bound service 和 content provider 也处于可见进程状态。这同样是为了保证使用中的 activity 所依赖的进程不会被过早地杀掉。</p>
+<p>但请记住，<strong>只是可见并不意味着不能被杀掉。</strong>如果来自前台进程的内存压力过大，可见进程仍有可能被杀掉。从用户的角度看，这意味着当前 activity 背后的可见 activity 会被黑屏代替。当然，如果你正确地<a href="https://developer.android.com/training/basics/activity-lifecycle/recreating.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog" target="_blank" rel="external">重建你的 activity</a>，在前台 activity 关闭之后你的进程和 activity 会立刻恢复而没有数据损失。</p>
+<blockquote>
+<p><strong>注意：</strong>你的activity和进程即使可见也可能被杀掉是因为startActivityForResult()+onActivityResult()或requestPermissions()+onRequestPermissionsResult() 流程没有获得回调类的实例。如果你的整个进程死了，那么所有的回调类实例也死了。如果你看到使用回调方式的库，你应该意识到这在低内存压力情况下无法完成。</p>
+</blockquote>
+<h2 id="服务进程"><a href="#服务进程" class="headerlink" title="服务进程"></a>服务进程</h2><p>如果你的进程不属于以上两种类别，而你有一个启动的服务(started service)，那么它被看作是一个服务进程。对于许多在后台做处理（如加载数据）而没有立即成为前台服务的应用都属于这种情况。</p>
+<p>这没有问题！绝大多数情况，这是后台处理的最佳方式。这种进程只有在前面讲的可见进程和前台进程做了太多事情需要更多资源的时候才会被杀掉。</p>
+<p>请特别注意从 onStartCommand() 返回的常量，如果你的服务由于内存压力被杀掉，它表示控制什么发生什么：</p>
+<ul>
+<li><a href="http://developer.android.com/reference/android/app/Service.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog#START_STICKY" target="_blank" rel="external">START_STICKY</a> 表示你希望系统可用的时候自动重启你的服务，但你不关心是否能获得最后一次的 Intent （例如，你可以重建自己的状态或者控制自己的 start/stop 生命周期）。</li>
+<li><a href="http://developer.android.com/reference/android/app/Service.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog#START_REDELIVER_INTENT" target="_blank" rel="external">START_REDELIVER_INTENT</a> 是为那些在被杀死之后重启时重新获得 Intent 的服务的，直到你用传递给 onStartCommand() 方法的 startId 参数调用 stopSelf() 为止。这里你会使用 Intent 和 startId 作为队列完成工作。</li>
+<li><a href="http://developer.android.com/reference/android/app/Service.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog#START_NOT_STICKY" target="_blank" rel="external">START_NOT_STICKY</a> 用于那些杀掉也没关系的服务。这适合那些管理周期性任务的服务，它们只是等待下一个时间窗口工作。</li>
+</ul>
+<h2 id="后台进程"><a href="#后台进程" class="headerlink" title="后台进程"></a>后台进程</h2><p>比如说你的 Activity 一开始是前台 Activity，但是用户点了 home 键导致 onStop() 方法被调用。假设你之前一直是高优先级进程类别，<strong>这时你的进程将变为后台进程类别。</strong>在一般操作场景下，设备上的许多内存就是用在这上面的，让你重新回到之前打开过的某个 activity 。</p>
+<p>Android 不是为了杀而杀的（记住：从头启动是有代价的），所以这些进程会保留一段时间，直到更高优先级进程需要内存的时候才被回收，并且是按照最近最少使用顺序（最老的会被优先回收）。然而，当他们被杀掉的时候和可见 activity 处理情况一样，你应该能够在不丢失用户状态的情况下<a href="http://developer.android.com/training/basics/activity-lifecycle/recreating.html?utm_campaign=adp_series_processes_012016&amp;utm_source=medium&amp;utm_medium=blog" target="_blank" rel="external">重建这些 activity</a> 。</p>
+<h2 id="空进程"><a href="#空进程" class="headerlink" title="空进程"></a>空进程</h2><p>在任何层次中，空进程都是最低优先级的。<strong>如果不属于以上类别，那它就是这种。</strong>这里没有活跃的组件，只是出于缓存的目的而被保留（为了更加有效地使用内存而不是完全释放掉），只要 Android 需要可以随时杀掉它们。</p>
+<h1 id="警告和注意事项"><a href="#警告和注意事项" class="headerlink" title="警告和注意事项"></a>警告和注意事项</h1><p>当我们谈论进程优先级的时候是以 activity、service 这样的组件来说的，但请记住<strong>这些优先级是在进程的级别上，不是组件级别上。</strong>只要一个组件（比如一个前台服务）就会将整个进程变为前台进程。绝大多数应用是单进程的，如果你有生命周期差异很大的不同部分或者某个部分非常重量型，那么强烈建议你把它们分为不同的进程，让重量级进程尽早被回收。</p>
+<p>同样重要的是，<strong>你的进程属于什么类别是组件层面发生的事情决定的。</strong>这意味着把非常重要的长时间运行的操作放在 activity 所在进程的一个独立线程中的做法，在进程突然变成后台进程的时候可能会遇到问题。使用你能用到的工具（一个服务或基于优先级的前台服务）来确保系统知道你在做什么。</p>
+<h1 id="与别人友好相处，把用户放在心里"><a href="#与别人友好相处，把用户放在心里" class="headerlink" title="与别人友好相处，把用户放在心里"></a>与别人友好相处，把用户放在心里</h1><p>整个系统这样工作都是为了用户。做个好公民，做好你的应用，始终让自己工作在合适的优先级上。请记住，作为一个开发者，你使用的手机可能比你用户的最差手机快得多得多，你可能从来不会看到可见进程被杀死，远少于服务进程，但是这不意味着它不会发生！</p>
+<p>我仍然建议你购买一个非常低端的 Android 设备用于测试，同时你<strong>也可以在高端设备上测试被杀掉时应用是如何响应的</strong>。要在包级别杀掉应用，请使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am force-stop com.example.packagename</div></pre></td></tr></table></figure>
+<p>如果你有多个进程，可以在第二栏找到进程 id（PID）(如，下面第一个数字)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell ps | grep com.example.packagename</div></pre></td></tr></table></figure>
+<p>然后这样杀掉：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell kill PID</div></pre></td></tr></table></figure>
+<p>不论内存压力多大，确保你的应用在尽可能多的设备上良好运行的第一步是测试你的应用在被杀掉时是如何响应的。</p>
+<blockquote>
+<p><strong>原文地址：</strong><a href="https://medium.com/google-developers/who-lives-and-who-dies-process-priorities-on-android-cb151f39044f" target="_blank" rel="external">https://medium.com/google-developers/who-lives-and-who-dies-process-priorities-on-android-cb151f39044f</a><br><strong>作者：</strong> Ian Lake，Google Android 推广工程师</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/19/understand-mvp-and-rxjava/" rel="next" title="我对MVP以及RxJava的浅薄认识">
+                <i class="fa fa-chevron-left"></i> 我对MVP以及RxJava的浅薄认识
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Ice.D.cap" />
+          <p class="site-author-name" itemprop="name">Ice.D.cap</p>
+          <p class="site-description motion-element" itemprop="description">Life is like a boat.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/icedcap" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/iced_cap" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/icedcap" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android进程优先级"><span class="nav-number">1.</span> <span class="nav-text">Android进程优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前台进程"><span class="nav-number">1.1.</span> <span class="nav-text">前台进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见进程"><span class="nav-number">1.2.</span> <span class="nav-text">可见进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务进程"><span class="nav-number">1.3.</span> <span class="nav-text">服务进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后台进程"><span class="nav-number">1.4.</span> <span class="nav-text">后台进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空进程"><span class="nav-number">1.5.</span> <span class="nav-text">空进程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#警告和注意事项"><span class="nav-number">2.</span> <span class="nav-text">警告和注意事项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#与别人友好相处，把用户放在心里"><span class="nav-number">3.</span> <span class="nav-text">与别人友好相处，把用户放在心里</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ice.D.cap</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'io-github-icedcap';
+      var disqus_identifier = '2017/02/12/who-lives-and-who-dies-process-priorities-on-android/';
+      var disqus_title = "生死有命，富贵在天 — 进程优先级(译)";
+      var disqus_url = 'http://icedcap.github.io/2017/02/12/who-lives-and-who-dies-process-priorities-on-android/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

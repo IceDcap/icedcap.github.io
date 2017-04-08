@@ -105,7 +105,7 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: '0',
+      userId: 'undefined',
       author: '博主'
     }
   };
@@ -229,10 +229,10 @@
     
       <div class="tag-cloud">
         <div class="tag-cloud-title">
-            目前共计 28 个标签
+            目前共计 29 个标签
         </div>
         <div class="tag-cloud-tags">
-          <a href="/tags/Android/" style="font-size: 22.8px; color: #5c5c5c">Android</a> <a href="/tags/Handler/" style="font-size: 12px; color: #ccc">Handler</a> <a href="/tags/Intent/" style="font-size: 12px; color: #ccc">Intent</a> <a href="/tags/MVP/" style="font-size: 12px; color: #ccc">MVP</a> <a href="/tags/MVVM/" style="font-size: 15.6px; color: #a7a7a7">MVVM</a> <a href="/tags/Transition/" style="font-size: 12px; color: #ccc">Transition</a> <a href="/tags/View/" style="font-size: 12px; color: #ccc">View</a> <a href="/tags/ViewGroup/" style="font-size: 12px; color: #ccc">ViewGroup</a> <a href="/tags/android/" style="font-size: 30px; color: #111">android</a> <a href="/tags/animation/" style="font-size: 15.6px; color: #a7a7a7">animation</a> <a href="/tags/animator/" style="font-size: 15.6px; color: #a7a7a7">animator</a> <a href="/tags/data-binding/" style="font-size: 26.4px; color: #363636">data binding</a> <a href="/tags/design/" style="font-size: 15.6px; color: #a7a7a7">design</a> <a href="/tags/geek/" style="font-size: 12px; color: #ccc">geek</a> <a href="/tags/java/" style="font-size: 12px; color: #ccc">java</a> <a href="/tags/jni/" style="font-size: 12px; color: #ccc">jni</a> <a href="/tags/permission/" style="font-size: 12px; color: #ccc">permission</a> <a href="/tags/python/" style="font-size: 12px; color: #ccc">python</a> <a href="/tags/scroll/" style="font-size: 12px; color: #ccc">scroll</a> <a href="/tags/view/" style="font-size: 12px; color: #ccc">view</a> <a href="/tags/事件分发/" style="font-size: 12px; color: #ccc">事件分发</a> <a href="/tags/动画/" style="font-size: 12px; color: #ccc">动画</a> <a href="/tags/单例/" style="font-size: 12px; color: #ccc">单例</a> <a href="/tags/合集/" style="font-size: 12px; color: #ccc">合集</a> <a href="/tags/构建工具/" style="font-size: 19.2px; color: #818181">构建工具</a> <a href="/tags/架构/" style="font-size: 22.8px; color: #5c5c5c">架构</a> <a href="/tags/爬虫/" style="font-size: 12px; color: #ccc">爬虫</a> <a href="/tags/设计模式/" style="font-size: 12px; color: #ccc">设计模式</a>
+          <a href="/tags/Android/" style="font-size: 24px; color: #4f4f4f">Android</a> <a href="/tags/Handler/" style="font-size: 12px; color: #ccc">Handler</a> <a href="/tags/Intent/" style="font-size: 12px; color: #ccc">Intent</a> <a href="/tags/MVP/" style="font-size: 15px; color: #adadad">MVP</a> <a href="/tags/MVVM/" style="font-size: 15px; color: #adadad">MVVM</a> <a href="/tags/RxJava/" style="font-size: 12px; color: #ccc">RxJava</a> <a href="/tags/Transition/" style="font-size: 12px; color: #ccc">Transition</a> <a href="/tags/View/" style="font-size: 12px; color: #ccc">View</a> <a href="/tags/ViewGroup/" style="font-size: 12px; color: #ccc">ViewGroup</a> <a href="/tags/android/" style="font-size: 30px; color: #111">android</a> <a href="/tags/animation/" style="font-size: 15px; color: #adadad">animation</a> <a href="/tags/animator/" style="font-size: 15px; color: #adadad">animator</a> <a href="/tags/data-binding/" style="font-size: 27px; color: #303030">data binding</a> <a href="/tags/design/" style="font-size: 15px; color: #adadad">design</a> <a href="/tags/geek/" style="font-size: 12px; color: #ccc">geek</a> <a href="/tags/java/" style="font-size: 12px; color: #ccc">java</a> <a href="/tags/jni/" style="font-size: 12px; color: #ccc">jni</a> <a href="/tags/permission/" style="font-size: 12px; color: #ccc">permission</a> <a href="/tags/python/" style="font-size: 12px; color: #ccc">python</a> <a href="/tags/scroll/" style="font-size: 12px; color: #ccc">scroll</a> <a href="/tags/view/" style="font-size: 12px; color: #ccc">view</a> <a href="/tags/事件分发/" style="font-size: 12px; color: #ccc">事件分发</a> <a href="/tags/动画/" style="font-size: 12px; color: #ccc">动画</a> <a href="/tags/单例/" style="font-size: 12px; color: #ccc">单例</a> <a href="/tags/合集/" style="font-size: 12px; color: #ccc">合集</a> <a href="/tags/构建工具/" style="font-size: 18px; color: #8e8e8e">构建工具</a> <a href="/tags/架构/" style="font-size: 21px; color: #6f6f6f">架构</a> <a href="/tags/爬虫/" style="font-size: 12px; color: #ccc">爬虫</a> <a href="/tags/设计模式/" style="font-size: 12px; color: #ccc">设计模式</a>
         </div>
       </div>
     
@@ -246,8 +246,11 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="tags/index.html"
-           data-title="tags" data-url="http://icedcap.github.io/tags/index.html">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -283,7 +286,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -300,7 +303,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -464,30 +467,35 @@
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"io-github-icedcap"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'io-github-icedcap';
+      var disqus_identifier = 'tags/index.html';
+      var disqus_title = "tags";
+      var disqus_url = 'http://icedcap.github.io/tags/index.html';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 

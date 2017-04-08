@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="架构,Android," />
+  <meta name="keywords" content="架构,MVP,Android,RxJava," />
 
 
 
@@ -98,7 +98,7 @@
 我们了解这种架构模式并且已经运用到实际项目中了，但是我们真的能在该架构模式下获得高效的利益吗？MVP和RxJava库能为用户带来价值吗或者能帮助开发者提升迭代速度吗？">
 <meta property="og:image" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/per-img.gif">
 <meta property="og:image" content="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/construct-layer.png">
-<meta property="og:updated_time" content="2017-03-31T07:27:31.000Z">
+<meta property="og:updated_time" content="2017-04-01T01:20:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我对MVP以及RxJava的浅薄认识">
 <meta name="twitter:description" content="MVP+RxJava是最近一两年讨论最热的技术，也许你最近还在讨论他们？
@@ -117,7 +117,7 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: '0',
+      userId: 'undefined',
       author: '博主'
     }
   };
@@ -294,7 +294,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2017/01/19/understand-mvp-and-rxjava/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/19/understand-mvp-and-rxjava/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/19/understand-mvp-and-rxjava/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -393,7 +393,11 @@
           
             <a href="/tags/架构/" rel="tag">#架构</a>
           
+            <a href="/tags/MVP/" rel="tag">#MVP</a>
+          
             <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/RxJava/" rel="tag">#RxJava</a>
           
         </div>
       
@@ -409,6 +413,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/12/who-lives-and-who-dies-process-priorities-on-android/" rel="prev" title="生死有命，富贵在天 — 进程优先级(译)">
+                生死有命，富贵在天 — 进程优先级(译) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -434,8 +442,11 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/19/understand-mvp-and-rxjava/"
-           data-title="我对MVP以及RxJava的浅薄认识" data-url="http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -480,7 +491,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -497,7 +508,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -676,30 +687,35 @@
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"io-github-icedcap"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'io-github-icedcap';
+      var disqus_identifier = '2017/01/19/understand-mvp-and-rxjava/';
+      var disqus_title = "我对MVP以及RxJava的浅薄认识";
+      var disqus_url = 'http://icedcap.github.io/2017/01/19/understand-mvp-and-rxjava/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 
